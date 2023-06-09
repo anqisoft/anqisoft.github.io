@@ -1,12 +1,13 @@
-Hello World
-<en>If you want to change the language, please click the button.</en>
-<zh_cn>如果您想切换语言，请点击下一行相应按钮。</zh_cn>
-<zh_tw>如果您想切換語言，請點擊下一行相應按鈕。</zh_tw>
-<br />
-<button type="button" onclick="setLang('en')"><en>En</en><zh_cn>Chinese</zh_cn><zh_tw>Traditional</zh_tw></button>
-<button type="button" onclick="setLang('zh_cn')"><en>英语</en><zh_cn>简体</zh_cn><zh_tw>繁体</zh_tw></button>
-<button type="button" onclick="setLang('zh_tw')"><en>英語</en><zh_cn>簡體</zh_cn><zh_tw>繁體</zh_tw></button>
-<script>
-		document.getElementsByTagName('html')[0].setAttribute('lang', localStorage.getItem('lang') || 'en' );
-		function setLang(lang){localStorage.setItem('lang', lang); window.location.reload();}
-</script>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover,minimal-ui">
+        <title>AnQi's Blog</title>
+        <link rel="icon" href="favicon.ico" />
+				<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    </head>
+		<body>
+			<en>Hello world!</en><zh_cn>您好！</zh_cn><zh_tw>您好！</zh_tw><br />
+			<script type="text/javascript" src="assets/js/common.js"></script>
+		</body>
+</html>
