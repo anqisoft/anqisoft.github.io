@@ -32,48 +32,6 @@ class DPIHelper {
   getPxToMmScale = () => this.pxToMmScale;
 }
 
-function parsePageParamsFromUrl(url) {
-  window.LANDSCAPE =
-    url.concat('&landscape=false').replace('&landscape=', '厶').split('厶')[1].split('&')[0] ===
-    'true';
-  window.A3 =
-    url.concat('&a3=true').replace('&a3=', '厶').split('厶')[1].split('&')[0] === 'true';
-
-  window.PAGE_PADDING_TOP = Math.max(
-    0,
-    // parseInt(url.concat('&top=4').replace('&top=', '厶').split('厶')[1].split('&')[0]),
-    parseFloat(url.concat('&top=3.5').replace('&top=', '厶').split('厶')[1].split('&')[0]),
-  );
-  window.PAGE_PADDING_LEFT = Math.max(
-    0,
-    // parseInt(url.concat('&left=3').replace('&left=', '厶').split('厶')[1].split('&')[0]),
-    parseFloat(url.concat('&left=3.5').replace('&left=', '厶').split('厶')[1].split('&')[0]),
-  );
-
-  const PAPER_WIDTH = A3 ? (LANDSCAPE ? 420 : 297) : (LANDSCAPE ? 297 : 210);
-  const PAPER_HEIGHT = A3 ? (LANDSCAPE ? 297 : 420) : (LANDSCAPE ? 210 : 297);
-  const PAGE_WIDTH = PAPER_WIDTH - PAGE_PADDING_LEFT * 2;
-  const PAGE_HEIGHT = PAPER_HEIGHT - PAGE_PADDING_TOP * 2;
-
-  window.PAPER_WIDTH = PAPER_WIDTH;
-  window.PAPER_HEIGHT = PAPER_HEIGHT;
-  window.PAGE_WIDTH = PAGE_WIDTH;
-  window.PAGE_HEIGHT = PAGE_HEIGHT;
-}
-
-function getPageCss() {
-  return `\@media print\{\@page\{size:${A3 ? 'A3' : 'A4'} ${LANDSCAPE ? 'landscape' : 'portrait'};\} \}
-*\{margin:0;border:0;padding:0;\}
-page:not(:last-of-type)\{page-break-after:always;\}
-page\{padding-top:${PAGE_PADDING_TOP}mm;padding-left:${PAGE_PADDING_LEFT}mm;display:block;width:${PAGE_WIDTH}mm;height:${PAGE_HEIGHT}mm;position:relative;overflow:hidden;\}`;
-}
-
-function getSvgCss() {
-  return `\@media print\{\@page\{size:${A3 ? 'A3' : 'A4'} ${LANDSCAPE ? 'landscape' : 'portrait'};\} \}
-*\{margin:0;border:0;padding:0;\}
-body>svg:not(:last-child)\{page-break-after:always;\}
-body>svg\{display:block;width:${PAGE_WIDTH}mm;height:${PAGE_HEIGHT}mm;\}`;
-}
 
 function countScaleMmAndPx() {
   // https://blog.csdn.net/baidu_25343343/article/details/84950269
@@ -99,25 +57,6 @@ function countScaleMmAndPx() {
 }
 countScaleMmAndPx();
 
-function setF1Content(content) {
-  // 原本使用onkeyup，后来发现谷歌浏览器中无法再使用，改用onkeydown
-  document.onkeydown = function (e) {
-    // 27 ESC
-    // alert(e.keyCode);
-    // var html = ''; for (var p in e) { html += p.concat('=>', e[p], '<br/>'); } document.getElementsByTagName('body')[0].innerHTML = html;
-    switch (e.keyCode) {
-      case 112: // F1
-        alert(content); // 'box.htm?long=80&width=60&height=50&landscape=false&a3=true&thickess=1&top=3&left=3&extend=5'
-        e.preventDefault();
-        e.stopPropagation();
-        break;
-      default:
-        break;
-    }
-
-    return false;
-  }
-}
 
 function createSvgElement(html, width, height) {
   console.log('createSvgElement', width, height);
@@ -159,9 +98,6 @@ function createSvgAndGElement({ html, width, height }) {
   return { svgElement, gElement, width, height };
 }
 
-function createPageElement() {
-  return document.createElement('page');
-}
 
 function createTopSvgElement() {
   const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -272,7 +208,3 @@ function appendSvgAndG(parentElement, info, options) {
   svgElement.setAttribute('y', `${y + HALF_DELTA_HEIGHT * yScale}mm`);
   gElement.style.translate = `${G_DELTA_X}mm ${G_DELTA_Y}mm`;
 }
-
-const DEGREE_180 = 180;
-const DEGREE_90 = 90;
-const DEGREE_90_COUNTERCLOCKWISE = -90;
