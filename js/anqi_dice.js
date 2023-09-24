@@ -38,14 +38,16 @@ var edu;
           }
           let FIXED_SIDE_LENGTH = SIDE_LENGTH;
           let nested = false;
-          switch (diceKind) {
-            case DiceKind.twentyFour:
-              FIXED_SIDE_LENGTH = 25;
-              nested = true;
-              break;
-            default:
-              break;
-          }
+          // TODO check it.
+          // AnQi: Cancel the wrapper of 24-sides dice.
+          // switch (diceKind) {
+          //   case DiceKind.twentyFour:
+          //     FIXED_SIDE_LENGTH = 25;
+          //     nested = true;
+          //     break;
+          //   default:
+          //     break;
+          // }
           const svg = this.createSvg();
           svg.setAttribute('id', id);
           const viewBox = {
@@ -115,7 +117,11 @@ var edu;
           svg.setAttribute('width', width);
           svg.setAttribute('height', height);
           // svg.setAttribute('style', `width:${width};height:${height};`);
-          const outerSvg = createElement('wrap');
+
+          // TODO check it.
+          // AnQi: create the wrap only when nested.
+          // const outerSvg = createElement('wrap');
+          const outerSvg = nested ? createElement('wrap') : null;
           if (outerSvg) {
             outerSvg.appendChild(svg);
             outerSvg.setAttribute('id', id.concat('_wrapper'));
@@ -689,19 +695,23 @@ var edu;
         getCosByAngle(angle) {
           return Math.cos(angle * Math.PI / 180);
         }
+
         drawGraphsOfTwentyFourSidedDice(svg, SIDE_LENGTH, INNER_LINE_STYLE, OUTER_LINE_STYLE, viewBox, OPTIONS) {
           const { getSinByAngle, getCosByAngle } = this;
           const BIGER_ANGLE = 180 - 48.275 * 2;
           const SMALL_ANGLE_COS = Math.cos(48.275 * Math.PI / 180);
-          const HALF_LONG_SIDE_LENGTH = 50 * 0.5;
-          const SHORT_SIDE_LENGTH = 50 * 0.5 / SMALL_ANGLE_COS;
+          // const HALF_LONG_SIDE_LENGTH = 50 * 0.5;
+          // const SHORT_SIDE_LENGTH = 50 * 0.5 / SMALL_ANGLE_COS;
+          const HALF_LONG_SIDE_LENGTH = SIDE_LENGTH;
+          const SHORT_SIDE_LENGTH = HALF_LONG_SIDE_LENGTH / SMALL_ANGLE_COS;
+          const SIDE_SCALE = SIDE_LENGTH / 25;
           let ax = 0, ay = 0, bx = 0, by = 0, cx = 0, cy = 0, dx = 0, dy = 0, ex = 0, ey = 0, fx = 0, fy = 0;
           let aax = 0, aay = 0, bbx = 0, bby = 0, ddx = 0, ddy = 0, eex = 0, eey = 0, ffx = 0, ffy = 0, fffx = 0, fffy = 0;
-          let content_offset_top = -3, content_offset_left = -2;
-          content_offset_top *= 1.5, content_offset_left *= 1.5;
-          const OFFSET_X = -23.0805019730301175;
-          const ax1 = 150 + OFFSET_X, ay1 = 0;
-          const bx1 = ax1 + 50, by1 = 0;
+          // let content_offset_top = -3 * SIDE_SCALE, content_offset_left = -2 * SIDE_SCALE;
+          // content_offset_top *= 1.5, content_offset_left *= 1.5;
+          const OFFSET_X = -23.0805019730301175 * SIDE_SCALE;
+          const ax1 = SIDE_LENGTH * 6 + OFFSET_X, ay1 = 0;
+          const bx1 = ax1 + SIDE_LENGTH * 2, by1 = 0;
           const cx1 = ax1 + HALF_LONG_SIDE_LENGTH, cy1 = SHORT_SIDE_LENGTH * getSinByAngle(48.275);
           const angle_cd1 = BIGER_ANGLE - 48.275;
           const dx1 = cx1 - SHORT_SIDE_LENGTH * getCosByAngle(angle_cd1), dy1 = cy1 + SHORT_SIDE_LENGTH * getSinByAngle(angle_cd1);
@@ -709,9 +719,9 @@ var edu;
           const ex1 = cx1 + SHORT_SIDE_LENGTH * getCosByAngle(angle_ce1), ey1 = cy1 + SHORT_SIDE_LENGTH * getSinByAngle(angle_ce1);
           const angle_cf1 = BIGER_ANGLE - angle_ce1;
           const fx1 = cx1 + SHORT_SIDE_LENGTH * getCosByAngle(angle_cf1), fy1 = cy1 - SHORT_SIDE_LENGTH * getSinByAngle(angle_cf1);
-          const c_mirror_ad_x1 = 150 + dx1 - cx1;
+          const c_mirror_ad_x1 = SIDE_LENGTH * 6 + dx1 - cx1;
           const c_mirror_ad_y1 = 0 + dy1 - cy1;
-          const aax1 = 150 + (c_mirror_ad_x1 - 150) * 0.3 + OFFSET_X, aay1 = 0 + (c_mirror_ad_y1 - 0) * 0.3;
+          const aax1 = SIDE_LENGTH * 6 + (c_mirror_ad_x1 - SIDE_LENGTH * 6) * 0.3 + OFFSET_X, aay1 = 0 + (c_mirror_ad_y1 - 0) * 0.3;
           const bbx1 = 0, bby1 = 0;
           const ddx1 = dx1 + (c_mirror_ad_x1 - dx1) * 0.3, ddy1 = dy1 + (c_mirror_ad_y1 - dy1) * 0.3;
           const ffx1 = bx1 + (cx1 - bx1) * 0.3, ffy1 = 0 + (cy1 - 0) * 0.3;
@@ -902,30 +912,92 @@ var edu;
           this.appendLine(svg, OUTER_LINE_STYLE, ddx, eex, ddy, eey, viewBox);
         }
         drawTextsOfTwentyFourSidedDice(infos, SIDE_LENGTH) {
-          this.setSvgTextInfo(infos[0], SIDE_LENGTH * 36.5 / 25, SIDE_LENGTH * 100.0 / 25, 180);
-          this.setSvgTextInfo(infos[1], SIDE_LENGTH * 147.5 / 25, SIDE_LENGTH * 125.0 / 25, 180);
-          this.setSvgTextInfo(infos[2], SIDE_LENGTH * 70.0 / 25, SIDE_LENGTH * 120.0 / 25, -70.35);
-          this.setSvgTextInfo(infos[3], SIDE_LENGTH * 180.0 / 25, SIDE_LENGTH * 120.0 / 25, -70.35);
-          this.setSvgTextInfo(infos[4], SIDE_LENGTH * 120.0 / 25, SIDE_LENGTH * 128.0 / 25, -83.45);
-          this.setSvgTextInfo(infos[5], SIDE_LENGTH * 82.5 / 25, SIDE_LENGTH * 188.0 / 25, 83.45);
-          this.setSvgTextInfo(infos[6], SIDE_LENGTH * 195.0 / 25, SIDE_LENGTH * 147.5 / 25, 166.9);
-          this.setSvgTextInfo(infos[7], SIDE_LENGTH * 95.0 / 25, SIDE_LENGTH * 110.0 / 25, 193.1);
-          this.setSvgTextInfo(infos[8], SIDE_LENGTH * 139.0 / 25, SIDE_LENGTH * 44.0 / 25, 13.1);
-          this.setSvgTextInfo(infos[9], SIDE_LENGTH * 97.5 / 25, SIDE_LENGTH * 58.0 / 25, 206.2);
-          this.setSvgTextInfo(infos[10], SIDE_LENGTH * 125.0 / 25, SIDE_LENGTH * 70.0 / 25, -70.35);
-          this.setSvgTextInfo(infos[11], SIDE_LENGTH * 114.0 / 25, SIDE_LENGTH * 27.0 / 25, 96.55);
-          this.setSvgTextInfo(infos[12], SIDE_LENGTH * 102.0 / 25, SIDE_LENGTH * 138.0 / 25, 96.55);
-          this.setSvgTextInfo(infos[13], SIDE_LENGTH * 102.0 / 25, SIDE_LENGTH * 183.0 / 25, 263.45);
-          this.setSvgTextInfo(infos[14], SIDE_LENGTH * 80.0 / 25, SIDE_LENGTH * 160.0 / 25, 180);
-          this.setSvgTextInfo(infos[15], SIDE_LENGTH * 126.0 / 25, SIDE_LENGTH * 154.0 / 25, 13.1);
-          this.setSvgTextInfo(infos[16], SIDE_LENGTH * 30.0 / 25, SIDE_LENGTH * 78.0 / 25, 0);
-          this.setSvgTextInfo(infos[17], SIDE_LENGTH * 137.0 / 25, SIDE_LENGTH * 95.0 / 25, 26.2);
-          this.setSvgTextInfo(infos[18], SIDE_LENGTH * 110.0 / 25, SIDE_LENGTH * 84.0 / 25, 109.65);
-          this.setSvgTextInfo(infos[19], SIDE_LENGTH * 130.0 / 25, SIDE_LENGTH * 16.0 / 25, -83.45);
-          this.setSvgTextInfo(infos[20], SIDE_LENGTH * 160.0 / 25, SIDE_LENGTH * 80.0 / 25, 122.75);
-          this.setSvgTextInfo(infos[21], SIDE_LENGTH * 60.0 / 25, SIDE_LENGTH * 77.0 / 25, 96.55);
-          this.setSvgTextInfo(infos[22], SIDE_LENGTH * 195.0 / 25, SIDE_LENGTH * 93.0 / 25, 13.1);
-          this.setSvgTextInfo(infos[23], SIDE_LENGTH * 83.0 / 25, SIDE_LENGTH * 93.0 / 25, 13.1);
+          const SIZE_SCALE = SIDE_LENGTH / 25;
+          // this.setSvgTextInfo(infos[0], SIZE_SCALE * 36.5, SIZE_SCALE * 100.0, 180);
+          // this.setSvgTextInfo(infos[1], SIZE_SCALE * 147.5, SIZE_SCALE * 125.0, 180);
+          // this.setSvgTextInfo(infos[2], SIZE_SCALE * 70.0, SIZE_SCALE * 120.0, -70.35);
+          // this.setSvgTextInfo(infos[3], SIZE_SCALE * 180.0, SIZE_SCALE * 120.0, -70.35);
+          // this.setSvgTextInfo(infos[4], SIZE_SCALE * 120.0, SIZE_SCALE * 128.0, -83.45);
+          // this.setSvgTextInfo(infos[5], SIZE_SCALE * 82.5, SIZE_SCALE * 188.0, 83.45);
+          // this.setSvgTextInfo(infos[6], SIZE_SCALE * 195.0, SIZE_SCALE * 147.5, 166.9);
+          // this.setSvgTextInfo(infos[7], SIZE_SCALE * 95.0, SIZE_SCALE * 110.0, 193.1);
+          // this.setSvgTextInfo(infos[8], SIZE_SCALE * 139.0, SIZE_SCALE * 44.0, 13.1);
+          // this.setSvgTextInfo(infos[9], SIZE_SCALE * 97.5, SIZE_SCALE * 58.0, 206.2);
+          // this.setSvgTextInfo(infos[10], SIZE_SCALE * 125.0, SIZE_SCALE * 70.0, -70.35);
+          // this.setSvgTextInfo(infos[11], SIZE_SCALE * 114.0, SIZE_SCALE * 27.0, 96.55);
+          // this.setSvgTextInfo(infos[12], SIZE_SCALE * 102.0, SIZE_SCALE * 138.0, 96.55);
+          // this.setSvgTextInfo(infos[13], SIZE_SCALE * 102.0, SIZE_SCALE * 183.0, 263.45);
+          // this.setSvgTextInfo(infos[14], SIZE_SCALE * 80.0, SIZE_SCALE * 160.0, 180);
+          // this.setSvgTextInfo(infos[15], SIZE_SCALE * 126.0, SIZE_SCALE * 154.0, 13.1);
+          // this.setSvgTextInfo(infos[16], SIZE_SCALE * 30.0, SIZE_SCALE * 78.0, 0);
+          // this.setSvgTextInfo(infos[17], SIZE_SCALE * 137.0, SIZE_SCALE * 95.0, 26.2);
+          // this.setSvgTextInfo(infos[18], SIZE_SCALE * 110.0, SIZE_SCALE * 84.0, 109.65);
+          // this.setSvgTextInfo(infos[19], SIZE_SCALE * 130.0, SIZE_SCALE * 16.0, -83.45);
+          // this.setSvgTextInfo(infos[20], SIZE_SCALE * 160.0, SIZE_SCALE * 80.0, 122.75);
+          // this.setSvgTextInfo(infos[21], SIZE_SCALE * 60.0, SIZE_SCALE * 77.0, 96.55);
+          // this.setSvgTextInfo(infos[22], SIZE_SCALE * 195.0, SIZE_SCALE * 93.0, 13.1);
+          // this.setSvgTextInfo(infos[23], SIZE_SCALE * 83.0, SIZE_SCALE * 93.0, 13.1);
+
+          const that = this;
+          // [
+          //   { x: 36.5, y: 100.0, angle: 180 },
+          //   { x: 147.5, y: 125.0, angle: 180 },
+          //   { x: 70.0, y: 120.0, angle: -70.35 },
+          //   { x: 180.0, y: 120.0, angle: -70.35 },
+          //   { x: 120.0, y: 128.0, angle: -83.45 },
+          //   { x: 82.5, y: 188.0, angle: 83.45 },
+          //   { x: 195.0, y: 147.5, angle: 166.9 },
+          //   { x: 95.0, y: 110.0, angle: 193.1 },
+          //   { x: 139.0, y: 44.0, angle: 13.1 },
+          //   { x: 97.5, y: 58.0, angle: 206.2 },
+          //   { x: 125.0, y: 70.0, angle: -70.35 },
+          //   { x: 114.0, y: 27.0, angle: 96.55 },
+          //   { x: 102.0, y: 138.0, angle: 96.55 },
+          //   { x: 102.0, y: 183.0, angle: 263.45 },
+          //   { x: 80.0, y: 160.0, angle: 180 },
+          //   { x: 126.0, y: 154.0, angle: 13.1 },
+          //   { x: 30.0, y: 78.0, angle: 0 },
+          //   { x: 137.0, y: 95.0, angle: 26.2 },
+          //   { x: 110.0, y: 84.0, angle: 109.65 },
+          //   { x: 130.0, y: 16.0, angle: -83.45 },
+          //   { x: 160.0, y: 80.0, angle: 122.75 },
+          //   { x: 60.0, y: 77.0, angle: 96.55 },
+          //   { x: 195.0, y: 93.0, angle: 13.1 },
+          //   { x: 83.0, y: 93.0, angle: 13.1 },
+          // ].forEach(({ x, y, angle }, n) => {
+          //   this.setSvgTextInfo(infos[n], SIZE_SCALE * x, SIZE_SCALE * y, angle);
+          // });
+
+          [
+            // { x: 195, y: 70.0, angle: 180 },
+            // { x: 84, y: 44, angle: 180 },
+            { x: 36.5, y: 100.0, angle: 180 },
+            { x: 147.5, y: 125.0, angle: 180 },
+            { x: 70.0, y: 120.0, angle: -70.35 },
+            { x: 180.0, y: 120.0, angle: -70.35 },
+            { x: 120.0, y: 128.0, angle: -83.45 },
+            { x: 82.5, y: 188.0, angle: 83.45 },
+            { x: 195.0, y: 147.5, angle: 166.9 },
+            { x: 95.0, y: 110.0, angle: 193.1 },
+            { x: 139.0, y: 44.0, angle: 13.1 },
+            { x: 97.5, y: 58.0, angle: 206.2 },
+            { x: 125.0, y: 70.0, angle: -70.35 },
+            { x: 114.0, y: 27.0, angle: 96.55 },
+            { x: 102.0, y: 138.0, angle: 96.55 },
+            { x: 102.0, y: 183.0, angle: 263.45 },
+            { x: 80.0, y: 160.0, angle: 180 },
+            { x: 126.0, y: 154.0, angle: 13.1 },
+            { x: 30.0, y: 78.0, angle: 0 },
+            { x: 137.0, y: 95.0, angle: 26.2 },
+            { x: 110.0, y: 84.0, angle: 109.65 },
+            { x: 130.0, y: 16.0, angle: -83.45 },
+            { x: 160.0, y: 80.0, angle: 122.75 },
+            { x: 60.0, y: 77.0, angle: 96.55 },
+            { x: 195.0, y: 93.0, angle: 13.1 },
+            { x: 83.0, y: 93.0, angle: 13.1 },
+          ].forEach(({ x, y, angle }, n) => {
+            that.setSvgTextInfo(infos[n], SIZE_SCALE * x, SIZE_SCALE * y, angle);
+          });
         }
         appendLine(svg, STYLE, x1, x2, y1, y2, viewBox) {
           const line = document.createElementNS(SVG_NS, 'line');
@@ -968,6 +1040,7 @@ var edu;
         }
         appendText(svg, STYLE, CONTENT, x, y, rotate, viewBox) {
           const g = document.createElementNS(SVG_NS, 'g');
+          // const g = document.createElementNS(SVG_NS, 'svg');
           if (rotate) {
             g.setAttribute('style', `transform: rotate(${rotate}deg);transform-origin: 50% 50%;`);
           }
