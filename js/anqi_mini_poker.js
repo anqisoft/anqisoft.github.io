@@ -972,7 +972,7 @@ function draw() {
   }
 
   document.getElementsByTagName('title')[0].innerText =
-    `${USE_DICE ? 10 : 0 + NO} ${A3 ? 'A3' : 'A4'} ${titleI18n[LANG]}`;
+    `${(USE_DICE ? 10 : 0) + NO} ${A3 ? 'A3' : 'A4'} ${titleI18n[LANG]}`;
 
   drawCore(getPokerHtml, firstPageAppendHtmlParamI18n, USE_DICE, sameColor, mixed);
 }
