@@ -943,6 +943,7 @@ function draw() {
       }
       break;
     case 6:
+      mixed = true;
       getPokerHtml = getPokerHtmlOfMultiplicationTableAndDivisionTableLessThan9;
       firstPageAppendHtmlParamI18n = {
         en: { longText: 'Complex2', shortText: 'Complex2' },
@@ -956,6 +957,7 @@ function draw() {
       }
       break;
     case 7:
+      mixed = true;
       getPokerHtml = getPokerHtmlOfCarryAdditionAndAbdicationMinusLessThan20;
       firstPageAppendHtmlParamI18n = {
         // en: { longText: 'Carry Plus <br>and Abdication Minus', shortText: 'Addition<br>Minus' },
