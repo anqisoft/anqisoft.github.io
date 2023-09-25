@@ -28,7 +28,7 @@ countScaleMmAndPx();
 
 
 function createSvgElement(html, width, height) {
-  console.log('createSvgElement', width, height);
+  // console.log('createSvgElement', width, height);
   // https://blog.csdn.net/longtengg1/article/details/116784565
   // Don't use: const svgElement = document.createElement('svg');
   const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

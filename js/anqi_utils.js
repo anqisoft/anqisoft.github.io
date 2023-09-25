@@ -83,6 +83,7 @@ function setF1Content(content) {
 
 
 function parsePageParamsFromUrl(url) {
+  url = url.replace('?', '&').toLowerCase();
   window.LANDSCAPE =
     url.concat('&landscape=false').replace('&landscape=', '厶').split('厶')[1].split('&')[0] ===
     'true';
@@ -99,8 +100,6 @@ function parsePageParamsFromUrl(url) {
     // parseInt(url.concat('&left=3').replace('&left=', '厶').split('厶')[1].split('&')[0]),
     parseFloat(url.concat('&left=3.5').replace('&left=', '厶').split('厶')[1].split('&')[0]),
   );
-  window.LANG =
-    url.concat('&lang=en').replace('&lang=', '厶').split('厶')[1].split('&')[0];
 
   const PAPER_WIDTH = A3 ? (LANDSCAPE ? 420 : 297) : (LANDSCAPE ? 297 : 210);
   const PAPER_HEIGHT = A3 ? (LANDSCAPE ? 297 : 420) : (LANDSCAPE ? 210 : 297);

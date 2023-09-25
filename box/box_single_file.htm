@@ -84,8 +84,8 @@
         const SVG_WIDTH = LONG + HEIGHT * 4 + EXTEND * 2;
         const SVG_HEIGHT = HEIGHT * 3 + WIDTH * 2;
 
-        const HELF_LONG = LONG * 0.5;
-        const CENTER_X = HELF_LONG + HEIGHT * 2 + EXTEND * 1;
+        const HALF_LONG = LONG * 0.5;
+        const CENTER_X = HALF_LONG + HEIGHT * 2 + EXTEND * 1;
 
         const LONG_PX = mmToPxScale * LONG;
         const WIDTH_PX = mmToPxScale * WIDTH;
@@ -124,12 +124,12 @@
         const Y4_OFFSET = Y4 + THICKESS;
         const Y5_OFFSET = Y5 - THICKESS;
 
-        const X4 = CENTER_X - HELF_LONG;
+        const X4 = CENTER_X - HALF_LONG;
         const X3 = X4 - HEIGHT;
         const X2 = X3 - HEIGHT;
         const X1 = X2 - EXTEND;
 
-        const X5 = CENTER_X + HELF_LONG;
+        const X5 = CENTER_X + HALF_LONG;
         const X6 = X5 + HEIGHT;
         const X7 = X6 + HEIGHT;
         const X8 = X7 + EXTEND;
