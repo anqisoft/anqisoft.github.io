@@ -1,1 +1,1 @@
-@call ..\..\_common\run.core.bat local ""
+@call ..\..\_common\run.python.core.bat local ""

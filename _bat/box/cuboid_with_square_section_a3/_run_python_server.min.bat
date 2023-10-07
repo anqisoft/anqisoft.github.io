@@ -1,1 +1,1 @@
-@call ..\..\_common\run.core.bat server min
+@call ..\..\_common\run.python.core.bat server min
