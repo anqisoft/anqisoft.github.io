@@ -1,0 +1,1 @@
+call createJson.core.bat local min math local.min

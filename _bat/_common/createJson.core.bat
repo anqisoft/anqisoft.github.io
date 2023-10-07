@@ -1,16 +1,23 @@
 @ECHO OFF
 chcp 65001
-:: %1: server, local, %2: min, %3: fileName, %4: subFolderName
+:: %1: server, local, %2: min, %3: fileName, %4: subFolderName %5: parentFolderName
 
 set langSet=en zh_cn zh_tw
 set landscapeSet=false true
 
 set htmFilename=%3%
 
+:: echo %5%
+set parentFolderName=box
+if "%5%" neq "" (
+  REM echo %%5%% is defined.
+  set parentFolderName=%5%
+)
+
 :: echo %4%
 set subFolderName=
 if "%4%" neq "" (
-  echo %%4%% is defined.
+  REM echo %%4%% is defined.
   set subFolderName=%4%
 )
 set subFolderName=%subFolderName:\=\\%
@@ -24,7 +31,7 @@ if "%2%" == "min" (
 )
 
 set htmlPath=%cd%
-call set htmlPath=%%htmlPath:_bat\box\%htmFilename%=%%
+call set htmlPath=%%htmlPath:_bat\%parentFolderName%\%htmFilename%=%%
 :: echo %htmlPath%
 
 if "%1%" == "server" (
@@ -34,13 +41,13 @@ if "%1%" == "server" (
   set url=file:///%htmlPath:\=/%
   set goal=%CD%\local%minSeg%.json
 )
-set url=%url%box/%htmFilename%%minSeg%.htm
+set url=%url%%parentFolderName%/%htmFilename%%minSeg%.htm
 
 :: https://www.codenong.com/37071353/
 if "%subFolderName%" neq "" (
-  set pdfPath=%htmlPath:\=\\%box\\%htmFilename%\\%subFolderName%\\pdfs\\
+  set pdfPath=%htmlPath:\=\\%%parentFolderName%\\%htmFilename%\\%subFolderName%\\pdfs\\
 ) else (
-  set pdfPath=%htmlPath:\=\\%box\\%htmFilename%\\pdfs\\
+  set pdfPath=%htmlPath:\=\\%%parentFolderName%\\%htmFilename%\\pdfs\\
 )
 set pdfPath=%pdfPath:\\\\=\\%
 :: echo %pdfPath% && pause

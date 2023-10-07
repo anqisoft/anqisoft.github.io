@@ -1,0 +1,1 @@
+call createJson.core.bat server min math server.min

@@ -176,10 +176,10 @@ ${getInlineVerticalLine(X3, Y4_OFFSET, Y5_OFFSET)}
 ${getInlineVerticalLine(X6, Y4_OFFSET, Y5_OFFSET)}
 ${getInlineVerticalLine(X7, Y4_OFFSET, Y5_OFFSET)}
 
-${getInlineHorizontalLine(X4, X5, Y2)}
-${getInlineHorizontalLine(X4, X5, Y3)}
-${getInlineHorizontalLine(X4, X5, Y4)}
-${getInlineHorizontalLine(X4, X5, Y5)}
+${getInnerHorizontalLine(X4, X5, Y2)}
+${getInnerHorizontalLine(X4, X5, Y3)}
+${getInnerHorizontalLine(X4, X5, Y4)}
+${getInnerHorizontalLine(X4, X5, Y5)}
 
 `;
 
@@ -273,8 +273,8 @@ h -${HEIGHT_PX}
 v -${EXTEND_PX}
 z"></path>
 
-${getInlineHorizontalLine(X1, X5, Y2)}
-${getInlineHorizontalLine(X1, X5, Y3)}
+${getInnerHorizontalLine(X1, X5, Y2)}
+${getInnerHorizontalLine(X1, X5, Y3)}
 
 ${getInlineVerticalLine(X2, Y2, Y3)}
 ${getInlineVerticalLine(X3, Y2, Y3)}
@@ -289,7 +289,7 @@ ${getInlineVerticalLine(X5, Y2, Y3)}
   };
 }
 
-function getInlineHorizontalLine(X1, X2, Y) {
+function getInnerHorizontalLine(X1, X2, Y) {
   return `<line x1="${X1}mm" x2="${X2}mm" y1="${Y}mm" y2="${Y}mm" style="stroke:#888;stroke-width:0.1mm;stroke-dasharray:3 2;"></line>`;
 }
 

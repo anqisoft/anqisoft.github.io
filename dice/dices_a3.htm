@@ -1,0 +1,275 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- It's useless? -->
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <meta
+      id="viewportMeta"
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover,minimal-ui"
+    />
+    <title>A3 Dices</title>
+    <style id="style"></style>
+  </head>
+  <body></body>
+  <script charset="utf-8" src="../js/anqi_utils.js"></script>
+  <script charset="utf-8" src="../js/anqi_svg_utils.js"></script>
+  <script charset="utf-8" src="../js/anqi_dice.js"></script>
+  <script>
+    function createSvgElementNew({ html, width, height }) {
+      return createSvgElement(html, width, height);
+    }
+
+    // ?top=4&left=3.5&landscape=false&a3=true
+    function draw() {
+      setF1Content('?top=4&left=3.5&landscape=false&a3=true');
+
+      const url = window.location.href.replace('?', '&');
+      parsePageParamsFromUrl(url);
+
+      document.getElementById('style').innerHTML = getPageCss(
+        A3,
+        LANDSCAPE,
+        PAGE_PADDING_TOP,
+        PAGE_PADDING_LEFT,
+      );
+
+      const body = document.getElementsByTagName('body')[0];
+
+      const pageElement = createPageElement();
+      body.appendChild(pageElement);
+
+      appendDices(pageElement);
+
+      window.print();
+    }
+
+    function createDices(pageElement, diceKind, sideLength, contents, count, svgId, fontSize) {
+      fontSize = fontSize || '3mm';
+
+      const outerLineStyle = 'stroke:#555;stroke-width:0.2mm;';
+      const innerLineStyle = 'stroke:#888;stroke-width:0.1mm;stroke-dasharray:3 2;';
+      // textStyle= 'font-size:8.5mm;font-family:"Times New Roman", "Kaiti";';
+      const textStyle = `font-size:${fontSize};font-family: "Kaiti";`;
+      const options = {};
+
+      const result =  [];
+      for (let i = 0; i < count; ++i) {
+        const svgInfo = diceGenerator.create({
+          id: `svg_${svgId++}`,
+          diceKind,
+          sideLength,
+          // contents: 'ˉ,ˊ,ˇ,ˋ'.split(','),
+          contents,
+          outerLineStyle,
+          innerLineStyle,
+          // textStyle: 'font-size:8.5mm;font-family:"Times New Roman", "Kaiti";',
+          textStyle,
+          options,
+        });
+        const { svg: svgElement, width, height } = svgInfo;
+        pageElement.appendChild(svgElement);
+        result.push(svgElement);
+      }
+
+      return result;
+    }
+
+    function appendDices(pageElement) {
+      let svgId = 1;
+
+      const COUNT_D4 = 10;
+      createDices(pageElement, DiceKind.four, 10, ',,,'.split(','), 1, svgId, '2mm');
+      createDices(pageElement, DiceKind.four, 10, '0,1,2,3'.split(','), 1, svgId, '3mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+          style.position = 'relative';
+          style.transform = 'rotate(180deg)';
+          style.left = '-5mm';
+          style.marginRight = '5mm';
+      });
+      createDices(pageElement, DiceKind.four, 10, '1,2,3,4'.split(','), (COUNT_D4 - 2) * 2 - 1, svgId, '3mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'relative';
+        style.left = '-5mm';
+        style.marginRight = '-5mm';
+        if (i % 2) {
+          style.transform = 'rotate(180deg)';
+        }
+      });
+      createDices(pageElement, DiceKind.four, 12, '春,夏,秋,冬'.split(','), 2, svgId, '2mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.bottom =`${PAGE_PADDING_TOP + 3}mm`;
+        style.left =  `${PAGE_PADDING_LEFT + 20 * i}mm`;
+        if (i % 2) {
+          style.transform = 'rotate(180deg)';
+        }
+      });
+      createDices(pageElement, DiceKind.four, 12, '1,2,3,4'.split(','), 3, svgId, '2mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.bottom =`${PAGE_PADDING_TOP + 3}mm`;
+        style.right =  `${PAGE_PADDING_LEFT - 2 + 90 * i}mm`;
+        style.transform = 'rotate(-40deg)';
+      });
+      createDices(pageElement, DiceKind.four, 12, '1,2,3,4'.split(','), 2, svgId, '2mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.bottom =`${PAGE_PADDING_TOP + 3}mm`;
+        style.left =  `${PAGE_PADDING_LEFT + 115 + 90 * i}mm`;
+        style.transform = 'rotate(180deg)';
+      });
+      createDices(pageElement, DiceKind.four, 12, '1,2,3,4'.split(','), 3, svgId, '2mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.bottom =`${PAGE_PADDING_TOP + 56}mm`;
+        style.left =  `${PAGE_PADDING_LEFT + 96 * i}mm`;
+      });
+
+      createDices(pageElement, DiceKind.four, 8, ',,,'.split(','), 5, svgId, '3mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.top = '21.5mm';
+        style.left = `${PAGE_PADDING_LEFT + 3.5 + 50 * i}mm`;
+      });
+      svgId += COUNT_D4 + 2;
+
+      const COUNT_D6 = 10;
+      createDices(pageElement, DiceKind.six, 10, ',,,,,'.split(','), 1, svgId, '5mm');
+      createDices(pageElement, DiceKind.six, 10, '0,1,2,3,4,5'.split(','), 1, svgId, '5mm');
+      createDices(pageElement, DiceKind.six, 10, '1,2,3,4,5,6'.split(','), COUNT_D6 - 2, svgId, '5mm').forEach((svgElement, i) => {
+        if(i >= 3) {
+          const { style } = svgElement;
+          style.position = 'relative';
+          style.top = '-15mm';
+          style.marginBottom = '-15mm';
+        }
+      });
+      svgId += COUNT_D6;
+
+
+      const COUNT_D8_ROTATE_45 = 5;
+      const COUNT_D8 = 11 + COUNT_D8_ROTATE_45;
+      createDices(pageElement, DiceKind.eight, 10, ',,,,,,,'.split(','), 1, svgId++, '4mm');
+      createDices(pageElement, DiceKind.eight, 10, '0,1,2,3,4,5,6,7'.split(','), 2, svgId += 2, '4mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.top = `${PAGE_PADDING_TOP + 18 + 20 * i}mm`;
+        style.right = `${PAGE_PADDING_LEFT}mm`;
+      });
+      createDices(pageElement, DiceKind.eight, 10, ',,,,,,,'.split(','), 1, svgId++, '4mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.display = 'none';
+      });
+      createDices(pageElement, DiceKind.eight, 10, '1,2,3,4,5,6,7,8'.split(','), COUNT_D8_ROTATE_45, svgId += COUNT_D8_ROTATE_45, '4mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+        style.position = 'absolute';
+        style.top = `${PAGE_PADDING_TOP + 18 + 20 * 3 + 6 + 28 * (i % (COUNT_D8_ROTATE_45 + 1))}mm`;
+        style.right = `${PAGE_PADDING_LEFT + 3}mm`;
+
+        style.transform = 'rotate(45deg)';
+        const HALF_WIDTH = svgElement.width * 0.5;
+        style.transformOrigin = `${HALF_WIDTH}mm ${HALF_WIDTH}mm`;
+      });
+      createDices(pageElement, DiceKind.eight, 10, '1,2,3,4,5,6,7,8'.split(','), COUNT_D8 - 4 - COUNT_D8_ROTATE_45, svgId, '4mm').forEach((svgElement, i) => {
+        const { style } = svgElement;
+
+        const TOP_MOVE = '-5mm';
+
+        // style.transform = `rotate(${40 * (i % 2 ? 1 : -1)}deg)`;
+        style.transform = `rotate(${[-40, 25, -40, -47, -30, 10, -40][i]}deg)`;
+        style.transformOrigin = 'center';
+        style.position = 'relative';
+        style.top = TOP_MOVE;
+        style.marginBottom = TOP_MOVE;
+        if (i === 5) {
+          style.left = '-3mm';
+        style.top = '-10mm';
+        }
+
+        // if (i >= 3 && i < 3 + COUNT_D8_ROTATE_45) {
+        //   style.position = 'absolute';
+        //   style.top = `${PAGE_PADDING_TOP + 18 + 20 * 3 + 6 + 28 * ((i - 3) % (COUNT_D8_ROTATE_45 + 1))}mm`;
+        //   style.right = `${PAGE_PADDING_LEFT + 3}mm`;
+
+        //   style.transform = 'rotate(45deg)';
+        //   const HALF_WIDTH = svgElement.width * 0.5;
+        //   style.transformOrigin = `${HALF_WIDTH}mm ${HALF_WIDTH}mm`;
+        // } else if (i === 3 + COUNT_D8_ROTATE_45) {
+        //   style.display = 'none';
+        // } else {
+        //   const TOP_MOVE = '-5mm';
+
+        //   // style.transform = `rotate(${40 * (i % 2 ? 1 : -1)}deg)`;
+        //   style.transform = `rotate(${[-40, 30, -40, -40, 30, -40][i - 1]}deg)`;
+        //   style.transformOrigin = 'center';
+        //   style.position = 'relative';
+        //   style.top = TOP_MOVE;
+        //   style.marginBottom = TOP_MOVE;
+        // }
+
+        // if (i === COUNT_D8 - 4) {
+        //   style.display = 'none';
+        // } else if (i < COUNT_D8 - COUNT_D8_ROTATE_45 - 4) {
+        //   style.position = 'absolute';
+        //   style.top = `${PAGE_PADDING_TOP + 18 + 20 * 3 + 6 + 28 * ((i - 3) % (COUNT_D8_ROTATE_45 + 1))}mm`;
+        //   style.right = `${PAGE_PADDING_LEFT + 3}mm`;
+
+        //   style.transform = 'rotate(45deg)';
+        //   const HALF_WIDTH = svgElement.width * 0.5;
+        //   style.transformOrigin = `${HALF_WIDTH}mm ${HALF_WIDTH}mm`;
+        // } else {
+        //   const TOP_MOVE = '-5mm';
+
+        //   // style.transform = `rotate(${40 * (i % 2 ? 1 : -1)}deg)`;
+        //   style.transform = `rotate(${[-40, 30, -40, -40, 30, -40][i - 1]}deg)`;
+        //   style.transformOrigin = 'center';
+        //   style.position = 'relative';
+        //   style.top = TOP_MOVE;
+        //   style.marginBottom = TOP_MOVE;
+        // }
+      });
+      svgId += COUNT_D8;
+
+      const COUNT_D12 = 9;
+      createDices(pageElement, DiceKind.twelve, 10, '0,1,2,3,4,5,6,7,8,9,10,11'.split(','), 1, svgId, '5mm');
+      createDices(pageElement, DiceKind.twelve, 10, ',,,,,,,,,,,'.split(','), 1, svgId, '5mm');
+      createDices(pageElement, DiceKind.twelve, 10, '1,2,3,4,5,6,7,8,9,10,11,12'.split(','), COUNT_D12 - 2, svgId, '5mm');
+      svgId += COUNT_D12;
+
+      const COUNT_D20 = 10;
+      createDices(pageElement, DiceKind.twenty, 10, ',,,,,,,,,,,,,,,,,,,'.split(','), 1, svgId, '4mm');
+      createDices(pageElement, DiceKind.twenty, 10, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'.split(','), 1, svgId, '4mm');
+      createDices(pageElement, DiceKind.twenty, 10, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20'.split(','), COUNT_D20 - 2, svgId, '4mm')
+      // .forEach((svgElement, i) => {
+      //   if(i > 3) {
+      //     const { style } = svgElement;
+      //     style.position = 'relative';
+      //     style.top = '-13mm';
+      //     style.left = '15mm';
+      //   }
+      // })
+      ;
+      svgId += COUNT_D20;
+
+      const COUNT_D24 = 6;
+      createDices(pageElement, DiceKind.twentyFour, 10, '立春、雨水、惊蛰、春分、清明、谷雨、立夏、小满、芒种、夏至、小暑、大暑、立秋、处暑、白露、秋分、寒露、霜降、立冬、小雪、大雪、冬至、小寒、大寒'.split('、'), 1, svgId, '4mm');
+      createDices(pageElement, DiceKind.twentyFour, 10, ',,,,,,,,,,,,,,,,,,,,,,,'.split(','), 1, svgId, '4mm');
+      createDices(pageElement, DiceKind.twentyFour, 10, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'.split(','), 1, svgId, '4mm');
+      createDices(pageElement, DiceKind.twentyFour, 10, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24'.split(','), COUNT_D24 - 3, svgId, '4mm').forEach((svgElement, i) => {
+        if(i <= 2) {
+          const { style } = svgElement;
+          style.position = 'relative';
+          style.top = '-13mm';
+          style.left = '17mm';
+
+          style.transform = 'rotate(-5deg)';
+          style.transformOrigin = 'center';
+        }
+      });
+      svgId += COUNT_D24;
+    };
+
+    draw();
+  </script>
+</html>

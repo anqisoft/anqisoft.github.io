@@ -4,6 +4,7 @@
 venv
 git.log
 centos.log
+.lnk
 _removed
 
 # Byte-compiled / optimized / DLL files

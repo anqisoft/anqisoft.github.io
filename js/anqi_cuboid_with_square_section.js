@@ -43,20 +43,20 @@ function draw() {
     switch (NO) {
       case 1:
       default:
-        appendLandscapeCuboids1(pageElement);
+        appendLandscapeDices1(pageElement);
         break;
       case 2:
-        appendLandscapeCuboids2(pageElement);
+        appendLandscapeDices2(pageElement);
         break;
     }
   } else {
-    appendPortraitCuboids(pageElement);
+    appendPortraitDices(pageElement);
   }
 
   window.print();
 }
 
-function appendPortraitCuboids(pageElement) {
+function appendPortraitDices(pageElement) {
   createAndAppendCuboids(pageElement, 80, 40, 12, 3);
   createAndAppendCuboids(pageElement, 40, 20, 6, 4);
   createAndAppendCuboids(pageElement, 20, 10, 4, 12);
@@ -125,7 +125,7 @@ function appendPortraitCuboids(pageElement) {
   });
 }
 
-function appendLandscapeCuboids1(pageElement) {
+function appendLandscapeDices1(pageElement) {
   // Count： 1, 2, 8, 14, 19
   [
     { long: 128, side: 64, pasteWidth: 16, count: 1 },
@@ -184,7 +184,7 @@ function appendLandscapeCuboids1(pageElement) {
   }
 }
 
-function appendLandscapeCuboids2(pageElement) {
+function appendLandscapeDices2(pageElement) {
   // Count： 1, 4, 4, 0, 17
   [
     { long: 128, side: 64, pasteWidth: 16, count: 1 },

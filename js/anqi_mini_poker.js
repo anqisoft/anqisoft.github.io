@@ -456,7 +456,11 @@ function getDicesInfo2(USED_DICES) {
     diceKind = DiceKind.twenty;
     // contents = ',,,,,,,,,,,,,,,,,,,'.split(',');
     // contents = '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20'.split(',');
-    contents = '1,2,3,4,5,20,19,18,17,16,11,12,13,14,15,10,9,8,7,6'.split(',');
+    // contents = '1,2,3,4,5,20,19,18,17,16,11,12,13,14,15,10,9,8,7,6'.split(',');
+
+    // 未修改dice代码前，直接强行修正
+    // contents = '1,5,9,13,17,18,15,19,11,14,10,7,3,6,2,12,8,4,20,16'.split(',');
+    contents = '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20'.split(',');
     for (let i = 0; i < 1; ++i) {
       html += diceGenerator.create({
         id: `svg_${svgId++}`,
@@ -787,6 +791,7 @@ function getDicesHtml() {
 }
 
 function drawCore(getPokerHtml, firstPageAppendHtmlParamI18n, useDice, sameColor, mixed) {
+  console.log(window.LANG);
   const { longText, shortText } = firstPageAppendHtmlParamI18n[window.LANG];
   const firstPageAppendHtml = getFirstPageAppendHtml(longText, shortText, useDice);
 
