@@ -471,7 +471,7 @@ class DiceFace6 extends DiceBase {
         this.SIDE_LENGTH * pasteRegionScale;
         const offsetX = SIDE_LENGTH_PX * 0.1;
         const pasteRegionWidth = SIDE_LENGTH_PX - offsetX * 2;
-        // console.log(this.SIDE_LENGTH, this.mmToPxScale, SIDE_LENGTH_PX);
+        console.log(this.SIDE_LENGTH, this.mmToPxScale, SIDE_LENGTH_PX);
         const path = document.createElementNS(SVG_NS, 'path');
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke', '#000000');
@@ -2195,9 +2195,6 @@ class DiceGenerator {
             'ā,á,ǎ,à,ō,ó,ǒ,ò,ē,é,ě,è,ī,í,ǐ,ì,ū,ú,ǔ,ù,ǖ,ǘ,ǚ,ǜ'.split(',')
         ]
     };
-    // for(const index in CONTENTS_MAP){
-    //     console.log(`${index} => ${CONTENTS_MAP[index].length + 3}`);
-    // }
     const diceKind = DICE_KIND_MAP[FACE_STRING];
     const DEFAULT_CONTENTS = [];
     switch(NO){
