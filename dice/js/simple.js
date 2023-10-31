@@ -301,6 +301,16 @@ class DiceBase {
         this.PASTE_WIDTH = PASTE_WIDTH;
         this.TEXT_STYLE = TEXT_STYLE;
     }
+    fixTextStyle(scale) {
+        if (this.TEXT_STYLE.length === 0) {
+            const { FONT_SIZE } = this.OPTIONS;
+            if (FONT_SIZE.length) {
+                this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${FONT_SIZE.match(/[\-0-9\.]+/) ? FONT_SIZE.concat('mm') : FONT_SIZE};`;
+            } else {
+                this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * scale}mm;`;
+            }
+        }
+    }
     draw() {
         this.drawGraphs();
         this.setTextsInfo();
@@ -320,9 +330,7 @@ class DiceBase {
 }
 class DiceFace4 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.25}mm;`;
-        }
+        this.fixTextStyle(0.25);
         const HEIGHT_OF_ONE = this.SIDE_LENGTH * 1.732 * 0.5;
         const HEIGHT_OF_TWO = HEIGHT_OF_ONE * 2;
         let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
@@ -457,9 +465,7 @@ class DiceFace4 extends DiceBase {
 }
 class DiceFace6 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.45}mm;`;
-        }
+        this.fixTextStyle(0.45);
         const SIDE_LENGTH_PX = this.SIDE_LENGTH * this.mmToPxScale;
         const duckTongueScale = 0.5;
         const duckTongueHeightPx = SIDE_LENGTH_PX * 0.5;
@@ -540,9 +546,7 @@ class DiceFace6 extends DiceBase {
 }
 class DiceFace8 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.45}mm;`;
-        }
+        this.fixTextStyle(0.45);
         const HEIGHT_OF_ONE = this.SIDE_LENGTH * 1.732 * 0.5;
         const HEIGHT_OF_TWO = HEIGHT_OF_ONE * 2;
         const BOTTOM = HEIGHT_OF_ONE * 3;
@@ -661,9 +665,7 @@ class DiceFace8 extends DiceBase {
 }
 class DiceFace12 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.45}mm;`;
-        }
+        this.fixTextStyle(0.45);
         const { SIDE_LENGTH } = this;
         const PASTE_SCALE = SIDE_LENGTH < 3 ? 1 : SIDE_LENGTH <= 10 ? 0.5 : 0.25;
         const PASTE_LENGTH = this.SIDE_LENGTH * PASTE_SCALE;
@@ -1027,9 +1029,7 @@ class DiceFace12 extends DiceBase {
 }
 class DiceFace20 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.45}mm;`;
-        }
+        this.fixTextStyle(0.45);
         const { SIDE_LENGTH } = this;
         const pasteRegionScale = SIDE_LENGTH < 3 ? 1 : SIDE_LENGTH <= 10 ? 0.5 : 0.25;
         const pasteRegion = this.SIDE_LENGTH * pasteRegionScale;
@@ -1220,9 +1220,7 @@ class DiceFace20 extends DiceBase {
 }
 class DiceFace24 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.8}mm;`;
-        }
+        this.fixTextStyle(0.8);
         const { SIDE_LENGTH } = this;
         const { getSinByAngle, getCosByAngle } = this;
         const SIDE_SCALE = SIDE_LENGTH / 25;
@@ -1568,9 +1566,7 @@ class DiceFace24 extends DiceBase {
 }
 class DiceFace10 extends DiceBase {
     drawGraphs() {
-        if (this.TEXT_STYLE.length === 0) {
-            this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * 0.45}mm;`;
-        }
+        this.fixTextStyle(0.45);
         const { max, min, sin, cos, tan, atan, PI, abs } = Math;
         const { SIDE_LENGTH, svg, viewBox, appendLine, OUTER_LINE_STYLE, INNER_LINE_STYLE } = this;
         const PASTE_SCALE = SIDE_LENGTH < 3 ? 1 : SIDE_LENGTH <= 10 ? 0.5 : 0.25;
@@ -1984,6 +1980,7 @@ class DiceGenerator {
 (function drawDice() {
     parsePageParamsFromUrl(window.location.href);
     const { A3, LANG, NO, LANDSCAPE } = window.anqiData;
+    const FONT_SIZE = getPageParameterByName('font_size', '');
     const FACE_IN_URL = parseInt(getPageParameterByName('face', '0'));
     const FACE = FACE_IN_URL || 4;
     const FACE_STRING = FACE.toString();
@@ -2032,7 +2029,7 @@ class DiceGenerator {
             '关汉卿拜月亭、王实甫西厢记、白朴墙头马上、郑光祖倩女离魂'.split('、'),
             '应天府书院、岳麓书院、白鹿洞书院、嵩阳书院'.split('、'),
             '京剧、黄梅戏、越剧、豫剧'.split('、'),
-            '久旱逢甘雨，他乡遇故知，洞房花烛夜，金榜题名时'.split('、'),
+            '久旱逢甘雨、他乡遇故知、洞房花烛夜、金榜题名时'.split('、'),
             '牛郎织女、孟姜女、梁山伯与祝英台、白蛇传'.split('、'),
             '李宝嘉官场现形记、吴趼人二十年目睹之怪现状、刘鹗老残游记、曾朴孽海花'.split('、'),
             '敦煌莫高窟、洛阳龙门石窟、大同云冈石窟、天水麦积山石窟'.split('、'),
@@ -2084,7 +2081,7 @@ class DiceGenerator {
             '亚洲、非洲、北美洲、南美洲、南极洲、欧洲、大洋洲、'.split('、'),
             '金、银、琉璃、珊瑚、砗磲、赤珠、玛瑙、'.split('、'),
             '轮、螺、伞、盖、花、瓶、鱼、长'.split('、'),
-            '东明庶风，东南清明风，南曰景风，西南凉风，西阊阖风，西北不周风，北方广莫风，东北融风'.split('、')
+            '东明庶风、东南清明风、南曰景风、西南凉风、西阊阖风、西北不周风、北方广莫风、东北融风'.split('、')
         ],
         '10': [
             '00,10,20,30,40,50,60,70,80,90'.split(','),
@@ -2229,7 +2226,9 @@ class DiceGenerator {
     const CONTENTS_IN_URL = getPageParameterByName('contents', '');
     const CONTENTS = CONTENTS_IN_URL.length === 0 ? DEFAULT_CONTENTS : CONTENTS_IN_URL.split(',');
     const diceGenerator = new DiceGenerator();
-    const OPTIONS = {};
+    const OPTIONS = {
+        FONT_SIZE
+    };
     const DICE_INFO = diceGenerator.create({
         id: 'svg_1',
         diceKind,
