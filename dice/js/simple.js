@@ -74,7 +74,7 @@ const SITE_ROOT = HOME_URL.substring(0, HOME_URL.lastIndexOf('/') + 1);
 `${SITE_ROOT}css/`;
 const getPageParameterByName = (name, defaultValue)=>{
     const REPLACED_CURRENT_URL = CURRENT_URL.replace('?', '&');
-    return REPLACED_CURRENT_URL.indexOf(`&${name}=`) === -1 ? defaultValue || '' : REPLACED_CURRENT_URL.split('&').slice(1).filter((keyValue)=>keyValue.startsWith(`${name}=`))[0].split('=')[1];
+    return REPLACED_CURRENT_URL.indexOf(`&${name}=`) === -1 ? defaultValue || '' : decodeURIComponent(REPLACED_CURRENT_URL.split('&').slice(1).filter((keyValue)=>keyValue.startsWith(`${name}=`))[0].split('=')[1]);
 };
 getPageParameterByName('kind', null);
 parseInt(getPageParameterByName('page', '1'), 0) - 1;
@@ -92,8 +92,8 @@ function parsePageParamsFromUrl(url) {
     const THICKESS = Math.max(0, parseFloat(url.concat('&thickess=0.2').replace('&thickess=', '厶').split('厶')[1].split('&')[0]));
     const A3 = url.concat('&a3=true').replace('&a3=', '厶').split('厶')[1].split('&')[0] === 'true';
     const LANDSCAPE = url.concat('&landscape=false').replace('&landscape=', '厶').split('厶')[1].split('&')[0] === 'true';
-    const PAGE_PADDING_TOP = Math.max(0, parseFloat(url.concat('&top=3.5').replace('&top=', '厶').split('厶')[1].split('&')[0]));
-    const PAGE_PADDING_LEFT = Math.max(0, parseFloat(url.concat('&left=3.5').replace('&left=', '厶').split('厶')[1].split('&')[0]));
+    const PAGE_PADDING_TOP = Math.max(0, parseFloat(url.concat('&top=15').replace('&top=', '厶').split('厶')[1].split('&')[0]));
+    const PAGE_PADDING_LEFT = Math.max(0, parseFloat(url.concat('&left=10').replace('&left=', '厶').split('厶')[1].split('&')[0]));
     const NO = Math.max(0, parseInt(url.concat('&no=1').replace('&no=', '厶').split('厶')[1].split('&')[0]));
     const PAPER_WIDTH = parseFloat(getPageParameterByName('width', '0')) || (A3 ? LANDSCAPE ? 420 : 297 : LANDSCAPE ? 297 : 210);
     const PAPER_HEIGHT = parseFloat(getPageParameterByName('height', '0')) || (A3 ? LANDSCAPE ? 297 : 420 : LANDSCAPE ? 210 : 297);
@@ -120,6 +120,20 @@ function getPageCss() {
 *\{margin:0;border:0;padding:0;\}
 page:not(:last-of-type)\{page-break-after:always;\}
 page\{padding-top:${PAGE_PADDING_TOP}mm;padding-left:${PAGE_PADDING_LEFT}mm;display:block;width:${PAGE_WIDTH}mm;height:${PAGE_HEIGHT}mm;position:relative;overflow:hidden;\}`;
+}
+function setF1Content(content) {
+    document.onkeydown = function(e) {
+        switch(e.keyCode){
+            case 112:
+                alert(content);
+                e.preventDefault();
+                e.stopPropagation();
+                break;
+            default:
+                break;
+        }
+        return false;
+    };
 }
 function isI18nable(object) {
     return typeof object.en === 'string' && typeof object.zh_cn === 'string' && typeof object.zh_tw === 'string';
@@ -305,7 +319,7 @@ class DiceBase {
         if (this.TEXT_STYLE.length === 0) {
             const { FONT_SIZE } = this.OPTIONS;
             if (FONT_SIZE.length) {
-                this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${FONT_SIZE.match(/[\-0-9\.]+/) ? FONT_SIZE.concat('mm') : FONT_SIZE};`;
+                this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${/^[0-9\.]+$/.test(FONT_SIZE) ? FONT_SIZE.concat('mm') : FONT_SIZE};`;
             } else {
                 this.TEXT_STYLE = `font-family:"Times New Roman", "Kaiti";font-size:${this.SIDE_LENGTH * scale}mm;`;
             }
@@ -1980,6 +1994,63 @@ class DiceGenerator {
 (function drawDice() {
     parsePageParamsFromUrl(window.location.href);
     const { A3, LANG, NO, LANDSCAPE } = window.anqiData;
+    switch(LANG){
+        case 'en':
+        default:
+            setF1Content(`?a3=false&landscape=false&top=15&left=10&width=0&height=0&face=0&no=1&side=0&contents=&font_size=&outer_line_style=&inner_line_style=&text_style=\n
+a3: A3 or A4(default). Values: true or false.
+landscape: Landscape or portrait (default). Values: true or false.
+top: Top margin of the page, unit is mm, default value is 15.
+left: Left margin of the page, unit is mm, default value is 10.
+width: Width of paper, unit is mm, the default value is 0, which means use the default width.
+height: Height of paper, unit is mm, the default value is 0, which means the default height is used.
+face: Number of faces of the dice. Values: 4, 6, 8, 10, 12, 20, 24. The default value is 0, which is 4.
+no: The content number provided. Start from 1. The default value is 1.
+side: 0 means 10. The unit is mm.
+contents: Empty means the numbers from 1 to the face count of the dices. Use "," to separate values. If there are no delimiters, each character is one side of content.
+font_size: Empty means use the default value. You can use units such as px, mm, etc. If no unit is specified, mm will be used as the unit.
+outer_line_style: The style of the outer line. Empty means 'Stroke: #555; Stroke width: 0.2mm;'.
+inner_line_style: The style of the inner line. Empty means 'stroke:#888;stroke-width:0.1mm;stroke-dasharray:3 2;'.
+text_style: The style of the text. Empty means use the default value: 'font-family:"Times New Roman", "Kaiti";' and the font size is automatically calculated based on the number of faces and side lengths of the dice.
+			`);
+            break;
+        case 'zh_cn':
+            setF1Content(`?a3=false&landscape=false&top=15&left=10&width=0&height=0&face=0&no=1&side=0&contents=&font_size=&outer_line_style=&inner_line_style=&text_style=\n
+a3: A3或A4（默认）。true/false
+landscape: 横向或纵向（默认）。true/false
+top: 页面上边距，单位mm，默认15。
+left: 页面左边距，单位mm，默认10。
+width: 纸宽，单位mm，默认0表示使用默认值。
+height: 纸高，单位mm，默认0表示使用默认值。
+face: 骰子页数。4, 6, 8, 10, 12, 20, 24。默认0表示4。
+no: 使用指定序号的默认内容，从1开始，默认为0，各面为1到面数对应数字序列。
+side: 单位mm，默认0表示10。
+contents: 空表示各面为1到面数对应数字序列。使用英文逗号分隔，无分隔符则每字符为一个面内容。
+font_size: 空表示使用默认值。可使用px或mm等单位。无单位时以mm为单位。
+outer_line_style: 外框线与剪裁线线型。空表示使用默认值：'Stroke: #555; Stroke width: 0.2mm;'.
+inner_line_style: 内部折叠线线型。空表示使用默认值：'stroke:#888;stroke-width:0.1mm;stroke-dasharray:3 2;'.
+text_style: 文本样式，空表示使用默认值（Times New Roman或楷体字体，字号由骰子面数及边长自动计算）。
+			`);
+            break;
+        case 'zh_tw':
+            setF1Content(`?a3=false&landscape=false&top=15&left=10&width=0&height=0&face=0&no=1&side=0&contents=&font_size=&outer_line_style=&inner_line_style=&text_style=\n
+a3: A3或A4（默認）。true/false
+landscape:橫向或縱向（默認）。true/false
+top:頁面上邊距，組織mm，默認15。
+left:頁面左邊距，組織mm，默認10。
+width:紙寬，組織mm，默認0表示使用預設值。
+height:紙高，組織mm，默認0表示使用預設值。
+face:骰子頁數。 4，6，8，10，12，20，24。 默認0表示4。
+no:使用指定序號的默認內容，從1開始，默認為0，各面為1到面數對應數位序列。
+side:組織mm，默認0表示10。
+contents:空表示各面為1到面數對應數位序列。 使用英文逗號分隔，無分隔符則每字元為一個面內容。
+font_ size:空表示使用預設值。 可使用px或mm等組織。 無組織時以mm為組織。
+outer_ line_ style:外框線與剪裁線線型。 空表示使用預設值：'Stroke: #555； Stroke width: 0.2mm；'.
+inner_ line_ style:內部折疊線線型。 空表示使用預設值：'stroke:#888； stroke-width:0.1mm； stroke-dasharray:3 2；'.
+text_ style:文字樣式，空表示使用預設值（Times New Roman或楷體字體，字型大小由骰子面數及邊長自動計算）。
+			`);
+            break;
+    }
     const FONT_SIZE = getPageParameterByName('font_size', '');
     const FACE_IN_URL = parseInt(getPageParameterByName('face', '0'));
     const FACE = FACE_IN_URL || 4;
@@ -2099,9 +2170,9 @@ class DiceGenerator {
             '木生火、火生土、土生金、金生水、水生木、木克土、土克水、水克火、火克金、金克木'.split('、'),
             '木火土金水肾肺脾心肝'.split(''),
             'ˉ,ˊ,ˇ,ˋ,,ˉ,ˊ,ˇ,ˋ,'.split(','),
-            'ˉ宫、商、角、徵、羽、宫、商、角、徵、羽'.split('、'),
-            'ˉ宫、商、角、徵、羽、水、火、木、金、土'.split('、'),
-            'ˉ宫、商、角、徵、羽、唇、舌、牙、齿、喉'.split('、'),
+            '宫、商、角、徵、羽、宫、商、角、徵、羽'.split('、'),
+            '宫、商、角、徵、羽、水、火、木、金、土'.split('、'),
+            '宫、商、角、徵、羽、唇、舌、牙、齿、喉'.split('、'),
             '父子有亲、君臣有义、夫妇有别、长幼有序、朋友有信、仁、义、礼、智、信'.split('、')
         ],
         '12': [
@@ -2181,7 +2252,6 @@ class DiceGenerator {
             ]
         ],
         '20': [
-            'a,o,e,i,u,ü,ai,ei,ui,ao,ou,iu,ie,üe,er,an,en,in,un,ün,ang,eng,ing,ong'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(','),
             'zhi,chi,shi,ri,zi,ci,si,yi,wu,yu,ye,yue,yuan,yin,yun,ying,,,,'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(',')
         ],
         '24': [
@@ -2224,7 +2294,7 @@ class DiceGenerator {
     const SIDE_IN_URL = parseFloat(getPageParameterByName('side', '0'));
     const SIDE_LENGTH = SIDE_IN_URL || 10;
     const CONTENTS_IN_URL = getPageParameterByName('contents', '');
-    const CONTENTS = CONTENTS_IN_URL.length === 0 ? DEFAULT_CONTENTS : CONTENTS_IN_URL.split(',');
+    const CONTENTS = CONTENTS_IN_URL.length === 0 ? DEFAULT_CONTENTS : CONTENTS_IN_URL.split(CONTENTS_IN_URL.indexOf(',') > -1 ? ',' : '');
     const diceGenerator = new DiceGenerator();
     const OPTIONS = {
         FONT_SIZE
