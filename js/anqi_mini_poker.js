@@ -5,6 +5,7 @@
 
 let ANOTHER_CSS = '';
 let LANG = 'zh_cn';
+const ANOTHER_CSS_PATCH_FOR_NO_3_AND_5 = 'page:nth-of-type(2n+1) topic:last-of-type{margin-left:110mm;}page:nth-of-type(2n) topic:last-of-type{margin-right:110mm;}';
 
 function getFixedHtml(original) {
   if (!original || !original.length) {
@@ -167,7 +168,7 @@ function getMiniPokerCss(sameColor) {
     PAGE_PADDING_LEFT,
   ).concat(
     // https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
-    'page{overflow:hidden;display:-webkit-flex;display:flex;flex-flow:row wrap;justify-content:center;align-items:flex-start;align-content:flex-start;}',
+    'page{overflow:hidden;display:-webkit-flex;display:flex;flex-flow:row wrap;justify-content:flex-start;align-items:flex-start;align-content:flex-start;}',
     'page{font-size:32;font-family:"Times New Roman", "KaiTi";}',
     ('undefined' === typeof sameColor || sameColor) ? '' : 'page:nth-of-type(2n){color:#F00;}',
     'topic,question, answer{height:16mm;}',
@@ -903,6 +904,7 @@ function draw() {
       break;
     case 3:
       ANOTHER_CSS = USE_DICE ? '#svg_3,#svg_4,#svg_5,#svg_6{display:none;}' : '';
+      ANOTHER_CSS += ANOTHER_CSS_PATCH_FOR_NO_3_AND_5;
       getDicesInfo = USE_DICE ? getDicesInfo2 : getDicesInfo3;
 
       getPokerHtml = getPokerHtmlOfMultiplicationFormulasFullLessThan9;
@@ -933,6 +935,7 @@ function draw() {
       break;
     case 5:
       ANOTHER_CSS = USE_DICE ? '#svg_3,#svg_4,#svg_5,#svg_6{display:none;}' : '';
+      ANOTHER_CSS += ANOTHER_CSS_PATCH_FOR_NO_3_AND_5;
       getDicesInfo = USE_DICE ? getDicesInfo2 : getDicesInfo3;
 
       getPokerHtml = getPokerHtmlOfDivisionTableLessThan9;
