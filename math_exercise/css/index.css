@@ -1,0 +1,88 @@
+@media print {
+    @page {
+        size: A4 landscape;
+    }
+}
+
+/*landscape横向 portrait 纵向*/
+* {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+page:not(page:last-child) {
+    page-break-after: always;
+}
+
+body,
+page,
+page>svg {
+    width: 297mm;
+    overflow: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    page-break-inside: avoid;
+}
+
+page,
+page>svg {
+    /* height: 210mm; */
+    height: 206mm;
+}
+
+page {
+    display: block;
+    font-size: 'source code pro', 'monospace', 'KaiTi', 'Times New Roman';
+}
+
+text.left {
+    text-anchor: start;
+}
+
+text.center {
+    text-anchor: middle;
+}
+
+text.right {
+    text-anchor: end;
+}
+
+/* 	auto | use-script | no-change | reset-size | ideographic | alphabetic | hanging | mathematical | central | middle | text-after-edge | text-before-edge | inherit */
+text.top {
+    dominant-baseline: Hanging;
+}
+
+text.middle {
+    dominant-baseline: middle;
+}
+
+text.bottom {
+    dominant-baseline: auto;
+}
+
+text {
+    /* font-family: 'KaiTi'; */
+    /* font-family: 'JetBrains Mono', 'KaiTi'; */
+    /* font-family: 'Courier New Bold', monospace, 'KaiTi'; */
+    /* font-family: Menlo, Monaco, 'Courier New', monospace, 'KaiTi'; */
+    /* 'Courier New'会混乱 */
+
+    /* 太细不歪： */
+    /* font-family: 'Courier New', 'KaiTi'; */
+
+    /* 太细而歪： */
+    /* font-family: monospace, 'KaiTi'; */
+    /* font-family: 'Times New Roman', 'KaiTi'; */
+
+    /* 以下字体都可以 */
+    font-family: Menlo, 'KaiTi';
+    /* font-family: Monaco, 'KaiTi'; */
+
+    /* 略有不当 */
+    font-family: 'KaiTi';
+}

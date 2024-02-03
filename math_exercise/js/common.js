@@ -14,7 +14,7 @@ const LineCountMethodType = {
     RightToLeftByBrackets: 3, // A*(B+C)
 };
 
-const DATA = {
+const DATA = Object.assign({
     // 几个常量：口算题目数、竖式题目数、脱式题目数
     COUNT_ORAL_QUESTION_COUNT_PER_PAGE: 4,
     COUNT_VERTICAL_QUESTION_COUNT_PER_PAGE: 3,
@@ -27,12 +27,6 @@ const DATA = {
     // 4 A+(B+C), A-(B+C), A+(B-C), A-(B-C),
     // 4 A×(B+C), A÷(B+C), A×(B-C), A÷(B-C)
     QUESTION_TYPE_COUNT: 24,
-
-    QUESTION_COVER_PAGE_SUBJECT_TEXT: '三年级寒假数学计算',
-    ANSWER_COVER_PAGE_SUBJECT_TEXT: '三年级寒假数学计算答案',
-
-    QUESTION_PAGE_FOOTER_TEXT: '三年级寒假数学',
-    ANSWER_PAGE_FOOTER_TEXT: '', // '三年级寒假数学答案',
 
     COVER_PAGE_SUBJECT_FONT_SIZE: 12,
 
@@ -94,7 +88,7 @@ const DATA = {
 
     SEPERATOR_LINE_STROKE_COLOR: '#aaaaaa',
     SEPERATOR_LINE_STROKE_WIDTH: '0.1',
-};
+}, COVER_INFO);
 
 // 已去掉：1, 2, 3, 5, 7
 // 4, 9
@@ -234,9 +228,8 @@ const A_TIMES_B_VALUE_COUNT = A_TIMES_B_VALUE_ARRAY.length;
 // 安启电脑 grade2_term2_summer_holiday.htm?start=20230703&end=20230830&left=4&right=4&top=4&bottom=4&notrim=true&removeCover=false&oralMax=200&verticalMax=1000&offTheShelfMax=200
 
 // 测试 grade2_term2_summer_holiday.htm?start=20230703&end=20230830&left=4&right=4&top=4&bottom=4&notrim=true&removeCover=false&oralMax=100&verticalMax=200&offTheShelfMax=100
+
 function parseUrl() {
-    const DEFAULT_START_DATE = '20230127'; // 八位：4位年，2位月，2位日
-    const DEFAULT_END_DATE = '20240225'; // 八位：4位年，2位月，2位日
     const DEFAULT_MARGIN_LEFT = 10; // 单位：毫米
     const DEFAULT_MARGIN_RIGHT = 10; // 单位：毫米
     const DEFAULT_MARGIN_TOP = 15; // 单位：毫米
@@ -246,13 +239,6 @@ function parseUrl() {
     const DEFAULT_ORAL_MAX = 100;
     const DEFAULT_VERTICAL_MAX = 200;
     const DEFAULT_OFF_THE_SHELF_MAX = 100;
-
-    // panic: end=20300225
-    // maybe panic: end=20280225
-
-    // ok: >= 8100
-    // maybe error(less than 0): 20, 1000, 5000, ..., 8099
-    const MIN_OF_MAX_VALUE = 8100;
 
     // <解析页面参数>
     const URL = window.location.href.replace('?', '&');
@@ -270,6 +256,12 @@ function parseUrl() {
         .split('厶')[1]
         .split('&')[0],
     );
+    console.log({
+        DEFAULT_START_DATE,
+        DEFAULT_END_DATE,
+        INPUT_START_DATE,
+        INPUT_END_DATE
+    });
 
     // left=3&right=3&top=3&bottom=3
     const MARGIN_LEFT = Math.max(
@@ -362,14 +354,14 @@ function parseUrl() {
 
     // <转为实际日期>
     const START_DATE = new Date(
-        parseInt(INPUT_START_DATE.substr(0, 4)),
-        parseInt(INPUT_START_DATE.substr(4, 2)) - 1,
-        parseInt(INPUT_START_DATE.substr(6, 2)),
+        parseInt(INPUT_START_DATE.substring(0, 4)),
+        parseInt(INPUT_START_DATE.substring(4, 6)) - 1,
+        parseInt(INPUT_START_DATE.substring(6, 8)),
     );
     const END_DATE = new Date(
-        parseInt(INPUT_END_DATE.substr(0, 4)),
-        parseInt(INPUT_END_DATE.substr(4, 2)) - 1,
-        parseInt(INPUT_END_DATE.substr(6, 2)),
+        parseInt(INPUT_END_DATE.substring(0, 4)),
+        parseInt(INPUT_END_DATE.substring(4, 6)) - 1,
+        parseInt(INPUT_END_DATE.substring(6, 8)),
     );
     const DAY_COUNT = (END_DATE - START_DATE) / 86400000 + 1;
     // </转为实际日期>
@@ -392,6 +384,25 @@ function parseUrl() {
     DATA.ORAL_MAX = ORAL_MAX;
     DATA.VERTICAL_MAX = VERTICAL_MAX;
     DATA.OFF_THE_SHELF_MAX = OFF_THE_SHELF_MAX;
+
+    document.onkeyup = function (e) {
+        // alert(e.keyCode);
+        switch (e.keyCode) {
+            case 112: // F1，实际需其它键辅助，如Shift或Ctrl或Alt，否则会被浏览器拦截
+                alert(
+                    window.location.href.split('/').pop().concat(
+                        `?start=${DEFAULT_START_DATE}&end=${DEFAULT_END_DATE}&left=${DEFAULT_MARGIN_RIGHT}&right=${DEFAULT_MARGIN_RIGHT}&top=${DEFAULT_MARGIN_TOP}&bottom=${DEFAULT_MARGIN_BOTTOM}&notrim=${DEFAULT_NO_TRIM}&removeCover=${DEFAULT_REMOVE_COVER}&oralMax=${ORAL_MAX}&verticalMax=${VERTICAL_MAX}&offTheShelfMax=${OFF_THE_SHELF_MAX}`
+                    ),
+                );
+                e.preventDefault();
+                e.stopPropagation();
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    };
 
     return window;
 }
@@ -675,6 +686,7 @@ function countPositionAndSize() {
     return window;
 }
 
+
 function countCoverPageContent() {
     if (!DATA.REMOVE_COVER) {
         const {
@@ -701,18 +713,18 @@ function countCoverPageContent() {
             .map(
                 (char, char_index) =>
                 `<tspan dx="${char_index ? `-${COVER_PAGE_SUBJECT_FONT_SIZE}mm` : 0}" dy="${char_index
-              ? `${COVER_PAGE_SUBJECT_FONT_SIZE * COVER_PAGE_SUBJECT_ROW_HEIGHT_EM}mm`
-              : 0
-            }">${char}</tspan>`,
+                  ? `${COVER_PAGE_SUBJECT_FONT_SIZE * COVER_PAGE_SUBJECT_ROW_HEIGHT_EM}mm`
+                  : 0
+                }">${char}</tspan>`,
             )
             .join('');
 
         const QUESTION_COVER_PAGE_CONTENT = `${COVER_PAGE_CONTENT_START}${convertCoverTextToVertialHtml(
-      DATA.QUESTION_COVER_PAGE_SUBJECT_TEXT,
-    )}${COVER_PAGE_CONTENT_END}`;
+          DATA.QUESTION_COVER_PAGE_SUBJECT_TEXT,
+        )}${COVER_PAGE_CONTENT_END}`;
         const ANSWER_COVER_PAGE_CONTENT = `${COVER_PAGE_CONTENT_START}${convertCoverTextToVertialHtml(
-      DATA.ANSWER_COVER_PAGE_SUBJECT_TEXT,
-    )}${COVER_PAGE_CONTENT_END}`;
+          DATA.ANSWER_COVER_PAGE_SUBJECT_TEXT,
+        )}${COVER_PAGE_CONTENT_END}`;
 
         DATA.QUESTION_COVER_PAGE_CONTENT = QUESTION_COVER_PAGE_CONTENT;
         DATA.ANSWER_COVER_PAGE_CONTENT = ANSWER_COVER_PAGE_CONTENT;
@@ -721,768 +733,6 @@ function countCoverPageContent() {
     return window;
 }
 
-// 限定脱式题型
-function getQuestionByKind(questionType, questionKind) {
-    let question = '';
-    let answer = '';
-    let formula = '';
-
-    let last_step_is_divide = false;
-    const IS_ORAL = questionKind === QuestionCategoryType.Oral;
-    const IS_VERTICAL = questionKind === QuestionCategoryType.Vertical;
-    const IS_OFF_THE_SHELF = questionKind === QuestionCategoryType.OffTheShelf;
-
-    let a = 0;
-    let b = 0;
-    let c = 0;
-
-    let middleResult = 0;
-    let result = 0;
-
-    // 商, 余数
-    let quotient = 0;
-    let remainder = 0;
-
-    let isOnlyOneColumn = false;
-    let operator1 = '';
-    let operator2 = '';
-
-    let lineCountMethod = LineCountMethodType.LeftToRight; // A+B+C
-    let secondRowFormula = '';
-
-    let power = 0;
-
-    // 4 * 59 = 236, 236 / 24 = 9.833333333333334
-    switch (questionType) {
-        case 0: // A+B+C
-            ({
-                addend1: a,
-                addend2: b,
-                sum: middleResult,
-            } = getAdditionTupleByResultLimited(questionKind));
-
-            ({
-                addend: c,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+${b}+${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '+';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}+${c}`;
-            }
-            break;
-        case 1: // A+B-C
-            ({
-                addend1: a,
-                addend2: b,
-                sum: middleResult,
-            } = getAdditionTupleByResultLimited(questionKind));
-
-            ({
-                subtrahend: c,
-                result
-            } = getSubtractionTupleWithMinuendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+${b}-${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '+';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}-${c}`;
-            }
-            break;
-        case 2: // A-B-C
-            ({
-                addend1: b,
-                addend2: c,
-                sum: middleResult,
-            } = getAdditionTupleByResultLimited(questionKind));
-
-            ({
-                minuend: a,
-                result
-            } = getSubtractionTupleWithSubtrahendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-
-            middleResult = a - b;
-            formula = `${a}-${b}-${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '-';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}-${c}`;
-            }
-            break;
-        case 3: // A-B+C
-            ({
-                minuend: a,
-                subtrahend: b,
-                difference: middleResult,
-            } = getSubtractionTupleByResultLimited(questionKind));
-
-            ({
-                addend: c,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}-${b}+${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '-';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}+${c}`;
-            }
-            break;
-        case 4: // A×B×C
-            ({
-                multiplier1: a,
-                multiplier2: b,
-                product: middleResult,
-                // } = getMultiplicationTupleByResultLimited9());
-            } = getMultiplicationTupleByResultLimited9Advance());
-
-            c = Math.ceil(Math.random() * 9);
-            result = middleResult * c;
-
-            formula = `${a}*${b}*${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '*';
-                operator2 = '*';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}*${c}`;
-            }
-            break;
-        case 5: // A÷B÷C
-            ({
-                multiplier1: b,
-                multiplier2: middleResult,
-                product: a,
-            } = getMultiplicationTupleByMultiplierLimited9Advance2());
-            // power = Math.pow(10, Math.floor(Math.random() * 2));
-            // a *= power;
-
-            c = Math.ceil(Math.random() * middleResult);
-            ({
-                quotient,
-                remainder
-            } = getDivisionTupleMayContainRemainder(middleResult, c));
-
-            last_step_is_divide = true;
-            formula = `${a}/${b}/${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '/';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}/${c}`;
-            }
-            break;
-        case 6: // A*B÷C
-            ({
-                multiplier1: a,
-                multiplier2: b,
-                product: middleResult,
-            } = getMultiplicationTupleByMultiplierLimited9Advance());
-            c = Math.ceil(Math.random() * Math.min(9, middleResult));
-            ({
-                quotient,
-                remainder
-            } = getDivisionTupleMayContainRemainder(middleResult, c));
-
-            last_step_is_divide = true;
-            formula = `${a}*${b}/${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '*';
-                operator2 = '/';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}/${c}`;
-            }
-            break;
-        case 7: // A÷B×C
-            // b = Math.ceil(Math.random() * 9);
-            // c = Math.ceil(Math.random() * 9);
-
-            // a = b * Math.ceil(Math.random() * 9);
-
-            // if (DEBUGGGING) {
-            //     // 240 ÷ 4 × 180 = 10800
-            //     a = 360;
-            //     b = 4;
-            //     // c = 180;
-            //     c = 88880;
-            //     middleResult = a / b;
-            //     result = middleResult * c;
-            // } else {
-            //     ({
-            //         dividend: a,
-            //         divisor: b,
-            //         quotient: middleResult,
-            //     } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            //     ({
-            //             multiplier: c,
-            //             product: result
-            //         } =
-            //         // getMultiplicationTupleWithMultiplieByMultiplierLimited9(middleResult));
-            //         getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance(middleResult));
-
-            // }
-
-            ({
-                dividend: a,
-                divisor: b,
-                quotient: middleResult,
-            } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            ({
-                    multiplier: c,
-                    product: result
-                } =
-                // getMultiplicationTupleWithMultiplieByMultiplierLimited9(middleResult));
-                getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance(middleResult));
-            formula = `${a}/${b}*${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '*';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}*${c}`;
-            }
-            break;
-        case 8: // A×B+C
-            ({
-                multiplier1: a,
-                multiplier2: b,
-                product: middleResult,
-            } = getMultiplicationTupleByMultiplierLimited9Advance());
-
-            ({
-                addend: c,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}*${b}+${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '*';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}+${c}`;
-            }
-            break;
-        case 9: // A×B-C
-            ({
-                multiplier1: a,
-                multiplier2: b,
-                product: middleResult,
-            } = getMultiplicationTupleByMultiplierLimited9Advance());
-
-            ({
-                subtrahend: c,
-                result
-            } = getSubtractionTupleWithMinuendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}*${b}-${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '*';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}-${c}`;
-            }
-            break;
-        case 10: // A÷B+C
-            // b = Math.ceil(Math.random() * 9);
-            // a = b * Math.ceil(Math.random() * 9);
-            // c = Math.ceil(Math.random() * (a / b));
-            ({
-                dividend: a,
-                divisor: b,
-                quotient: middleResult,
-            } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            ({
-                addend: c,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}/${b}+${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}+${c}`;
-            }
-            break;
-        case 11: // A÷B-C
-            // b = Math.ceil(Math.random() * 9);
-            // a = b * Math.ceil(Math.random() * 9);
-
-            ({
-                dividend: a,
-                divisor: b,
-                quotient: middleResult,
-            } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            ({
-                subtrahend: c,
-                result
-            } = getSubtractionTupleWithMinuendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}/${b}-${c}`;
-
-            lineCountMethod = LineCountMethodType.LeftToRight;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${middleResult}-${c}`;
-            }
-            break;
-        case 12: // A+B*C
-            ({
-                multiplier1: b,
-                multiplier2: c,
-                product: middleResult,
-            } = getMultiplicationTupleByMultiplierLimited9Advance());
-
-            ({
-                addend: a,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+${b}*${c}`;
-
-            lineCountMethod = LineCountMethodType.RightToLeft;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '*';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}+${middleResult}`;
-            }
-            break;
-        case 13: // A-B*C
-            ({
-                multiplier1: b,
-                multiplier2: c,
-                product: middleResult,
-            } = getMultiplicationTupleByMultiplierLimited9Advance());
-
-            ({
-                minuend: a,
-                result
-            } = getSubtractionTupleWithSubtrahendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}-${b}*${c}`;
-
-            lineCountMethod = LineCountMethodType.RightToLeft;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '*';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}-${middleResult}`;
-            }
-            break;
-        case 14: // A+B÷C
-            // c = Math.ceil(Math.random() * 9);
-            // b = c * Math.ceil(Math.random() * 9);
-            // a = Math.ceil(Math.random() * (MAX_VALUE - b / c));
-
-            ({
-                dividend: b,
-                divisor: c,
-                quotient: middleResult,
-            } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            ({
-                addend: a,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+${b}/${c}`;
-
-            lineCountMethod = LineCountMethodType.RightToLeft;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}+${middleResult}`;
-            }
-            break;
-        case 15: // A-B÷C
-            // c = Math.ceil(Math.random() * 9);
-            // b = c * Math.ceil(Math.random() * 9);
-
-            ({
-                dividend: b,
-                divisor: c,
-                quotient: middleResult,
-            } = getDivisionTupleWithoutRemainderByResultLimited9Advance());
-
-            ({
-                minuend: a,
-                result
-            } = getSubtractionTupleWithSubtrahendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}-${b}/${c}`;
-
-            lineCountMethod = LineCountMethodType.RightToLeft;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '/';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}-${middleResult}`;
-            }
-            break;
-        case 16: // A+(B+C)
-            ({
-                addend1: b,
-                addend2: c,
-                sum: middleResult,
-            } = getAdditionTupleByResultLimited(questionKind));
-
-            ({
-                addend: a,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+(${b}+${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '+';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}+${middleResult}`;
-            }
-            break;
-        case 17: // A-(B+C)
-            ({
-                addend1: b,
-                addend2: c,
-                sum: middleResult,
-            } = getAdditionTupleByResultLimited(questionKind));
-
-            ({
-                minuend: a,
-                result
-            } = getSubtractionTupleWithSubtrahendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}-(${b}+${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '+';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}-${middleResult}`;
-            }
-            break;
-        case 18: // A+(B-C)
-            ({
-                minuend: b,
-                subtrahend: c,
-                difference: middleResult,
-            } = getSubtractionTupleByResultLimited(questionKind));
-
-            ({
-                addend: a,
-                result
-            } = getAdditionTupleWithAddendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}+(${b}-${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '-';
-                operator2 = '+';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}+${middleResult}`;
-            }
-            break;
-        case 19: // A-(B-C)
-            // if (DEBUGGGING) {
-            //     // 19818 － (15612 － 6940) = 11146
-            //     a = 19818;
-            //     b = 15612;
-            //     c = 6940;
-            //     result = 11146;
-            //     middleResult = b - c;
-            // } else {
-            //     ({
-            //         minuend: b,
-            //         subtrahend: c,
-            //         difference: middleResult,
-            //     } = getSubtractionTupleByResultLimited(questionKind));
-
-            //     ({
-            //         minuend: a,
-            //         result
-            //     } = getSubtractionTupleWithSubtrahendByResultLimited(
-            //         questionKind,
-            //         middleResult,
-            //     ));
-            // }
-            ({
-                minuend: b,
-                subtrahend: c,
-                difference: middleResult,
-            } = getSubtractionTupleByResultLimited(questionKind));
-
-            ({
-                minuend: a,
-                result
-            } = getSubtractionTupleWithSubtrahendByResultLimited(
-                questionKind,
-                middleResult,
-            ));
-            formula = `${a}-(${b}-${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '-';
-                operator2 = '-';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}-${middleResult}`;
-            }
-            break;
-        case 20: // A×(B+C)
-            ({
-                addend1: b,
-                addend2: c,
-                sum: middleResult
-            } = getAdditionTupleByResultLimited9());
-
-            ({
-                    multiplier: a,
-                    product: result
-                } =
-                // getMultiplicationTupleWithMultiplieByMultiplierLimited9(middleResult));
-                getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance(middleResult));
-            formula = `${a}*(${b}+${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '+';
-                operator2 = '*';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}*${middleResult}`;
-            }
-            break;
-        case 21: // A÷(B+C)
-            ({
-                addend1: b,
-                addend2: c,
-                sum: middleResult
-            } = getAdditionTupleByResultLimited9());
-
-            ({
-                dividend: a,
-                quotient,
-                remainder,
-            } = getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance(middleResult));
-            last_step_is_divide = true;
-            formula = `${a}/(${b}+${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '+';
-                operator2 = '/';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}/${middleResult}`;
-            }
-            break;
-        case 22: // A×(B-C)
-            ({
-                minuend: b,
-                subtrahend: c,
-                difference: middleResult,
-            } = getSubtractionTupleByResultLimited9(questionKind, 2));
-
-            ({
-                    multiplier: a,
-                    product: result
-                } =
-                // getMultiplicationTupleWithMultiplieByMultiplierLimited9(middleResult));
-                getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance(middleResult));
-
-            formula = `${a}*(${b}-${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                isOnlyOneColumn = true;
-                operator1 = '-';
-                operator2 = '*';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}*${middleResult}`;
-            }
-            break;
-        case 23: // A÷(B-C)
-            ({
-                minuend: b,
-                subtrahend: c,
-                difference: middleResult,
-            } = getSubtractionTupleByResultLimited9(questionKind, 2));
-
-            ({
-                dividend: a,
-                quotient,
-                remainder,
-            } = getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance(middleResult));
-
-            last_step_is_divide = true;
-            formula = `${a}/(${b}-${c})`;
-
-            lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
-            if (IS_VERTICAL) {
-                // isOnlyOneColumn = false;
-                operator1 = '-';
-                operator2 = '/';
-            } else if (IS_OFF_THE_SHELF) {
-                secondRowFormula = `${a}/${middleResult}`;
-            }
-            break;
-        default:
-            break;
-    }
-
-    if (a < 0 || b < 0 || c < 0) {
-        console.log('a', a, 'b', b, 'c', c);
-    }
-
-    const FORMULA_STRING = getMathFormula(formula);
-
-    const {
-        QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH,
-        QUESTION_ROW_HEIGHT,
-        // CONTENT_PAGE_CONTENT_CHAR_WIDTH,
-        CONTENT_PAGE_CONTENT_FONT_SIZE,
-        OFF_THE_SHELF_QUESTION_X,
-    } = DATA;
-
-    // https://fex-team.github.io/blog/2014/06/svg-whitespace/
-    const QUESTION_ROW_HEIGHT_HALF = QUESTION_ROW_HEIGHT * 0.5;
-    // const QUESTION_ROW_HTML = `<text class="right middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="height:${QUESTION_ROW_HEIGHT}mm">${FORMULA_STRING}${
-    //   IS_OFF_THE_SHELF ? '&nbsp;&nbsp;&nbsp;' : ' =&nbsp;'
-    // }</text>`;
-    const QUESTION_ROW_HTML = IS_OFF_THE_SHELF ?
-        `<text class="left middle" x="${OFF_THE_SHELF_QUESTION_X}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${FORMULA_STRING.concat(
-      IS_OFF_THE_SHELF ? '   ' : ' = ',
-    )}</text>` :
-        `<text class="right middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="height:${QUESTION_ROW_HEIGHT}mm;font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${getContentPageContentTextByChars(
-      FORMULA_STRING.concat(IS_OFF_THE_SHELF ? '   ' : ' = '),
-    )}</text>`;
-
-    const OFF_THE_SHELF_ANSWER_START_ROW_HTML = !IS_OFF_THE_SHELF ? '' : `<text class="left middle" x="${OFF_THE_SHELF_QUESTION_X}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${getOffTheShelfMathFormula(formula, a, c, lineCountMethod)}</text>`;
-
-    if (last_step_is_divide) {
-        result = `${quotient}${remainder > 0 ? `......${remainder}` : ''}`;
-    } else {
-        result = result.toString();
-    }
-
-    const ANSWER_HTML = IS_OFF_THE_SHELF ?
-        '' :
-        `<text class="left middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">&nbsp;${result}</text>`;
-
-    const STEP_HTML = IS_ORAL ?
-        '' :
-        IS_OFF_THE_SHELF ?
-        getOffTheShelfQuestionStepHtml(lineCountMethod, a, b, c, secondRowFormula, result) :
-        getVertialQuestionStepHtml(
-            lineCountMethod,
-            isOnlyOneColumn,
-            operator1,
-            operator2,
-            a,
-            b,
-            c,
-            middleResult,
-            result,
-            quotient,
-            remainder,
-        );
-
-    return {
-        // 问题页，仅题目
-        questionHtml: QUESTION_ROW_HTML,
-        // 答案页：题目与答案、步骤
-        answerHtml: `${IS_OFF_THE_SHELF ? OFF_THE_SHELF_ANSWER_START_ROW_HTML : QUESTION_ROW_HTML}${ANSWER_HTML}${STEP_HTML}`,
-    };
-}
 
 function getVertialQuestionStepHtml(
     lineCountMethod,
@@ -3269,19 +2519,1482 @@ function main() {
 
 window.onload = main;
 
-document.onkeyup = function (e) {
-    // alert(e.keyCode);
-    switch (e.keyCode) {
-        case 112: // F1，实际需其它键辅助，如Shift或Ctrl或Alt，否则会被浏览器拦截
-            alert(
-                'grade2_term2_summer_holiday.htm?start=20230703&end=20230830&left=4&right=4&top=4&bottom=4&notrim=true&removeCover=false&oralMax=200&verticalMax=1000&offTheShelfMax=200',
-            );
-            e.preventDefault();
-            e.stopPropagation();
-            break;
-        default:
-            break;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const getQuestionByKindArray = [
+    getQuestionByKind00,
+    getQuestionByKind01,
+    getQuestionByKind02,
+    getQuestionByKind03,
+    getQuestionByKind04,
+    getQuestionByKind05,
+    getQuestionByKind06,
+    getQuestionByKind07,
+    getQuestionByKind08,
+    getQuestionByKind09,
+    getQuestionByKind10,
+    getQuestionByKind11,
+    getQuestionByKind12,
+    getQuestionByKind13,
+    getQuestionByKind14,
+    getQuestionByKind15,
+    getQuestionByKind16,
+    getQuestionByKind17,
+    getQuestionByKind18,
+    getQuestionByKind19,
+    getQuestionByKind20,
+    getQuestionByKind21,
+    getQuestionByKind22,
+    getQuestionByKind23,
+];
+
+// 限定脱式题型（商 quotient, 余数 remainder）
+function getQuestionByKind(questionType, questionKind) {
+    const IS_ORAL = questionKind === QuestionCategoryType.Oral;
+    // const IS_VERTICAL = questionKind === QuestionCategoryType.Vertical;
+    const IS_OFF_THE_SHELF = questionKind === QuestionCategoryType.OffTheShelf;
+
+    const {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result: resultValue,
+        formula,
+        secondRowFormula,
+        last_step_is_divide,
+        quotient,
+        remainder,
+    } = getQuestionByKindArray[questionType](questionKind);
+
+    // 用于跟踪负数情况！
+    if (a < 0 || b < 0 || c < 0) {
+        console.log('a', a, 'b', b, 'c', c);
     }
 
-    return false;
+    const FORMULA_STRING = getMathFormula(formula);
+
+    const {
+        QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH,
+        QUESTION_ROW_HEIGHT,
+        // CONTENT_PAGE_CONTENT_CHAR_WIDTH,
+        CONTENT_PAGE_CONTENT_FONT_SIZE,
+        OFF_THE_SHELF_QUESTION_X,
+    } = DATA;
+
+    // https://fex-team.github.io/blog/2014/06/svg-whitespace/
+    const QUESTION_ROW_HEIGHT_HALF = QUESTION_ROW_HEIGHT * 0.5;
+    // const QUESTION_ROW_HTML = `<text class="right middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="height:${QUESTION_ROW_HEIGHT}mm">${FORMULA_STRING}${
+    //   IS_OFF_THE_SHELF ? '&nbsp;&nbsp;&nbsp;' : ' =&nbsp;'
+    // }</text>`;
+    const QUESTION_ROW_HTML = IS_OFF_THE_SHELF ?
+        `<text class="left middle" x="${OFF_THE_SHELF_QUESTION_X}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${FORMULA_STRING.concat(
+          IS_OFF_THE_SHELF ? '   ' : ' = ',
+        )}</text>` :
+        `<text class="right middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="height:${QUESTION_ROW_HEIGHT}mm;font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${getContentPageContentTextByChars(
+          FORMULA_STRING.concat(IS_OFF_THE_SHELF ? '   ' : ' = '),
+        )}</text>`;
+
+    const OFF_THE_SHELF_ANSWER_START_ROW_HTML = !IS_OFF_THE_SHELF ? '' : `<text class="left middle" x="${OFF_THE_SHELF_QUESTION_X}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">${getOffTheShelfMathFormula(formula, a, c, lineCountMethod)}</text>`;
+
+    // if (last_step_is_divide) {
+    //     result = `${quotient}${remainder > 0 ? `......${remainder}` : ''}`;
+    // } else {
+    //     result = result.toString();
+    // }
+    const result = last_step_is_divide ? `${quotient}${remainder > 0 ? `......${remainder}` : ''}` : resultValue.toString();
+
+    const ANSWER_HTML = IS_OFF_THE_SHELF ?
+        '' :
+        `<text class="left middle" x="${QUESTION_ROW_BEFORE_EQUAL_SIGN_WIDTH}mm" y="${QUESTION_ROW_HEIGHT_HALF}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm;">&nbsp;${result}</text>`;
+
+    const STEP_HTML = IS_ORAL ?
+        '' :
+        IS_OFF_THE_SHELF ?
+        getOffTheShelfQuestionStepHtml(lineCountMethod, a, b, c, secondRowFormula, result) :
+        getVertialQuestionStepHtml(
+            lineCountMethod,
+            isOnlyOneColumn,
+            operator1,
+            operator2,
+            a,
+            b,
+            c,
+            middleResult,
+            result,
+            quotient,
+            remainder,
+        );
+
+    return {
+        // 问题页，仅题目
+        questionHtml: QUESTION_ROW_HTML,
+        // 答案页：题目与答案、步骤
+        // answerHtml: `${QUESTION_ROW_HTML}${ANSWER_HTML}${STEP_HTML}`,
+        answerHtml: `${IS_OFF_THE_SHELF ? OFF_THE_SHELF_ANSWER_START_ROW_HTML : QUESTION_ROW_HTML}${ANSWER_HTML}${STEP_HTML}`,
+    };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/** A+B+C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind00(questionKind) {
+    const {
+        addend1: a,
+        addend2: b,
+        sum: middleResult,
+    } = getAdditionTupleByResultLimited(questionKind);
+
+    const {
+        addend: c,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+${b}+${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '+';
+    const operator2 = '+';
+    const secondRowFormula = `${middleResult}+${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A+B-C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+ */
+function getQuestionByKind01(questionKind) {
+    const {
+        addend1: a,
+        addend2: b,
+        sum: middleResult,
+    } = getAdditionTupleByResultLimited(questionKind);
+
+    const {
+        subtrahend: c,
+        result
+    } = getSubtractionTupleWithMinuendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+${b}-${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '+';
+    const operator2 = '-';
+    const secondRowFormula = `${middleResult}-${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A-B-C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+ */
+function getQuestionByKind02(questionKind) {
+    const {
+        addend1: b,
+        addend2: c,
+        sum: middleResult1,
+    } = getAdditionTupleByResultLimited(questionKind);
+
+    const {
+        minuend: a,
+        result
+    } = getSubtractionTupleWithSubtrahendByResultLimited(
+        questionKind,
+        middleResult1
+    );
+
+    const middleResult = a - b;
+    const formula = `${a}-${b}-${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '-';
+    const operator2 = '-';
+    const secondRowFormula = `${middleResult}-${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A-B+C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+ */
+function getQuestionByKind03(questionKind) {
+    const {
+        minuend: a,
+        subtrahend: b,
+        difference: middleResult,
+    } = getSubtractionTupleByResultLimited(questionKind);
+
+    const {
+        addend: c,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}-${b}+${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '-';
+    const operator2 = '+';
+    const secondRowFormula = `${middleResult}+${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A×B×C
+ * @param {number} _questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+ */
+function getQuestionByKind04(_questionKind) {
+    const {
+        multiplier1: a,
+        multiplier2: b,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_04[FUNCTION_KEY]();
+
+    const c = Math.ceil(Math.random() * 9);
+    const result = middleResult * c;
+
+    const formula = `${a}*${b}*${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '*';
+    const operator2 = '*';
+    const secondRowFormula = `${middleResult}*${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A÷B÷C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+        last_step_is_divide: boolean,
+        quotient: number,
+        remainder: number,
+    }
+*/
+function getQuestionByKind05(_questionKind) {
+    const {
+        multiplier1: b,
+        multiplier2: middleResult,
+        product: a,
+    } = MAP_OF_GET_QUESTION_BY_KIND_05[FUNCTION_KEY]();
+
+    const c = Math.ceil(Math.random() * middleResult);
+    const {
+        quotient,
+        remainder
+    } = getDivisionTupleMayContainRemainder(middleResult, c);
+
+    const formula = `${a}/${b}/${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '/';
+    const secondRowFormula = `${middleResult}/${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result: 0,
+        formula,
+        secondRowFormula,
+        last_step_is_divide: true,
+        quotient,
+        remainder
+    };
+}
+
+/** A*B÷C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+        last_step_is_divide: boolean,
+        quotient: number,
+        remainder: number,
+    }
+*/
+function getQuestionByKind06(_questionKind) {
+    const {
+        multiplier1: a,
+        multiplier2: b,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_06[FUNCTION_KEY]();
+    const c = Math.ceil(Math.random() * Math.min(9, middleResult));
+    const {
+        quotient,
+        remainder
+    } = getDivisionTupleMayContainRemainder(middleResult, c);
+
+    const formula = `${a}*${b}/${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = false;
+    const operator1 = '*';
+    const operator2 = '/';
+    const secondRowFormula = `${middleResult}/${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result: 0,
+        formula,
+        secondRowFormula,
+        last_step_is_divide: true,
+        quotient,
+        remainder
+    };
+}
+
+/** A÷B×C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind07(_questionKind) {
+    const {
+        dividend: a,
+        divisor: b,
+        quotient: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_07A[FUNCTION_KEY]();
+
+    const {
+        multiplier: c,
+        product: result
+    } =
+    MAP_OF_GET_QUESTION_BY_KIND_07B[FUNCTION_KEY](middleResult);
+
+    const formula = `${a}/${b}*${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '*';
+    const secondRowFormula = `${middleResult}*${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A×B+C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind08(questionKind) {
+
+    const {
+        multiplier1: a,
+        multiplier2: b,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_08[FUNCTION_KEY]();
+
+    const {
+        addend: c,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}*${b}+${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '*';
+    const operator2 = '+';
+    const secondRowFormula = `${middleResult}+${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A×B-C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind09(questionKind) {
+    const {
+        multiplier1: a,
+        multiplier2: b,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_09[FUNCTION_KEY]();
+
+    const {
+        subtrahend: c,
+        result
+    } = getSubtractionTupleWithMinuendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}*${b}-${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = true;
+    const operator1 = '*';
+    const operator2 = '-';
+    const secondRowFormula = `${middleResult}-${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A÷B+C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind10(questionKind) {
+    const {
+        dividend: a,
+        divisor: b,
+        quotient: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_10[FUNCTION_KEY]();
+
+    const {
+        addend: c,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}/${b}+${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '+';
+    const secondRowFormula = `${middleResult}+${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A÷B-C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind11(questionKind) {
+    const {
+        dividend: a,
+        divisor: b,
+        quotient: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_11[FUNCTION_KEY]();
+    const {
+        subtrahend: c,
+        result
+    } = getSubtractionTupleWithMinuendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}/${b}-${c}`;
+
+    const lineCountMethod = LineCountMethodType.LeftToRight;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '-';
+    const secondRowFormula = `${middleResult}-${c}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A+B*C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind12(questionKind) {
+    const {
+        multiplier1: b,
+        multiplier2: c,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_12[FUNCTION_KEY]();
+
+    const {
+        addend: a,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+${b}*${c}`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeft;
+    const isOnlyOneColumn = true;
+    const operator1 = '*';
+    const operator2 = '+';
+    const secondRowFormula = `${a}+${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A-B*C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind13(questionKind) {
+    const {
+        multiplier1: b,
+        multiplier2: c,
+        product: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_13[FUNCTION_KEY]();
+
+    const {
+        minuend: a,
+        result
+    } = getSubtractionTupleWithSubtrahendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}-${b}*${c}`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeft;
+    const isOnlyOneColumn = false;
+    const operator1 = '*';
+    const operator2 = '-';
+    const secondRowFormula = `${a}-${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A+B÷C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind14(questionKind) {
+    const {
+        dividend: b,
+        divisor: c,
+        quotient: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_14[FUNCTION_KEY]();
+
+    const {
+        addend: a,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+${b}/${c}`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeft;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '+';
+    const secondRowFormula = `${a}+${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A-B÷C
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind15(questionKind) {
+
+    // c = Math.ceil(Math.random() * 9);
+    // b = c * Math.ceil(Math.random() * 9);
+
+    const {
+        dividend: b,
+        divisor: c,
+        quotient: middleResult,
+    } = MAP_OF_GET_QUESTION_BY_KIND_15[FUNCTION_KEY]();
+
+    const {
+        minuend: a,
+        result
+    } = getSubtractionTupleWithSubtrahendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}-${b}/${c}`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeft;
+    const isOnlyOneColumn = false;
+    const operator1 = '/';
+    const operator2 = '-';
+    const secondRowFormula = `${a}-${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+
+/** A+(B+C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind16(questionKind) {
+    const {
+        addend1: b,
+        addend2: c,
+        sum: middleResult,
+    } = getAdditionTupleByResultLimited(questionKind);
+
+    const {
+        addend: a,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+(${b}+${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = true;
+    const operator1 = '+';
+    const operator2 = '+';
+    const secondRowFormula = `${a}+${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+
+/** A-(B+C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind17(questionKind) {
+    const {
+        addend1: b,
+        addend2: c,
+        sum: middleResult,
+    } = getAdditionTupleByResultLimited(questionKind);
+
+    const {
+        minuend: a,
+        result
+    } = getSubtractionTupleWithSubtrahendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}-(${b}+${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = false;
+    const operator1 = '+';
+    const operator2 = '-';
+    const secondRowFormula = `${a}-${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A+(B-C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind18(questionKind) {
+    const {
+        minuend: b,
+        subtrahend: c,
+        difference: middleResult,
+    } = getSubtractionTupleByResultLimited(questionKind);
+
+    const {
+        addend: a,
+        result
+    } = getAdditionTupleWithAddendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}+(${b}-${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = true;
+    const operator1 = '-';
+    const operator2 = '+';
+    const secondRowFormula = `${a}+${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A-(B-C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind19(questionKind) {
+    const {
+        minuend: b,
+        subtrahend: c,
+        difference: middleResult,
+    } = getSubtractionTupleByResultLimited(questionKind);
+
+    const {
+        minuend: a,
+        result
+    } = getSubtractionTupleWithSubtrahendByResultLimited(
+        questionKind,
+        middleResult
+    );
+    const formula = `${a}-(${b}-${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = false;
+    const operator1 = '-';
+    const operator2 = '-';
+    const secondRowFormula = `${a}-${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A×(B+C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind20(_questionKind) {
+    const {
+        addend1: b,
+        addend2: c,
+        sum: middleResult
+    } = getAdditionTupleByResultLimited9();
+
+    const {
+        multiplier: a,
+        product: result
+    } = MAP_OF_GET_QUESTION_BY_KIND_20[FUNCTION_KEY](middleResult);
+    const formula = `${a}*(${b}+${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = true;
+    const operator1 = '+';
+    const operator2 = '*';
+    const secondRowFormula = `${a}*${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A÷(B+C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+        last_step_is_divide: boolean,
+        quotient: number,
+        remainder: number,
+    }
+*/
+function getQuestionByKind21(_questionKind) {
+    const {
+        addend1: b,
+        addend2: c,
+        sum: middleResult
+    } = getAdditionTupleByResultLimited9();
+
+    const {
+        dividend: a,
+        quotient,
+        remainder,
+    } = MAP_OF_GET_QUESTION_BY_KIND_21[FUNCTION_KEY](middleResult);
+    const formula = `${a}/(${b}+${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = false;
+    const operator1 = '+';
+    const operator2 = '/';
+    const secondRowFormula = `${a}/${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result: 0,
+        formula,
+        secondRowFormula,
+        last_step_is_divide: true,
+        quotient,
+        remainder,
+    };
+}
+
+/** A×(B-C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+    }
+*/
+function getQuestionByKind22(questionKind) {
+    const {
+        minuend: b,
+        subtrahend: c,
+        difference: middleResult,
+    } = getSubtractionTupleByResultLimited9(questionKind, 2);
+
+    const {
+        multiplier: a,
+        product: result
+    } = MAP_OF_GET_QUESTION_BY_KIND_22[FUNCTION_KEY](middleResult);
+
+    const formula = `${a}*(${b}-${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = true;
+    const operator1 = '-';
+    const operator2 = '*';
+    const secondRowFormula = `${a}*${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result,
+        formula,
+        secondRowFormula,
+    };
+}
+
+/** A÷(B-C)
+ * @param {number} questionKind
+ * @returns {
+        isOnlyOneColumn: boolean,
+        lineCountMethod: LineCountMethodType,
+        operator1: string,
+        operator2: string,
+        a: number,
+        b: number,
+        c: number,
+        middleResult: number,
+        result: number,
+        formula: string,
+        secondRowFormula: string,
+        last_step_is_divide: boolean,
+        quotient: number,
+        remainder: number,
+    }
+*/
+function getQuestionByKind23(questionKind) {
+    const {
+        minuend: b,
+        subtrahend: c,
+        difference: middleResult,
+    } = getSubtractionTupleByResultLimited9(questionKind, 2);
+
+    const {
+        dividend: a,
+        quotient,
+        remainder,
+    } = MAP_OF_GET_QUESTION_BY_KIND_23[FUNCTION_KEY](middleResult);
+
+    const formula = `${a}/(${b}-${c})`;
+
+    const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
+    const isOnlyOneColumn = false;
+    const operator1 = '-';
+    const operator2 = '/';
+    const secondRowFormula = `${a}/${middleResult}`;
+
+    return {
+        isOnlyOneColumn,
+        lineCountMethod,
+        operator1,
+        operator2,
+        a,
+        b,
+        c,
+        middleResult,
+        result: 0,
+        formula,
+        secondRowFormula,
+        last_step_is_divide: true,
+        quotient,
+        remainder,
+    };
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const MAP_OF_GET_QUESTION_BY_KIND_04 = {
+    'grade3_term1': getMultiplicationTupleByResultLimited9,
+    'grade3_term2': getMultiplicationTupleByResultLimited9Advance,
+};
+// MAP_OF_GET_QUESTION_BY_KIND_14[FUNCTION_KEY]
+const MAP_OF_GET_QUESTION_BY_KIND_05 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance2,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_06 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_07A = {
+    'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
+    'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_07B = {
+    'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_08 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_09 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_10 = {
+    'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
+    'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_11 = {
+    'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
+    'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_12 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_13 = {
+    'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_14 = {
+    'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
+    'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_15 = {
+    'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
+    'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_20 = {
+    'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_21 = {
+    'grade3_term1': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9,
+    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_22 = {
+    'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
+    'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+};
+const MAP_OF_GET_QUESTION_BY_KIND_23 = {
+    'grade3_term1': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9,
+    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance,
 };
