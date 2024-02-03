@@ -246,7 +246,13 @@ function parseUrl() {
     const DEFAULT_ORAL_MAX = 100;
     const DEFAULT_VERTICAL_MAX = 200;
     const DEFAULT_OFF_THE_SHELF_MAX = 100;
-    const MIN_OF_MAX_VALUE = 20;
+
+    // panic: end=20300225
+    // maybe panic: end=20280225
+
+    // ok: >= 8100
+    // maybe error(less than 0): 20, 1000, 5000, ..., 8099
+    const MIN_OF_MAX_VALUE = 8100;
 
     // <解析页面参数>
     const URL = window.location.href.replace('?', '&');
@@ -320,7 +326,7 @@ function parseUrl() {
         .replace('&removeCover=', '厶')
         .split('厶')[1]
         .split('&')[0] === 'true';
-    console.log(REMOVE_COVER);
+    // console.log(REMOVE_COVER);
     const ORAL_MAX = Math.max(
         MIN_OF_MAX_VALUE,
         parseInt(
@@ -1411,6 +1417,10 @@ function getQuestionByKind(questionType, questionKind) {
             break;
         default:
             break;
+    }
+
+    if (a < 0 || b < 0 || c < 0) {
+        console.log('a', a, 'b', b, 'c', c);
     }
 
     const FORMULA_STRING = getMathFormula(formula);
@@ -2765,7 +2775,15 @@ function getAdditionTupleWithAddendByResultLimited(questionKind, addend1) {
     const {
         MAX_VALUE
     } = getMaxAndRandSeed(questionKind);
+
     const addend = addend1 === MAX_VALUE ? 0 : Math.ceil(Math.random() * (MAX_VALUE - addend1));
+
+    // let MAX = MAX_VALUE;
+    // while (MAX < addend1) {
+    //     MAX *= 10;
+    // }
+    // const addend = addend1 === MAX ? 0 : Math.ceil(Math.random() * (MAX - addend1));
+
     const result = addend1 + addend;
     return {
         addend,
