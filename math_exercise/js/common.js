@@ -1,4 +1,6 @@
+// ①②③④⑤⑥⑦⑧⑨⑩
 // const DEBUGGGING = true;
+const DEBUGGGING = false;
 const MIN_OF_SUBTRAHEND = 11;
 
 const QuestionCategoryType = {
@@ -256,12 +258,12 @@ function parseUrl() {
         .split('厶')[1]
         .split('&')[0],
     );
-    console.log({
-        DEFAULT_START_DATE,
-        DEFAULT_END_DATE,
-        INPUT_START_DATE,
-        INPUT_END_DATE
-    });
+    // console.log({
+    //     DEFAULT_START_DATE,
+    //     DEFAULT_END_DATE,
+    //     INPUT_START_DATE,
+    //     INPUT_END_DATE
+    // });
 
     // left=3&right=3&top=3&bottom=3
     const MARGIN_LEFT = Math.max(
@@ -768,8 +770,8 @@ function getVertialQuestionStepHtml(
 
     const TRIM_RIGHT_ZERO_OPERAND_1_2 = trimRightZero(operand_1_2).length;
     const TRIM_RIGHT_ZERO_OPERAND_2_2 = trimRightZero(operand_2_2).length;
-    const APPEND_ROW_COUNT_1 = IS_MULTIPLY_1 && TRIM_RIGHT_ZERO_OPERAND_1_2 > 1 ? TRIM_RIGHT_ZERO_OPERAND_1_2 : 0;
-    const APPEND_ROW_COUNT_2 = IS_MULTIPLY_2 && TRIM_RIGHT_ZERO_OPERAND_2_2 > 1 ? TRIM_RIGHT_ZERO_OPERAND_2_2 : 0;
+    const APPEND_ROW_COUNT_1 = (IS_MULTIPLY_1 && TRIM_RIGHT_ZERO_OPERAND_1_2 > 1) ? TRIM_RIGHT_ZERO_OPERAND_1_2 : 0;
+    const APPEND_ROW_COUNT_2 = (IS_MULTIPLY_2 && TRIM_RIGHT_ZERO_OPERAND_2_2 > 1) ? TRIM_RIGHT_ZERO_OPERAND_2_2 : 0;
 
     // 目测当前行间空白区可放下退位减所需小圆点与借位、退位辅助数字
     // const STEP_ROW_COUNT = isOnlyOneColumn
@@ -780,7 +782,23 @@ function getVertialQuestionStepHtml(
     //     : 0
     //   : 3 + (IS_SUBTRACTION_1 || IS_SUBTRACTION_2 ? 1 : 0);
     // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 : IS_DIVISION_1 || IS_DIVISION_2 ? 4 : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
-    const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 * APPEND_ROW_COUNT_2 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? 0.5 * APPEND_ROW_COUNT_2 : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? ) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? (APPEND_ROW_COUNT_2 - 0.5) : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2 > 0 ? (APPEND_ROW_COUNT_2 - 0.5) : 0) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    // const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + 2 * (APPEND_ROW_COUNT_1 + (APPEND_ROW_COUNT_2 > 0 ? APPEND_ROW_COUNT_2 : 0)) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    const STEP_ROW_COUNT = isOnlyOneColumn ? 5 + (APPEND_ROW_COUNT_1 + APPEND_ROW_COUNT_2) : IS_DIVISION_1 || IS_DIVISION_2 ? 4 + (APPEND_ROW_COUNT_1 > 1 ? APPEND_ROW_COUNT_1 : 0) : 3 + Math.max(APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+
+    // if (IS_MULTIPLY_1 && IS_MULTIPLY_2) { //  && a === 54 && b === 32
+    //     console.log(isOnlyOneColumn, STEP_ROW_COUNT, APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2, a, b);
+    // }
+    if (IS_MULTIPLY_1 && operator2 === '+') {
+        console.log(a, b, c, isOnlyOneColumn, STEP_ROW_COUNT, APPEND_ROW_COUNT_1, APPEND_ROW_COUNT_2);
+    }
 
     const ONE_COLUMN_MAX_LENGTH = isOnlyOneColumn ?
         1 +
@@ -817,6 +835,8 @@ function getVertialQuestionStepHtml(
         middleResult,
         IS_DIVISION_1 ? middleResult : 0, // quotient,
         0, // remainder,
+        // IS_MULTIPLY_2 && APPEND_ROW_COUNT_2 > 0,
+        APPEND_ROW_COUNT_2 > 0,
     )}, ${getVertialQuestionStepColumnHtml(
         isOnlyOneColumn,
         ONE_COLUMN_MAX_LENGTH,
@@ -828,6 +848,8 @@ function getVertialQuestionStepHtml(
         result,
         quotient,
         remainder,
+        // IS_MULTIPLY_1 && APPEND_ROW_COUNT_1 > 0,
+        APPEND_ROW_COUNT_1 > 0,
     )}`;
 }
 
@@ -986,6 +1008,7 @@ function getVertialQuestionStepColumnHtml(
     result,
     quotient,
     remainder,
+    anotherOperatorIsMultiply,
 ) {
     // 最后一行都有一条上横线和一个数字
     // 除法：至少4行文字、2条横线、1条弧线
@@ -1027,7 +1050,7 @@ function getVertialQuestionStepColumnHtml(
         STRING_RESULT,
         X1,
         X2,
-    } = prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quotient, operator, isOnlyOneColumn, ONE_COLUMN_MAX_LENGTH, CHAR_WIDTH, columnIndex, STEP_ROW_SPACE, STEP_ROW_COUNT);
+    } = prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quotient, operator, isOnlyOneColumn, ONE_COLUMN_MAX_LENGTH, CHAR_WIDTH, columnIndex, STEP_ROW_SPACE, STEP_ROW_COUNT, anotherOperatorIsMultiply);
 
     const TEXT_HTML_ARRAY = [];
 
@@ -1045,7 +1068,7 @@ function getVertialQuestionStepColumnHtml(
 
     if (IS_MULTIPLY) {
         // && trimRightZero(operand2).length > 1
-        return getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, operand1, operand2, result, STRING_OPERAND1, STRING_OPERAND2, STRING_RESULT, LENGTH_OF_OPERAND1, LENGTH_OF_OPERAND2, LENGTH_OF_RESULT, VERTIAL_QUESTION_STEP_BOTTOM, STEP_ROW_SPACE, CONTENT_PAGE_CONTENT_FONT_SIZE, RIGHT_X, X1, X2, CHAR_WIDTH, SECONDARY_NUMBER_FONT_SIZE, SECONDARY_NUMBER_COLOR, VERTIAL_LINE_Y_MARGIN_TOP, VERTIAL_LINE_STROKE_COLOR, VERTIAL_LINE_STROKE_WIDTH, BLUE_VERTIAL_LINE_STROKE_COLOR);
+        return getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, operand1, operand2, result, STRING_OPERAND1, STRING_OPERAND2, STRING_RESULT, LENGTH_OF_OPERAND1, LENGTH_OF_OPERAND2, LENGTH_OF_RESULT, VERTIAL_QUESTION_STEP_BOTTOM, STEP_ROW_SPACE, CONTENT_PAGE_CONTENT_FONT_SIZE, RIGHT_X, X1, X2, CHAR_WIDTH, SECONDARY_NUMBER_FONT_SIZE, SECONDARY_NUMBER_COLOR, VERTIAL_LINE_Y_MARGIN_TOP, VERTIAL_LINE_STROKE_COLOR, VERTIAL_LINE_STROKE_WIDTH, BLUE_VERTIAL_LINE_STROKE_COLOR, anotherOperatorIsMultiply);
     }
 
     const Y3 = VERTIAL_QUESTION_STEP_BOTTOM;
@@ -1168,7 +1191,7 @@ function getVertialQuestionStepColumnHtml(
     return `${TEXT_HTML_ARRAY.join('')}${LINE_HTML_ARRAY.join('')}`;
 }
 
-function getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, operand1, operand2, result, STRING_OPERAND1, STRING_OPERAND2, STRING_RESULT, LENGTH_OF_OPERAND1, LENGTH_OF_OPERAND2, LENGTH_OF_RESULT, VERTIAL_QUESTION_STEP_BOTTOM, STEP_ROW_SPACE, CONTENT_PAGE_CONTENT_FONT_SIZE, RIGHT_X, X1, X2, CHAR_WIDTH, SECONDARY_NUMBER_FONT_SIZE, SECONDARY_NUMBER_COLOR, VERTIAL_LINE_Y_MARGIN_TOP, VERTIAL_LINE_STROKE_COLOR, VERTIAL_LINE_STROKE_WIDTH, BLUE_VERTIAL_LINE_STROKE_COLOR) {
+function getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, operand1, operand2, result, STRING_OPERAND1, STRING_OPERAND2, STRING_RESULT, LENGTH_OF_OPERAND1, LENGTH_OF_OPERAND2, LENGTH_OF_RESULT, VERTIAL_QUESTION_STEP_BOTTOM, STEP_ROW_SPACE, CONTENT_PAGE_CONTENT_FONT_SIZE, RIGHT_X, X1, X2, CHAR_WIDTH, SECONDARY_NUMBER_FONT_SIZE, SECONDARY_NUMBER_COLOR, VERTIAL_LINE_Y_MARGIN_TOP, VERTIAL_LINE_STROKE_COLOR, VERTIAL_LINE_STROKE_WIDTH, BLUE_VERTIAL_LINE_STROKE_COLOR, anotherOperatorIsMultiply) {
     const TEXT_HTML_ARRAY = [];
     const LINE_HTML_ARRAY = [];
 
@@ -1188,7 +1211,12 @@ function getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, 
     // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * ((isOnlyOneColumn || !MORE_THAN_3_ROWS) ? 0 : RESULT_ROW_COUNT - 3);
 
     // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * ((isOnlyOneColumn && columnIndex === 0) ? 0 : RESULT_ROW_COUNT - 3);
-    const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * (!MORE_THAN_3_ROWS ? 0 : (isOnlyOneColumn ? (columnIndex === 0 ? 0 : RESULT_ROW_COUNT - 4) : RESULT_ROW_COUNT - 3));
+    // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * (!MORE_THAN_3_ROWS ? 0 : (isOnlyOneColumn ? (columnIndex === 0 ? 0 : RESULT_ROW_COUNT - 4) : RESULT_ROW_COUNT - 3));
+    // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * (!MORE_THAN_3_ROWS ? 0 : (isOnlyOneColumn ? (columnIndex === 0 ? (TRIMED_RIGHT_ZERO_LENGTH_2 > 1 ? TRIMED_RIGHT_ZERO_LENGTH_2 * 1 : 0) : RESULT_ROW_COUNT - 4) : RESULT_ROW_COUNT - 3));
+
+    // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * (!MORE_THAN_3_ROWS ? 0 : (isOnlyOneColumn ? (columnIndex === 0 ? (TRIMED_RIGHT_ZERO_LENGTH_2 > 1 ? TRIMED_RIGHT_ZERO_LENGTH_2 : 0) : RESULT_ROW_COUNT - 4) : (columnIndex === 0 ? RESULT_ROW_COUNT - (TRIMED_RIGHT_ZERO_LENGTH_2 > 1 ? TRIMED_RIGHT_ZERO_LENGTH_2 : 0) - 3 : RESULT_ROW_COUNT - 3)));
+    const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - FIXED_STEP_ROW_SPACE * (!MORE_THAN_3_ROWS ? 0 : (isOnlyOneColumn ? (columnIndex === 0 ? (TRIMED_RIGHT_ZERO_LENGTH_2 > 1 ? TRIMED_RIGHT_ZERO_LENGTH_2 : 0) : RESULT_ROW_COUNT - 0.5) : (columnIndex === 0 ? RESULT_ROW_COUNT - (TRIMED_RIGHT_ZERO_LENGTH_2 > 1 ? TRIMED_RIGHT_ZERO_LENGTH_2 : 0) - 3 : RESULT_ROW_COUNT - 3)));
+
     const Y2 = Y3 - FIXED_STEP_ROW_SPACE;
     const Y1 = Y2 - FIXED_STEP_ROW_SPACE + (isOnlyOneColumn ? CONTENT_PAGE_CONTENT_FONT_SIZE * 0.5 : 0);
 
@@ -1283,22 +1311,59 @@ function getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, 
         />`);
     }
 
+
     // 计算进位辅助数字，须修正乘数带0的情况
     // 九九乘法口诀表对应的不需要标记进位辅助数字
     if (TRIMED_RIGHT_ZERO_LENGTH_1 + TRIMED_RIGHT_ZERO_LENGTH_2 > 2) {
         if (TRIMED_RIGHT_ZERO_LENGTH_2 === 1) {
+            // if (operand1 === 58 && operand2 === 900) {
+            //     console.log(TRIMED_RIGHT_ZERO_LENGTH_1, TRIMED_RIGHT_ZERO_LENGTH_2);
+            // }
             const Y = Y2 + SECONDARY_NUMBER_FONT_SIZE - 0.75;
-            for (let digitCount = 1; digitCount < LENGTH_OF_RESULT; ++digitCount) {
+            // for (let digitCount = 1; digitCount < LENGTH_OF_RESULT; ++digitCount) {
+            //     const a = LENGTH_OF_OPERAND1 < digitCount ?
+            //         operand1 :
+            //         parseInt(STRING_OPERAND1.substr(-1 * digitCount), 0);
+            //     const b = LENGTH_OF_OPERAND2 < digitCount ?
+            //         operand2 :
+            //         parseInt(STRING_OPERAND2.substr(-1 * digitCount), 0);
+            //     // console.log({ a, b, digitCount, sum: a + b, sumLength: (a + b).length });
+            //     const A_MULTIPLY_B_STRING = (a * b).toString();
+            //     if (operand1 === 58 && operand2 === 900) {
+            //         console.log({
+            //             a,
+            //             b,
+            //             digitCount,
+            //             sum: a + b,
+            //             // sumLength: (a + b).toString().length,
+            //             A_MULTIPLY_B_STRING
+            //         });
+            //     }
+            //     if (A_MULTIPLY_B_STRING.toString().length > digitCount) {
+            //         const X = RIGHT_X - CHAR_WIDTH * 1.75 * digitCount + CHAR_WIDTH * 0.5;
+            //         TEXT_HTML_ARRAY.push(
+            //             `<text class="left bottom" x="${X}mm" y="${Y}mm" style="fill:${SECONDARY_NUMBER_COLOR};font-size:${SECONDARY_NUMBER_FONT_SIZE}mm">${A_MULTIPLY_B_STRING.substring(0, 1)}</text>`
+            //         );
+            //     }
+            // }
+            const LENGTH_OF_TRIMED_RIGHT_ZERO_RESULT = (operand1 * parseInt(TRIMED_RIGHT_ZERO_2)).toString().length;
+            const b = parseInt(TRIMED_RIGHT_ZERO_2);
+            // if (operand1 === 58 && operand2 === 900) {
+            //     console.log({
+            //         b,
+            //         trimResult: operand1 * parseInt(TRIMED_RIGHT_ZERO_2),
+            //         LENGTH_OF_TRIMED_RIGHT_ZERO_RESULT,
+            //     });
+            // }
+
+            for (let digitCount = 1; digitCount < LENGTH_OF_TRIMED_RIGHT_ZERO_RESULT; ++digitCount) {
                 const a = LENGTH_OF_OPERAND1 < digitCount ?
                     operand1 :
                     parseInt(STRING_OPERAND1.substr(-1 * digitCount), 0);
-                const b = LENGTH_OF_OPERAND2 < digitCount ?
-                    operand2 :
-                    parseInt(STRING_OPERAND2.substr(-1 * digitCount), 0);
-                // console.log({ a, b, digitCount, sum: a + b, sumLength: (a + b).length });
                 const A_MULTIPLY_B_STRING = (a * b).toString();
+
                 if (A_MULTIPLY_B_STRING.toString().length > digitCount) {
-                    const X = RIGHT_X - CHAR_WIDTH * 1.75 * digitCount + CHAR_WIDTH * 0.5;
+                    const X = RIGHT_X - CHAR_WIDTH * 1.75 * (digitCount + RIGHT_ZERO_COUNT_2) + CHAR_WIDTH * 0.5;
                     TEXT_HTML_ARRAY.push(
                         `<text class="left bottom" x="${X}mm" y="${Y}mm" style="fill:${SECONDARY_NUMBER_COLOR};font-size:${SECONDARY_NUMBER_FONT_SIZE}mm">${A_MULTIPLY_B_STRING.substring(0, 1)}</text>`
                     );
@@ -1352,7 +1417,7 @@ function getMultiplyVertialQuestionStepColumnHtml(isOnlyOneColumn, columnIndex, 
     return TEXT_HTML_ARRAY.join('').concat(LINE_HTML_ARRAY.join(''));
 }
 
-function prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quotient, operator, isOnlyOneColumn, ONE_COLUMN_MAX_LENGTH, CHAR_WIDTH, columnIndex, STEP_ROW_SPACE, STEP_ROW_COUNT) {
+function prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quotient, operator, isOnlyOneColumn, ONE_COLUMN_MAX_LENGTH, CHAR_WIDTH, columnIndex, STEP_ROW_SPACE, STEP_ROW_COUNT, anotherOperatorIsMultiply) {
     const {
         VERTIAL_QUESTION_STEP_CENTER_POSITION_ONE_COLUMN,
         VERTIAL_QUESTION_STEP_CENTER_POSITION1,
@@ -1409,6 +1474,11 @@ function prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quo
 
     const QUOTIENT_TRIM_RIGHT_ZERO_LENGTH = IS_DIVISION ? trimRightZero(quotient).length : 0;
     const FIX_ROW_COUNT_BY_DIVISION = (IS_DIVISION && QUOTIENT_TRIM_RIGHT_ZERO_LENGTH > 1) ? 1 + (QUOTIENT_TRIM_RIGHT_ZERO_LENGTH === 2 ? 0 : (QUOTIENT_TRIM_RIGHT_ZERO_LENGTH === 3 ? -0.5 : 0.75 * (3 - QUOTIENT_TRIM_RIGHT_ZERO_LENGTH))) : 0;
+    // const FIX_ROW_COUNT_BY_DIVISION = (IS_DIVISION && QUOTIENT_TRIM_RIGHT_ZERO_LENGTH > 1) ? 1 + (QUOTIENT_TRIM_RIGHT_ZERO_LENGTH === 2 ? 0 : (QUOTIENT_TRIM_RIGHT_ZERO_LENGTH === 3 ? -2.5 : 0.75 * (3 - QUOTIENT_TRIM_RIGHT_ZERO_LENGTH))) : 0;
+
+    // if (quotient === 547) {
+    //     console.log(QUOTIENT_TRIM_RIGHT_ZERO_LENGTH, FIX_ROW_COUNT_BY_DIVISION);
+    // }
 
     // const VERTIAL_QUESTION_STEP_BOTTOM = isOnlyOneColumn ?
     //     VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? STEP_ROW_COUNT - 2 : STEP_ROW_COUNT - 4) :
@@ -1419,9 +1489,37 @@ function prepairGetVertialQuestionStepColumnHtml(operand1, operand2, result, quo
     // if (IS_DIVISION && QUOTIENT_TRIM_RIGHT_ZERO_LENGTH >= 4) {
     //     console.log(`${operand1} / ${operand2} = ${result}`);
     // }
+
+    // 当只有一列时，如果第一项是乘法，位置不对
+    // const VERTIAL_QUESTION_STEP_BOTTOM = isOnlyOneColumn ?
+    //     VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? STEP_ROW_COUNT - 2 : STEP_ROW_COUNT - 4) :
+    //     VERTIAL_QUESTION_STEP_BOTTOM_TWO_COLUMN - STEP_ROW_SPACE * (STEP_ROW_COUNT - 3 - FIX_ROW_COUNT_BY_DIVISION);
+    // const VERTIAL_QUESTION_STEP_BOTTOM = isOnlyOneColumn ?
+    //     VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? STEP_ROW_COUNT + 2 - LENGTH_OF_OPERAND2 * 2 : STEP_ROW_COUNT - 0 - LENGTH_OF_OPERAND2 * 2) :
+    //     VERTIAL_QUESTION_STEP_BOTTOM_TWO_COLUMN - STEP_ROW_SPACE * (STEP_ROW_COUNT - 3 - FIX_ROW_COUNT_BY_DIVISION);
+    // const VERTIAL_QUESTION_STEP_BOTTOM = isOnlyOneColumn ?
+    //     VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? STEP_ROW_COUNT - 2 - (IS_MULTIPLY ? LENGTH_OF_OPERAND2 + 1 : 0) : STEP_ROW_COUNT - 4 - (IS_MULTIPLY ? LENGTH_OF_OPERAND2 + 2 : 0)) :
+    //     VERTIAL_QUESTION_STEP_BOTTOM_TWO_COLUMN - STEP_ROW_SPACE * (STEP_ROW_COUNT - 3 - FIX_ROW_COUNT_BY_DIVISION);
+
+    // const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_FIRST_ITEM_FIX_SCALE = (STEP_ROW_COUNT - 2 - (IS_MULTIPLY ? LENGTH_OF_OPERAND2 + 1 + (anotherOperatorIsMultiply ? -0 : 0) : (anotherOperatorIsMultiply ? 2 : 0)));
+    // const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_SECOND_ITEM_FIX_SCALE = STEP_ROW_COUNT - 4 - (IS_MULTIPLY ? LENGTH_OF_OPERAND2 : (anotherOperatorIsMultiply ? 3 : 0));
+
+    // 240228 0627修改前
+    // const OPERAND2_TRIMED_RIGHT_ZERO_LENGTH = trimRightZero(STRING_OPERAND2).length;
+    // const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_FIRST_ITEM_FIX_SCALE = (STEP_ROW_COUNT - 2 - (IS_MULTIPLY ? (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH - 1 + (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH > 1 ? 0.5 : 0)) * 2 : (anotherOperatorIsMultiply ? 2 : 0)));
+    // const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_SECOND_ITEM_FIX_SCALE = STEP_ROW_COUNT - 4 - (IS_MULTIPLY ? (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH - 1 + 1.5) * 2 : (anotherOperatorIsMultiply ? 3 : 0));
+
+    // 240228 0627修改后
+    const OPERAND2_TRIMED_RIGHT_ZERO_LENGTH = trimRightZero(STRING_OPERAND2).length;
+    const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_FIRST_ITEM_FIX_SCALE = (STEP_ROW_COUNT - 2 - (IS_MULTIPLY ? (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH - 1 + (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH > 1 ? 0.5 : 0)) * 2 : (anotherOperatorIsMultiply ? 2 : 0)));
+    // anotherOperatorIsMultiply ? 3(ok，A*B-C可以) : 0(不确定，0或负数可保证上面的内容位置正确，若负数则上面的内容位置不对)
+    const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_SECOND_ITEM_FIX_SCALE = STEP_ROW_COUNT - 4 - (IS_MULTIPLY ? (OPERAND2_TRIMED_RIGHT_ZERO_LENGTH - 1 + 1.5) * 2 : (anotherOperatorIsMultiply ? 3 : 0));
+
+    const VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN = VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_FIRST_ITEM_FIX_SCALE : VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN_SECOND_ITEM_FIX_SCALE);
+    const VERTIAL_QUESTION_STEP_BOTTOM_OF_TWO_COLUMNS = VERTIAL_QUESTION_STEP_BOTTOM_TWO_COLUMN - STEP_ROW_SPACE * (STEP_ROW_COUNT - 3 - FIX_ROW_COUNT_BY_DIVISION);
     const VERTIAL_QUESTION_STEP_BOTTOM = isOnlyOneColumn ?
-        VERTIAL_QUESTION_STEP_BOTTOM_ONE_COLUMN - STEP_ROW_SPACE * (columnIndex === 0 ? STEP_ROW_COUNT - 2 : STEP_ROW_COUNT - 4) :
-        VERTIAL_QUESTION_STEP_BOTTOM_TWO_COLUMN - STEP_ROW_SPACE * (STEP_ROW_COUNT - 3 - FIX_ROW_COUNT_BY_DIVISION);
+        VERTIAL_QUESTION_STEP_BOTTOM_OF_ONE_COLUMN :
+        VERTIAL_QUESTION_STEP_BOTTOM_OF_TWO_COLUMNS;
 
     const X2 = RIGHT_X + CHAR_WIDTH * 2;
     const X1 = X2 - (IS_DIVISION ? LINE_WIDTH_DIVISION : LINE_WIDTH);
@@ -1449,13 +1547,23 @@ function getDivisionVertialQuestionStepColumnHtml(STEP_ROW_SPACE, quotient, oper
     const QUOTIENT_STRING = quotient.toString();
     const OPERAND1_STRING = operand1.toString();
 
+    // TODO(@anqi) 今后除以整十数时，可能还会出现Bug，到时再进行调整吧
     const QUOTIENT_LENGTH = QUOTIENT_STRING.length;
-    const QUOTIENT_TRIMED_RIGHT_ZERO = trimRightZero(QUOTIENT_STRING);
-    const QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH = QUOTIENT_TRIMED_RIGHT_ZERO.length;
-    const QUOTIENT_RIGHT_ZERO_COUNT = QUOTIENT_LENGTH - QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH;
+    // const QUOTIENT_TRIMED_RIGHT_ZERO = trimRightZero(QUOTIENT_STRING);
+    // const QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH = QUOTIENT_TRIMED_RIGHT_ZERO.length;
+    // const QUOTIENT_RIGHT_ZERO_COUNT = QUOTIENT_LENGTH - QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH;
 
-    const STEP_ROW_SPACE_SMALL = STEP_ROW_SPACE * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 ? 1 : 6.2 / (2 * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH + 1)));
+    const OPERAND1_TRIMED_RIGHT_ZERO_LENGTH = OPERAND1_STRING.length - trimRightZero(OPERAND1_STRING).length;
+    const ORIGINAL_QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH = QUOTIENT_LENGTH - trimRightZero(QUOTIENT_STRING).length;
+    const QUOTIENT_RIGHT_ZERO_COUNT = Math.min(ORIGINAL_QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH, OPERAND1_TRIMED_RIGHT_ZERO_LENGTH);
+    const QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH = QUOTIENT_LENGTH - QUOTIENT_RIGHT_ZERO_COUNT;
+    const QUOTIENT_TRIMED_RIGHT_ZERO = QUOTIENT_STRING.substring(0, QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH);
 
+    // const STEP_ROW_SPACE_SMALL = STEP_ROW_SPACE * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 ? 1 : 6.2 / (2 * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH + 1)));
+    // const STEP_ROW_SPACE_SMALL = STEP_ROW_SPACE * ((QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 && QUOTIENT_LENGTH - trimRightZero(QUOTIENT_STRING).length === 0) ? 1 : 6.2 / (2 * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH + 1)));
+    const STEP_ROW_SPACE_SMALL = STEP_ROW_SPACE * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 ? 1 : 6.2 / (2 * (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH + 1 + Math.max(ORIGINAL_QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH - OPERAND1_TRIMED_RIGHT_ZERO_LENGTH, 0))));
+
+    // const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 ? 0 : STEP_ROW_SPACE_SMALL * QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH);
     const Y3 = VERTIAL_QUESTION_STEP_BOTTOM - (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH === 1 ? 0 : STEP_ROW_SPACE_SMALL * QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH);
     const Y2 = Y3 - STEP_ROW_SPACE_SMALL;
     const Y1 = Y2 - STEP_ROW_SPACE_SMALL;
@@ -1485,33 +1593,71 @@ function getDivisionVertialQuestionStepColumnHtml(STEP_ROW_SPACE, quotient, oper
         );
     } else {
         let oldQuotient = 0;
+        // let lastQuotient = 0;
         const FIXED_OPERAND1_STRING = (operand1 / Math.pow(10, QUOTIENT_RIGHT_ZERO_COUNT)).toString();
         const FIXED_OPERAND1_LENGTH = OPERAND1_STRING.length;
 
+        let zeroCount = 0;
         QUOTIENT_TRIMED_RIGHT_ZERO.split('').forEach((c, index) => {
             const CURRENT_QUOTIENT = parseInt(c);
             const DIGIT = QUOTIENT_RIGHT_ZERO_COUNT + (QUOTIENT_TRIMED_RIGHT_ZERO_LENGTH - index);
 
-            const Y_OFFSET = STEP_ROW_SPACE_SMALL * (index + 1) * 2;
+            const Y_OFFSET = STEP_ROW_SPACE_SMALL * (index - zeroCount + 1) * 2;
             const LINE_Y = LINE_Y0 + Y_OFFSET;
             const Y = Y0 + Y_OFFSET;
+
+            // TEXT_HTML_ARRAY.push(
+            //     `<text class="right bottom" x="${X}mm" y="${Y}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">厶
+            //     ${getTransparentTspanCharByChar(DIGIT -1, operand2 * CURRENT_QUOTIENT, CHAR_WIDTH)}</text>`
+            // );
+
+            const used = FIXED_OPERAND1_STRING.substring(0, FIXED_OPERAND1_LENGTH - DIGIT + 1);
+            const next = FIXED_OPERAND1_STRING.substring(FIXED_OPERAND1_LENGTH - DIGIT + 1, FIXED_OPERAND1_LENGTH - DIGIT + 2);
+            const REMAINING = parseInt(used) - operand2 * (oldQuotient * 10 + CURRENT_QUOTIENT);
+
+            // 607 ÷ (1 ＋ 1) = 303......1
+            // if (operand1 === 607 && operand2 === 2 && quotient === 303 && remainder === 1 && CURRENT_QUOTIENT === 0) {
+            //     // 3 1 0 false
+            //     // 0 1 7 false
+            //     // 3 0 1 false
+            //     // console.log(CURRENT_QUOTIENT, next.length, next.length ? (REMAINING * 10 + parseInt(next)) : REMAINING, CURRENT_QUOTIENT === 0 && (next.length ? (REMAINING * 10 + parseInt(next)) : REMAINING) === 0);
+
+            //     console.log(CURRENT_QUOTIENT, next.length, REMAINING, next, next.length ? (REMAINING * 10 + parseInt(next)) : REMAINING, operand2 * CURRENT_QUOTIENT);
+            // }
+
+            // if (CURRENT_QUOTIENT === 0 && (next.length ? (REMAINING * 10 + parseInt(next)) : REMAINING) === 0) {
+
+            // 进一步简化写法，当商的中间出现0时，不用写下面的式子
+            // const NEED_SKIP_THIS = CURRENT_QUOTIENT === 0 && REMAINING === 0;
+            const NEED_SKIP_THIS = CURRENT_QUOTIENT === 0 && (REMAINING === 0 || next.length);
+
+            if (NEED_SKIP_THIS) {
+                ++zeroCount;
+
+                oldQuotient *= 10;
+                oldQuotient += CURRENT_QUOTIENT;
+                // lastQuotient = CURRENT_QUOTIENT;
+
+                TEXT_HTML_ARRAY.push(
+                    `<text class="right bottom" x="${X}mm" y="${Y - STEP_ROW_SPACE_SMALL}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">
+                    ${next.length ? getTransparentTspanCharByChar(DIGIT - 2, REMAINING * 10 + parseInt(next), CHAR_WIDTH): getTransparentTspanCharByChar(DIGIT - 1, REMAINING, CHAR_WIDTH)}</text>`
+                );
+
+                return;
+            }
 
             TEXT_HTML_ARRAY.push(
                 `<text class="right bottom" x="${X}mm" y="${Y}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">
                 ${getTransparentTspanCharByChar(DIGIT -1, operand2 * CURRENT_QUOTIENT, CHAR_WIDTH)}</text>`
             );
-
-            const used = FIXED_OPERAND1_STRING.substring(0, FIXED_OPERAND1_LENGTH - DIGIT + 1);
-            const next = FIXED_OPERAND1_STRING.substring(FIXED_OPERAND1_LENGTH - DIGIT + 1, FIXED_OPERAND1_LENGTH - DIGIT + 2);
             if (next.length) {
-                const REMAINING = parseInt(used) - operand2 * (oldQuotient * 10 + CURRENT_QUOTIENT);
-                TEXT_HTML_ARRAY.push(
-                    `<text class="right bottom" x="${X}mm" y="${Y + STEP_ROW_SPACE_SMALL}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">
-                    ${getTransparentTspanCharByChar(DIGIT - 2, REMAINING * 10 + parseInt(next), CHAR_WIDTH)}</text>`
-                );
-                // } else if (!next.length) {
+                if (REMAINING * 10 + parseInt(next)) {
+                    TEXT_HTML_ARRAY.push(
+                        `<text class="right bottom" x="${X}mm" y="${Y + STEP_ROW_SPACE_SMALL}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">
+                        ${getTransparentTspanCharByChar(DIGIT - 2, REMAINING * 10 + parseInt(next), CHAR_WIDTH)}</text>`
+                    );
+                }
             } else {
-                const REMAINING = parseInt(used) - operand2 * (oldQuotient * 10 + CURRENT_QUOTIENT);
                 TEXT_HTML_ARRAY.push(
                     `<text class="right bottom" x="${X}mm" y="${Y + STEP_ROW_SPACE_SMALL}mm" style="font-size:${CONTENT_PAGE_CONTENT_FONT_SIZE}mm">
                     ${getTransparentTspanCharByChar(DIGIT - 1, REMAINING, CHAR_WIDTH)}</text>`
@@ -2488,12 +2634,12 @@ function getBodyHtml() {
 }
 
 function main() {
-    // 8 A+B+C, A+B-C, A-B-C, A-B+C, A×B×C, A÷B÷C, A*B÷C, A÷B×C,
-    // 8 A×B+C, A×B-C, A÷B+C, A÷B-C, A+B*C, A-B*C, A+B÷C, A-B÷C,
+    // 8 A+B+C, A+B-C, A-B-C, A-B+C, A×B×C, A÷B÷C, A×B÷C, A÷B×C,
+    // 8 A×B+C, A×B-C, A÷B+C, A÷B-C, A+B×C, A-B×C, A+B÷C, A-B÷C,
     // 4 A+(B+C), A-(B+C), A+(B-C), A-(B-C),
     // 4 A×(B+C), A÷(B+C), A×(B-C), A÷(B-C)
     const OFF_THE_SHELF_QUESTION_TYPE_ARRAY = [];
-    // 跳过了以下项：A+B+C, A-B+C, A×B×C, A÷B÷C, A×B+C, A×B-C, A÷B+C, A÷B-C, A+B*C
+    // 跳过了以下项：A+B+C, A-B+C, A×B×C, A÷B÷C, A×B+C, A×B-C, A÷B+C, A÷B-C, A+B×C
     OFF_THE_SHELF_QUESTION_TYPE_ARRAY.push(1);
     OFF_THE_SHELF_QUESTION_TYPE_ARRAY.push(3);
     OFF_THE_SHELF_QUESTION_TYPE_ARRAY.push(6);
@@ -2872,11 +3018,23 @@ function getQuestionByKind03(questionKind) {
     }
  */
 function getQuestionByKind04(_questionKind) {
+    // const {
+    //     multiplier1: a,
+    //     multiplier2: b,
+    //     product: middleResult,
+    // } = MAP_OF_GET_QUESTION_BY_KIND_04[FUNCTION_KEY]();
+
+    // 54 × 32 × 2 = 3456
+    const DATA1 = {
+        multiplier1: 54,
+        multiplier2: 32,
+        product: 54 * 32,
+    };
     const {
         multiplier1: a,
         multiplier2: b,
         product: middleResult,
-    } = MAP_OF_GET_QUESTION_BY_KIND_04[FUNCTION_KEY]();
+    } = DEBUGGGING ? DATA1 : MAP_OF_GET_QUESTION_BY_KIND_04[FUNCTION_KEY]();
 
     const c = Math.ceil(Math.random() * 9);
     const result = middleResult * c;
@@ -2982,12 +3140,34 @@ function getQuestionByKind05(_questionKind) {
     }
 */
 function getQuestionByKind06(_questionKind) {
+    // const {
+    //     multiplier1: a,
+    //     multiplier2: b,
+    //     product: middleResult,
+    // } = MAP_OF_GET_QUESTION_BY_KIND_06[FUNCTION_KEY]();
+    // const c = Math.ceil(Math.random() * Math.min(9, middleResult));
+
+    // 以这个测试发现，A*B÷C中除法竖式位置不对来源于乘法的位置不对。
+    // 3258 × 1 ÷ 6 = 547......3
+    // const DATA1 = {
+    //     multiplier1: 3258,
+    //     multiplier2: 1,
+    //     product: 3258,
+    // };
+
+    // 73 × 45 ÷ 6 = 547......3
+    const DATA1 = {
+        multiplier1: 73,
+        multiplier2: 45,
+        product: 73 * 45,
+    };
     const {
         multiplier1: a,
         multiplier2: b,
         product: middleResult,
-    } = MAP_OF_GET_QUESTION_BY_KIND_06[FUNCTION_KEY]();
-    const c = Math.ceil(Math.random() * Math.min(9, middleResult));
+    } = DEBUGGGING ? DATA1 : MAP_OF_GET_QUESTION_BY_KIND_06[FUNCTION_KEY]();
+    const c = DEBUGGGING ? 6 : Math.ceil(Math.random() * Math.min(9, middleResult));
+
     const {
         quotient,
         remainder
@@ -3041,12 +3221,29 @@ function getQuestionByKind07(_questionKind) {
         divisor: b,
         quotient: middleResult,
     } = MAP_OF_GET_QUESTION_BY_KIND_07A[FUNCTION_KEY]();
-
     const {
         multiplier: c,
         product: result
-    } =
-    MAP_OF_GET_QUESTION_BY_KIND_07B[FUNCTION_KEY](middleResult);
+    } = MAP_OF_GET_QUESTION_BY_KIND_07B[FUNCTION_KEY](middleResult);
+
+    // const DATA1 = {
+    //     dividend: 232,
+    //     divisor: 4,
+    //     quotient: 58
+    // };
+    // const DATA2 = {
+    //     multiplier: 900,
+    //     product: 52200
+    // };
+    // const {
+    //     dividend: a,
+    //     divisor: b,
+    //     quotient: middleResult,
+    // } = DEBUGGGING ? DATA1 : MAP_OF_GET_QUESTION_BY_KIND_07A[FUNCTION_KEY]();
+    // const {
+    //     multiplier: c,
+    //     product: result
+    // } = DEBUGGGING ? DATA2 : MAP_OF_GET_QUESTION_BY_KIND_07B[FUNCTION_KEY](middleResult);
 
     const formula = `${a}/${b}*${c}`;
 
@@ -3088,12 +3285,23 @@ function getQuestionByKind07(_questionKind) {
     }
 */
 function getQuestionByKind08(questionKind) {
-
     const {
         multiplier1: a,
         multiplier2: b,
         product: middleResult,
     } = MAP_OF_GET_QUESTION_BY_KIND_08[FUNCTION_KEY]();
+
+    // // 60 × 2 ＋ c
+    // const DATA1 = {
+    //     multiplier1: 60,
+    //     multiplier2: 2,
+    //     product: 120,
+    // };
+    // const {
+    //     multiplier1: a,
+    //     multiplier2: b,
+    //     product: middleResult,
+    // } = DEBUGGGING ? DATA1 : MAP_OF_GET_QUESTION_BY_KIND_08[FUNCTION_KEY]();
 
     const {
         addend: c,
@@ -3142,16 +3350,38 @@ function getQuestionByKind08(questionKind) {
     }
 */
 function getQuestionByKind09(questionKind) {
+    // const {
+    //     multiplier1: a,
+    //     multiplier2: b,
+    //     product: middleResult,
+    // } = MAP_OF_GET_QUESTION_BY_KIND_09[FUNCTION_KEY]();
+    // const {
+    //     subtrahend: c,
+    //     result
+    // } = getSubtractionTupleWithMinuendByResultLimited(
+    //     questionKind,
+    //     middleResult
+    // );
+
+    // 61 × 23 － 897 = 506
+    const DATA1 = {
+        multiplier1: 61,
+        multiplier2: 23,
+        product: 61 * 23,
+    };
+    const DATA2 = {
+        subtrahend: 897,
+        result: 506
+    };
     const {
         multiplier1: a,
         multiplier2: b,
         product: middleResult,
-    } = MAP_OF_GET_QUESTION_BY_KIND_09[FUNCTION_KEY]();
-
+    } = DEBUGGGING ? DATA1 : MAP_OF_GET_QUESTION_BY_KIND_09[FUNCTION_KEY]();
     const {
         subtrahend: c,
         result
-    } = getSubtractionTupleWithMinuendByResultLimited(
+    } = DEBUGGGING ? DATA2 : getSubtractionTupleWithMinuendByResultLimited(
         questionKind,
         middleResult
     );
@@ -3783,17 +4013,66 @@ function getQuestionByKind20(_questionKind) {
     }
 */
 function getQuestionByKind21(_questionKind) {
+    // 94 ÷ (9 ＋ 0) = 10......4
+    // const DATA1 = {
+    //     addend1: 9,
+    //     addend2: 0,
+    //     sum: 9
+    // };
+    // const DATA2 = {
+    //     dividend: 94,
+    //     quotient: 10,
+    //     remainder: 4
+    // };
+
+    // 607 ÷ (8066 － 8064) = 303......1
+    // 607 ÷ (1 + 1) = 303......1
+    // const DATA1 = {
+    //     addend1: 1,
+    //     addend2: 1,
+    //     sum: 2
+    // };
+    // const DATA2 = {
+    //     dividend: 607,
+    //     quotient: 303,
+    //     remainder: 1
+    // };
+
+    // 4073 ÷ (3274 － 3266) = 509......1
+    // 4073 ÷ (2 + 6) = 509......1
+    // const DATA1 = {
+    //     addend1: 2,
+    //     addend2: 6,
+    //     sum: 8
+    // };
+    // const DATA2 = {
+    //     dividend: 4073,
+    //     quotient: 509,
+    //     remainder: 1
+    // };
+
+    // const {
+    //     addend1: b,
+    //     addend2: c,
+    //     sum: middleResult
+    // } = DEBUGGGING ? DATA1 : getAdditionTupleByResultLimited9();
+    // const {
+    //     dividend: a,
+    //     quotient,
+    //     remainder,
+    // } = DEBUGGGING ? DATA2 : MAP_OF_GET_QUESTION_BY_KIND_21[FUNCTION_KEY](middleResult);
+
     const {
         addend1: b,
         addend2: c,
         sum: middleResult
     } = getAdditionTupleByResultLimited9();
-
     const {
         dividend: a,
         quotient,
         remainder,
     } = MAP_OF_GET_QUESTION_BY_KIND_21[FUNCTION_KEY](middleResult);
+
     const formula = `${a}/(${b}+${c})`;
 
     const lineCountMethod = LineCountMethodType.RightToLeftByBrackets;
@@ -3929,72 +4208,217 @@ function getQuestionByKind23(questionKind) {
     };
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// grade3_term2_phase2: 80%概率(100a + b) * c，20%概率a * b或a * 10b
+function getDivisionTupleWithoutRemainder_grade3_term2_phase2() {
+    // dividend, divisor, quotient, remainder
+    const divisor = Math.ceil(Math.random() * 9); // * Math.pow(10, Math.floor(Math.random() * 2));
+    // const quotient = Math.ceil(Math.random() * 9) * Math.pow(10, Math.floor(Math.random() * 2));
+    // const quotient = (Math.random() < 0.8 ? Math.ceil(Math.random() * 9) * Math.pow(10, 2) : 0) + Math.ceil(Math.random() * 9);
+    const quotient = Math.random() < 0.8 ? (Math.ceil(Math.random() * 9) * Math.pow(10, 2) + Math.ceil(Math.random() * 9)) : (Math.ceil(Math.random() * 9) * Math.pow(10, Math.floor(Math.random() * 2)));
+    const dividend = divisor * quotient;
+    return {
+        dividend,
+        divisor,
+        quotient
+    };
+}
+
+// 80%概率(100a + b) * c + d，20%概率a * b + c或a * 10b + c
+function getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2(divisor) {
+    // const quotient = Math.ceil(Math.random() * 9);
+    // const quotient = (Math.random() < 0.8 ? Math.ceil(Math.random() * 9) * Math.pow(10, 2) : 0) + Math.ceil(Math.random() * 9);
+
+    const quotient = Math.random() < 0.8 ? (Math.ceil(Math.random() * 9) * Math.pow(10, 2) + Math.ceil(Math.random() * 9)) : (Math.ceil(Math.random() * 9) * Math.pow(10, Math.floor(Math.random() * 2)));
+    const remainder = Math.floor(Math.random() * (divisor - 1)) + 1;
+    const dividend = divisor * quotient + remainder;
+    // console.log('getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2',
+    //     dividend,
+    //     quotient,
+    //     remainder);
+    return {
+        dividend,
+        quotient,
+        remainder
+    };
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// grade3_term2_phase3:
+function getIntBetween10And100() {
+    return Math.ceil(Math.random() * 90) + 10;
+}
+
+function getMultiplicationTuple_grade3_term2_phase3_a() {
+    const IS_COMPLEX = Math.random() < 0.9;
+    const multiplier1 = IS_COMPLEX ? getIntBetween10And100() : (Math.ceil(Math.random() * 100) * Math.pow(10, Math.floor(Math.random() * 2)));
+    const multiplier2 = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 9);
+
+    const product = multiplier1 * multiplier2;
+    // console.log({ multiplier1, multiplier2, product });
+    return {
+        multiplier1,
+        multiplier2,
+        product
+    };
+}
+
+function getMultiplicationTuple_grade3_term2_phase3_b() {
+    const IS_COMPLEX = Math.random() < 0.9;
+    const POWER1 = Math.pow(10, Math.floor(Math.random() * 2));
+    const multiplier1 = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 9) * 10 * POWER1;
+    const multiplier2 = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 9); // * (10 * Math.pow(10, Math.floor(Math.random() * 2)) / POWER1);
+    const product = multiplier1 * multiplier2;
+    return {
+        multiplier1,
+        multiplier2,
+        product
+    };
+}
+
+
+// 获取乘数限定于1-9的整十、整百、整千倍的乘法
+function getMultiplicationTuple_grade3_term2_phase3_c() {
+    const IS_COMPLEX = Math.random() < 0.5;
+    const POWER1 = Math.pow(10, Math.floor(Math.random() * 2));
+    const multiplier1 = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 9) * POWER1;
+    const multiplier2 = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 9) * (10 * Math.pow(10, Math.floor(Math.random() * 2)) / POWER1);
+    const product = multiplier1 * multiplier2;
+    return {
+        multiplier1,
+        multiplier2,
+        product
+    };
+}
+
+function getMultiplicationTuple_grade3_term2_phase3_d(multiplier1) {
+    const IS_COMPLEX = Math.random() < 0.9;
+    // const multiplier = Math.ceil(Math.random() * 9);
+    const multiplier = IS_COMPLEX ? getIntBetween10And100() : Math.ceil(Math.random() * 100) * Math.pow(10, Math.floor(Math.random() * 2));
+    const product = multiplier1 * multiplier;
+    return {
+        multiplier,
+        product
+    };
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const MAP_OF_GET_QUESTION_BY_KIND_04 = {
     'grade3_term1': getMultiplicationTupleByResultLimited9,
     'grade3_term2': getMultiplicationTupleByResultLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByResultLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_a,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_a,
 };
 // MAP_OF_GET_QUESTION_BY_KIND_14[FUNCTION_KEY]
 const MAP_OF_GET_QUESTION_BY_KIND_05 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance2,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance2,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_b,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_b,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_06 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_c,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_c,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_07A = {
     'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
     'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+    'grade3_term2_phase2': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_07B = {
     'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_d,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_d,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_08 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_c,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_c,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_09 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_c,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_c,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_10 = {
     'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
     'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+    'grade3_term2_phase2': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_11 = {
     'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
     'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+    'grade3_term2_phase2': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_12 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_c,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_c,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_13 = {
     'grade3_term1': getMultiplicationTupleByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_c,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_c,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_14 = {
     'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
     'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+    'grade3_term2_phase2': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_15 = {
     'grade3_term1': getDivisionTupleWithoutRemainderByResultLimited9,
     'grade3_term2': getDivisionTupleWithoutRemainderByResultLimited9Advance,
+    'grade3_term2_phase2': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleWithoutRemainder_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_20 = {
     'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_d,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_d,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_21 = {
     'grade3_term1': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9,
-    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance,
+    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase2': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_22 = {
     'grade3_term1': getMultiplicationTupleWithMultiplieByMultiplierLimited9,
     'grade3_term2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase2': getMultiplicationTupleWithMultiplieByMultiplierLimited9Advance,
+    'grade3_term2_phase3': getMultiplicationTuple_grade3_term2_phase3_d,
+    'grade3_term2_phase4': getMultiplicationTuple_grade3_term2_phase3_d,
 };
 const MAP_OF_GET_QUESTION_BY_KIND_23 = {
     'grade3_term1': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9,
-    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisorByResultLimited9Advance,
+    'grade3_term2': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase2': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase3': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
+    'grade3_term2_phase4': getDivisionTupleMayContainRemainderWithDivisor_grade3_term2_phase2,
 };

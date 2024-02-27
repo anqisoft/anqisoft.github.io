@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <!-- anqisoft@gmail.com 2024-02-04 -->
+  <meta charset="utf-8" />
+  <!-- It's useless? -->
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+  <meta id="viewportMeta" name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover,minimal-ui" />
+  <title>24点</title>
+  <!--
+      页码：正文页左页左下角，右页右下角，从1开始。
+      页面参数：上下左右边距、开始日期、结束日期、是否免切边、结束于13（默认否，结束于10）。
+
+      ?start=20240204&end=20240225&endAt13=false&left=10&right=10&top=15&bottom=20&notrim=true
+    -->
+  <link rel="stylesheet" href="css/index.css">
+  <script>
+    const DEFAULT_END_AT13 = false;
+    const parseUrlSpecial = (DATA) => {
+      // &endAt13=false
+      const END_AT13 = URL.concat(`&endat13=${DEFAULT_END_AT13}`)
+        .replace("&endat13=", "厶")
+        .split("厶")[1]
+        .split("&")[0] === "true";
+
+      DATA.END_AT13 = END_AT13;
+
+      return `&endAt13=${END_AT13}`;
+    };
+
+  </script>
+</head>
+
+<body>
+  <script type="application/javascript" src="js/24points.js"></script>
+</body>
+
+</html>
