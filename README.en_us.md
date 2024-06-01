@@ -21,7 +21,7 @@
 		<a target="_blank" href="logger/logger.htm">Style 1: No need to cut, you need to bind</a><br/>
 		<a target="_blank" href="logger/logger_notNeedCut.htm">Style 1: No need to cut, you need to bind</a><br/>
 		<a target="_blank" href="logger/logger1.htm">Style 2: Need to cut, no binding</a><br />
-		
+
     <details open>
       <summary>page parameters</summary>
       <ol>
@@ -45,7 +45,7 @@
 		<a target="_blank" href="math_exercise/grade3_term2_phase2.htm">three sub -stages 2</a><br/>
 		<a target="_blank" href="math_exercise/grade3_term2_phase3.htm">three lower stages 3</a><br/>
 		<a target="_blank" href="math_exercise/grade3_term2_weekend.htm">Three weekends practice</a><br />
-		
+
     <details open>
       <summary>page parameters</summary>
       <ol>
@@ -65,9 +65,9 @@
   </details>
 
   <details open><summary>mini poker</summary>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=1&useDice=true">with dice, inward 20 in -20, English version</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=2&useDice=true">with dice, abdicated within 20, English version</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=3&useDice=true">with dice, the big nine -nine multiplication formula, the English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=1&useDice=true">with dice, inward 20 in -20, English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=2&useDice=true">with dice, abdicated within 20, English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=3&useDice=true">with dice, the big nine -nine multiplication formula, the English version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=1&useDice=true">with dice, 20 internal entry plus, simplified Chinese version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=2&useDice=true">with dice, abdication within 20, simplified Chinese version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=3&useDice=true">with dice, the big nine -nine multiplication formula, the simplified Chinese version</a><br/>
@@ -86,9 +86,9 @@
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=1&useDice=true">with a dice, inward 20 in -position,</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=2&useDice=true">with dice, abdicated within 20,</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=3&useDice=true">with a dice, a big nine -nine multiplication formula,</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=1&useDice=false">No dice, inward 20 in -position, English version</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=2&useDice=false">No dice, abdication within 20, English version</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=3&useDice=false">No dice, the big nine -nine multiplication formula, the English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=1&useDice=false">No dice, inward 20 in -position, English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=2&useDice=false">No dice, abdication within 20, English version</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=3&useDice=false">No dice, the big nine -nine multiplication formula, the English version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=1&useDice=false">no dice, inward 20 in -position, simplified Chinese version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=2&useDice=false">no dice, abdication within 20, simplified Chinese version</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=3&useDice=false">No dice, the Drice Nine -nine multiplication formula, simplified Chinese version</a><br/>

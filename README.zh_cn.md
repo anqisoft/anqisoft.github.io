@@ -20,7 +20,7 @@
 		<a target="_blank" href="logger/logger.htm">风格1：无需裁切，需装订</a><br/>
 		<a target="_blank" href="logger/logger_notNeedCut.htm">风格1：无需裁切，需装订</a><br/>
 		<a target="_blank" href="logger/logger1.htm">风格2：需裁切，不需装订</a><br />
-		
+
     <details open>
       <summary>页面参数</summary>
       <ol>
@@ -44,7 +44,7 @@
 		<a target="_blank" href="math_exercise/grade3_term2_phase2.htm">三下阶段2</a><br/>
 		<a target="_blank" href="math_exercise/grade3_term2_phase3.htm">三下阶段3</a><br/>
 		<a target="_blank" href="math_exercise/grade3_term2_weekend.htm">三下周末练</a><br />
-		
+
     <details open>
       <summary>页面参数</summary>
       <ol>
@@ -64,9 +64,9 @@
   </details>
 
   <details open><summary>迷你扑克</summary>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=1&useDice=true">带骰子，20內進位加，英文版</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=2&useDice=true">带骰子，20內退位减，英文版</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=3&useDice=true">带骰子，大九九乘法口訣表，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=1&useDice=true">带骰子，20內進位加，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=2&useDice=true">带骰子，20內退位减，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=3&useDice=true">带骰子，大九九乘法口訣表，英文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=1&useDice=true">带骰子，20內進位加，简体中文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=2&useDice=true">带骰子，20內退位减，简体中文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=3&useDice=true">带骰子，大九九乘法口訣表，简体中文版</a><br/>
@@ -85,9 +85,9 @@
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=1&useDice=true">带骰子，20內進位加，</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=2&useDice=true">带骰子，20內退位减，</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=繁体中文版&no=3&useDice=true">带骰子，大九九乘法口訣表，</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=1&useDice=false">无骰子，20內進位加，英文版</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=2&useDice=false">无骰子，20內退位减，英文版</a><br/>
-		<a target="_blank" href="mini_poker/math.htm?lang=en_cn&no=3&useDice=false">无骰子，大九九乘法口訣表，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=1&useDice=false">无骰子，20內進位加，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=2&useDice=false">无骰子，20內退位减，英文版</a><br/>
+		<a target="_blank" href="mini_poker/math.htm?lang=en_us&no=3&useDice=false">无骰子，大九九乘法口訣表，英文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=1&useDice=false">无骰子，20內進位加，简体中文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=2&useDice=false">无骰子，20內退位减，简体中文版</a><br/>
 		<a target="_blank" href="mini_poker/math.htm?lang=zh_cn&no=3&useDice=false">无骰子，大九九乘法口訣表，简体中文版</a><br/>
@@ -109,6 +109,5 @@
     <a target="_blank" href="mini_poker/math.min.htm">数学迷你扑克（代码已压缩）</a><br />
   </details>
 
-  
+
   <img src="math_exercise/三阶幻方.jpg" alt="math_exercise/三阶幻方.jpg" />
-  
