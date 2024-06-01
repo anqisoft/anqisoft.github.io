@@ -32,7 +32,7 @@
         <li>vLine: true, there are vertical lines; false, there is no vertical line</li>
         <li>withoutLineNo: true, no number; false, with line number</li>
       </ol>
-		</details>
+	</details>
   </details>
 
   <details open><summary>Mathematics exercises</summary>
@@ -61,7 +61,7 @@
         <li>verticalMax: the maximum value of the column vertical type (may be automatically modified)</li>
         <li>offTheShelfMax: The maximum value of the departure calculation (may be automatically corrected)</li>
       </ol>
-		</details>
+	</details>
   </details>
 
   <details open><summary>mini poker</summary>
