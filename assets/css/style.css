@@ -49,3 +49,11 @@ html[lang='zh_tw'] button[onclick="setLang('en_us')"] en_us,
 html[lang='zh_tw'] button[onclick="setLang('zh_cn')"] zh_cn {
     display: inline;
 }
+
+details {
+    margin: 1em 0;
+}
+
+details>a {
+    margin-left: 2em;
+}
