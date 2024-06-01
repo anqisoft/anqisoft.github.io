@@ -57,3 +57,11 @@ details {
 details>a {
     margin-left: 2em;
 }
+
+details details {
+    margin: 0 0 0 2em;
+}
+
+details details ol {
+    margin-top: -0.1em;
+}
