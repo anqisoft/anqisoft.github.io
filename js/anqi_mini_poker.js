@@ -4,7 +4,7 @@
 */
 
 let ANOTHER_CSS = '';
-let LANG = 'zh_cn';
+// let LANG = 'zh_cn';
 const ANOTHER_CSS_PATCH_FOR_NO_3_AND_5 = 'page:nth-of-type(2n+1) topic:last-of-type{margin-left:110mm;}page:nth-of-type(2n) topic:last-of-type{margin-right:110mm;}';
 
 function getFixedHtml(original) {
@@ -1075,7 +1075,7 @@ function draw() {
   }
 
   document.getElementsByTagName('title')[0].innerText =
-    `${(USE_DICE ? 10 : 0) + NO} ${A3 ? 'A3' : 'A4'} ${titleI18n[LANG]}`;
+    `${(USE_DICE ? 10 : 0) + NO} ${A3 ? 'A3' : 'A4'} ${titleI18n[window.LANG]}`;
 
   drawCore(getPokerHtml, firstPageAppendHtmlParamI18n, USE_DICE, sameColor, mixed);
 }
