@@ -115,4 +115,4 @@
     <img src="math_exercise/Third Order Magic Square.jpg" alt="math_exercise/Third Order Magic Square.jpg" />
   </details>
 
-  The other website is http://edu.sonya.cc/ and the source url is https://github.com/edu-sonya-cc/.<br />
+  The other website is <a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a> and the source url is <a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>.<br />

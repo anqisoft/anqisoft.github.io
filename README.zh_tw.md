@@ -114,4 +114,4 @@
     <img src="math_exercise/三阶幻方.jpg" alt="math_exercise/三阶幻方.jpg" />
   </details>
 
-  另一網站是http://edu.sonya.cc/，相應源碼網址：https://github.com/edu-sonya-cc/。<br />
+  另一網站是<a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a>，相應源碼網址：<a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>。<br />
