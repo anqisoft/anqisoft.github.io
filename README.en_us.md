@@ -110,5 +110,9 @@
     <a target="_blank" href="mini_poker/math.min.htm">Mathematics mini poker (code has been compressed)</a><br />
   </details>
 
-  <img src="math_exercise/Third Order Magic Square.jpg" alt="math_exercise/Third Order Magic Square.jpg" />
+  <details>
+    <summary>Others</summary>
+    <img src="math_exercise/Third Order Magic Square.jpg" alt="math_exercise/Third Order Magic Square.jpg" />
+  </details>
 
+  The other website is http://edu.sonya.cc/ and the source url is https://github.com/edu-sonya-cc/.<br />

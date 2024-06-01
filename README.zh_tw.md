@@ -109,6 +109,9 @@
     <a target="_blank" href="mini_poker/math.min.htm">數學迷你撲克（代碼已壓縮）</a><br />
   </details>
 
+  <details>
+    <summary>Others</summary>
+    <img src="math_exercise/三阶幻方.jpg" alt="math_exercise/三阶幻方.jpg" />
+  </details>
 
-
-  <img src="math_exercise/三阶幻方.jpg" alt="math_exercise/三阶幻方.jpg" />
+  另一網站是http://edu.sonya.cc/，相應源碼網址：https://github.com/edu-sonya-cc/。<br />
