@@ -1,0 +1,176 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover,minimal-ui">
+  <title>AnQi's Blog</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+</head>
+
+<body>
+  <br />
+  <en_us>Hello! Please click on the links to open them!</en_us>
+  <zh_cn>您好！请点击链接以打开它们！</zh_cn>
+  <zh_tw>您好！請點選連結以打開它們！</zh_tw><br />
+
+  <details open>
+    <summary>
+      <en_us>dice</en_us>
+      <zh_cn>仅线条</zh_cn>
+      <zh_tw>骰子</zh_tw>
+    </summary>
+    <a target="_blank" href="_onlyLines/A3.htm">
+      <en_us>ten sides dice</en_us>
+      <zh_cn>A3</zh_cn>
+      <zh_tw>十面骰子</zh_tw>
+    </a><br />
+    <a target="_blank" href="_onlyLines/A4.htm">
+      <en_us>A3 various dice</en_us>
+      <zh_cn>A4</zh_cn>
+      <zh_tw>A3各種骰子</zh_tw>
+    </a><br />
+    <a target="_blank" href="_onlyLines/anySize.htm">
+      <en_us>A3 various dice</en_us>
+      <zh_cn>任意尺寸</zh_cn>
+      <zh_tw>A3各種骰子</zh_tw>
+    </a><br />
+
+    <details open>
+      <summary>
+        <en_us>page parameters</en_us>
+        <zh_cn>页面参数</zh_cn>
+        <zh_tw>頁面參數</zh_tw>
+      </summary>
+      <ol>
+        <li>side<en_us>: Start Date</en_us>
+          <zh_cn>：正方体边长</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>left<en_us>: left spacing</en_us>
+          <zh_cn>：页面左边距</zh_cn>
+          <zh_tw>：左邊距</zh_tw>
+        </li>
+        <li>right<en_us>: right distance</en_us>
+          <zh_cn>：页面右边距</zh_cn>
+          <zh_tw>：右邊距</zh_tw>
+        </li>
+        <li>top<en_us>: upper distance</en_us>
+          <zh_cn>：页面上边距</zh_cn>
+          <zh_tw>：上邊距</zh_tw>
+        </li>
+        <li>bottom<en_us>: below</en_us>
+          <zh_cn>：页面下边距</zh_cn>
+          <zh_tw>：下邊距</zh_tw>
+        </li>
+      </ol>
+    </details>
+  </details>
+
+  <details open>
+    <summary>
+      <en_us>Handwriting log Book</en_us>
+      <zh_cn>魔法正方体</zh_cn>
+      <zh_tw>手寫日誌小冊子</zh_tw>
+    </summary>
+    <a target="_blank" href="ghostkubes_01.htm">
+      <en_us>Style 1: No need to cut, you need to bind</en_us>
+      <zh_cn>第一组</zh_cn>
+      <zh_tw>風格1：無需裁切，需裝訂</zh_tw>
+    </a><br />
+    <a target="_blank" href="manners_2rows_part.htm">
+      <en_us>Style 1: No need to cut, you need to bind</en_us>
+      <zh_cn>二行五列部分正方体（用于测试1转24）</zh_cn>
+      <zh_tw>風格1：無需裁切，需裝訂</zh_tw>
+    </a><br />
+    <details open>
+      <summary>
+        <en_us>page parameters</en_us>
+        <zh_cn>页面参数</zh_cn>
+        <zh_tw>頁面參數</zh_tw>
+      </summary>
+      <ol>
+        <li style="display:none;">hide_face_text<en_us>: </en_us>
+          <zh_cn>：true，隐藏六面文本；false，显示六面文本</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>face_font_size<en_us>: </en_us>
+          <zh_cn>：六面文本字号（默认3毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li style="display:none;">face_text_color<en_us>: </en_us>
+          <zh_cn>：六面字色（默认#555）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li style="display:none;">hide_set_text<en_us>: </en_us>
+          <zh_cn>：true，隐藏套装文本；false，显示套装文本</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>set_font_size<en_us>: </en_us>
+          <zh_cn>：套装文本字号（默认3毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>set_text_color<en_us>: </en_us>
+          <zh_cn>：套装字色（默认#555）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li style="display:none;">set_text_use_mode_no<en_us>: </en_us>
+          <zh_cn>：true，套装文本使用纸模编号；false，套装文本不使用纸模编号</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li style="display:none;">text_only_in_first_cell<en_us>: </en_us>
+          <zh_cn>：true，仅第一格显示文本；false，所有格显示文本</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+
+        <li>side<en_us>: Start Date</en_us>
+          <zh_cn>：正方体边长</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>thickness<en_us>: Start Date</en_us>
+          <zh_cn>：纸厚（毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>hole<en_us>: Start Date</en_us>
+          <zh_cn>：孔半径（毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>text_offset<en_us>: Start Date</en_us>
+          <zh_cn>：文本偏移量</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>width<en_us>: Start Date</en_us>
+          <zh_cn>：纸张宽度（毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>height<en_us>: Start Date</en_us>
+          <zh_cn>：纸张高度（毫米）</zh_cn>
+          <zh_tw>：</zh_tw>
+        </li>
+        <li>left<en_us>: left spacing</en_us>
+          <zh_cn>：页面左边距</zh_cn>
+          <zh_tw>：左邊距</zh_tw>
+        </li>
+        <li>right<en_us>: right distance</en_us>
+          <zh_cn>：页面右边距</zh_cn>
+          <zh_tw>：右邊距</zh_tw>
+        </li>
+        <li>top<en_us>: upper distance</en_us>
+          <zh_cn>：页面上边距</zh_cn>
+          <zh_tw>：上邊距</zh_tw>
+        </li>
+        <li>bottom<en_us>: below</en_us>
+          <zh_cn>：页面下边距</zh_cn>
+          <zh_tw>：下邊距</zh_tw>
+        </li>
+      </ol>
+    </details>
+  </details>
+
+
+  <script type="text/javascript" src="/assets/js/common.js"></script>
+</body>
+
+</html>
