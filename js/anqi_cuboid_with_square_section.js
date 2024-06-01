@@ -1,7 +1,6 @@
-
 // ?top=4&left=3.5&landscape=false&a3=true
 function draw() {
-  setF1Content('?lang=en&landscape=false&no=1\nlang:en, zh_cn, zh_tw\nlandscape:true, false\nno:1,2');
+  setF1Content('?lang=en_us&landscape=false&no=1\nlang:en_us, zh_cn, zh_tw\nlandscape:true, false\nno:1,2');
 
   // Force to A3 paper, and use the default margins.
   const ORIGINAL_URL = window.location.href;
@@ -14,12 +13,12 @@ function draw() {
 
   document.getElementsByTagName('title')[0].innerText = `${[
     {
-      en: 'A3 Cuboid with Square Section Landscape ',
+      en_us: 'A3 Cuboid with Square Section Landscape ',
       zh_cn: 'A3_带正方形截面的长方体_横排',
       zh_tw: 'A3_帶正方形截面的長方體_橫排',
     },
     {
-      en: 'A3 Cuboid with Square Section Portrait ',
+      en_us: 'A3 Cuboid with Square Section Portrait ',
       zh_cn: 'A3_带正方形截面的长方体_竖排',
       zh_tw: 'A3_帶正方形截面的長方體_豎排',
     },
@@ -61,8 +60,13 @@ function appendPortraitDices(pageElement) {
   createAndAppendCuboids(pageElement, 40, 20, 6, 4);
   createAndAppendCuboids(pageElement, 20, 10, 4, 12);
 
-  const { ceil, floor } = Math;
-  const LONG = 10, SIDE = 5, PASTE_WIDTH = 4;
+  const {
+    ceil,
+    floor
+  } = Math;
+  const LONG = 10,
+    SIDE = 5,
+    PASTE_WIDTH = 4;
 
   function getSvgElements(COUNT) {
     return createAndAppendCuboids(pageElement, LONG, SIDE, PASTE_WIDTH, COUNT);
@@ -127,20 +131,49 @@ function appendPortraitDices(pageElement) {
 
 function appendLandscapeDices1(pageElement) {
   // Count： 1, 2, 8, 14, 19
-  [
-    { long: 128, side: 64, pasteWidth: 16, count: 1 },
-    { long: 64, side: 32, pasteWidth: 8, count: 2 },
-    { long: 32, side: 16, pasteWidth: 4, count: 8 },
-    { long: 16, side: 8, pasteWidth: 4, count: 14 },
+  [{
+      long: 128,
+      side: 64,
+      pasteWidth: 16,
+      count: 1
+    },
+    {
+      long: 64,
+      side: 32,
+      pasteWidth: 8,
+      count: 2
+    },
+    {
+      long: 32,
+      side: 16,
+      pasteWidth: 4,
+      count: 8
+    },
+    {
+      long: 16,
+      side: 8,
+      pasteWidth: 4,
+      count: 14
+    },
 
     // { long:8, side:4, pasteWidth: 4, count: 14 },
-  ].forEach(({ long, side, pasteWidth, count }) => {
+  ].forEach(({
+    long,
+    side,
+    pasteWidth,
+    count
+  }) => {
     createAndAppendCuboids(pageElement, long, side, pasteWidth, count);
   });
 
-  const { ceil, floor } = Math;
+  const {
+    ceil,
+    floor
+  } = Math;
   // const LONG = 16, SIDE = 8, PASTE_WIDTH = 4;
-  const LONG = 8, SIDE = 4, PASTE_WIDTH = 4;
+  const LONG = 8,
+    SIDE = 4,
+    PASTE_WIDTH = 4;
 
   function getSvgElements(COUNT) {
     return createAndAppendCuboids(pageElement, LONG, SIDE, PASTE_WIDTH, COUNT);
@@ -160,7 +193,9 @@ function appendLandscapeDices1(pageElement) {
     const svgStyle = svgElement.style;
     svgStyle.position = 'absolute';
 
-    const { widthMm: WIDTH } = svgElement;
+    const {
+      widthMm: WIDTH
+    } = svgElement;
     svgStyle.left = `${PAGE_PADDING_LEFT + 64 * 6 + 16}mm`;
     if (i < 2) {
       svgStyle.top = `${PAGE_PADDING_TOP + 64 * 0.5 + WIDTH * (i % 2)}mm`;
@@ -186,18 +221,42 @@ function appendLandscapeDices1(pageElement) {
 
 function appendLandscapeDices2(pageElement) {
   // Count： 1, 4, 4, 0, 17
-  [
-    { long: 128, side: 64, pasteWidth: 16, count: 1 },
-    { long: 64, side: 32, pasteWidth: 8, count: 4 },
-    { long: 32, side: 16, pasteWidth: 4, count: 4 },
+  [{
+      long: 128,
+      side: 64,
+      pasteWidth: 16,
+      count: 1
+    },
+    {
+      long: 64,
+      side: 32,
+      pasteWidth: 8,
+      count: 4
+    },
+    {
+      long: 32,
+      side: 16,
+      pasteWidth: 4,
+      count: 4
+    },
 
-  ].forEach(({ long, side, pasteWidth, count }) => {
+  ].forEach(({
+    long,
+    side,
+    pasteWidth,
+    count
+  }) => {
     createAndAppendCuboids(pageElement, long, side, pasteWidth, count);
   });
 
-  const { ceil, floor } = Math;
+  const {
+    ceil,
+    floor
+  } = Math;
   // const LONG = 16, SIDE = 8, PASTE_WIDTH = 4;
-  const LONG = 8, SIDE = 4, PASTE_WIDTH = 4;
+  const LONG = 8,
+    SIDE = 4,
+    PASTE_WIDTH = 4;
 
   function getSvgElements(COUNT) {
     return createAndAppendCuboids(pageElement, LONG, SIDE, PASTE_WIDTH, COUNT);
@@ -217,7 +276,9 @@ function appendLandscapeDices2(pageElement) {
     const svgStyle = svgElement.style;
     svgStyle.position = 'absolute';
 
-    const { widthMm: WIDTH } = svgElement;
+    const {
+      widthMm: WIDTH
+    } = svgElement;
     svgStyle.left = `${PAGE_PADDING_LEFT + 64 * 6 + 16}mm`;
     if (i < 2) {
       svgStyle.top = `${PAGE_PADDING_TOP + 64 * 0.5 + WIDTH * (i % 2)}mm`;

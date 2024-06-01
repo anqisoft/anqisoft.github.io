@@ -4,9 +4,14 @@
 
 (function drawDice() {
     parsePageParamsFromUrl(window.location.href);
-    const { A3, LANG, NO, LANDSCAPE } = window.anqiData;
-    switch(LANG){
-        case 'en':
+    const {
+        A3,
+        LANG,
+        NO,
+        LANDSCAPE
+    } = window.anqiData;
+    switch (LANG) {
+        case 'en_us':
         default:
             setF1Content(`?a3=false&landscape=false&top=15&left=10&width=0&height=0&face=0&no=1&side=0&contents=&font_size=&outer_line_style=&inner_line_style=&text_style=
 a3: A3 or A4(default). Values: true or false.
@@ -268,34 +273,34 @@ text_ style:文字樣式，空表示使用預設值（Times New Roman或楷體�
         '24': [
             '立春、雨水、惊蛰、春分、清明、谷雨、立夏、小满、芒种、夏至、小暑、大暑、立秋、处暑、白露、秋分、寒露、霜降、立冬、小雪、大雪、冬至、小寒、大寒'.split('、'),
             'b,p,m,f,d,t,n,l,g,k,h,j,q,x,zh,ch,sh,r,z,c,s,y,w,'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(','),
-            'a,o,e,i,u,ü,ai,ei,ui,ao,ou,iu,ie,üe,er,an,en,in,un,ün,ang,eng,ing,ong'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(','),
+            'a,o,e,i,u,ü,ai,ei,ui,ao,ou,iu,ie,üe,er,an,en_us,in,un,ün,ang,eng,ing,ong'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(','),
             'zhi,chi,shi,ri,zi,ci,si,yi,wu,yu,ye,yue,yuan,yin,yun,ying,,,,,,,,'.replace(/a/g, 'ɑ').replace(/g/g, 'ɡ').split(','),
             'ā,á,ǎ,à,ō,ó,ǒ,ò,ē,é,ě,è,ī,í,ǐ,ì,ū,ú,ǔ,ù,ǖ,ǘ,ǚ,ǜ'.split(',')
         ]
     };
     const diceKind = DICE_KIND_MAP[FACE_STRING];
     const DEFAULT_CONTENTS = [];
-    switch(NO){
+    switch (NO) {
         case 0:
         case 1:
-            for(let i = 0; i < FACE; ++i){
+            for (let i = 0; i < FACE; ++i) {
                 DEFAULT_CONTENTS.push((i + 1).toString());
             }
             break;
         case 2:
-            for(let i = 0; i < FACE; ++i){
+            for (let i = 0; i < FACE; ++i) {
                 DEFAULT_CONTENTS.push(i.toString());
             }
             break;
         case 3:
-            for(let i = 0; i < FACE; ++i){
+            for (let i = 0; i < FACE; ++i) {
                 DEFAULT_CONTENTS.push('');
             }
             break;
         default:
-            CONTENTS_MAP[FACE_STRING].forEach((array, n)=>{
+            CONTENTS_MAP[FACE_STRING].forEach((array, n) => {
                 if (NO === n + 4) {
-                    array.forEach((item)=>{
+                    array.forEach((item) => {
                         DEFAULT_CONTENTS.push(item);
                     });
                 }
@@ -320,15 +325,19 @@ text_ style:文字樣式，空表示使用預設值（Times New Roman或楷體�
         textStyle: getPageParameterByName('text_style', ''),
         options: OPTIONS
     });
-    const { id, svg, css } = DICE_INFO;
+    const {
+        id,
+        svg,
+        css
+    } = DICE_INFO;
     document.getElementsByTagName('title')[0].innerText = `${A3 ? 'A3' : 'A4'}_D${FACE}_${[
         {
-            en: 'Landscape ',
+            en_us: 'Landscape ',
             zh_cn: '横排',
             zh_tw: '橫排'
         },
         {
-            en: 'Portrait ',
+            en_us: 'Portrait ',
             zh_cn: '竖排',
             zh_tw: '豎排'
         }

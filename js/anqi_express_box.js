@@ -5,7 +5,10 @@
 
 function parseExpressBoxParamsFromUrl(url) {
   url = url.replace('?', '&').toLowerCase();
-  const { max, min } = Math;
+  const {
+    max,
+    min
+  } = Math;
   window.THICKESS = max(0, min(
     1,
     parseFloat(
@@ -19,14 +22,17 @@ function parseExpressBoxParamsFromUrl(url) {
   );
 
   window.LANG =
-    url.concat('&lang=en').replace('&lang=', '厶').split('厶')[1].split('&')[0];
-  if (['en', 'zh_cn', 'zh_tw'].indexOf(window.LANG) === -1) {
-    window.LANG = 'en';
+    url.concat('&lang=en_us').replace('&lang=', '厶').split('厶')[1].split('&')[0];
+  if (['en_us', 'zh_cn', 'zh_tw'].indexOf(window.LANG) === -1) {
+    window.LANG = 'en_us';
   }
 }
 
 function getExpressBoxSvgHtml(long, width, height, extend) {
-  const { max, min } = Math;
+  const {
+    max,
+    min
+  } = Math;
 
   long = max(1, long || 40);
   width = max(1, width || 30);
@@ -55,8 +61,8 @@ function getExpressBoxSvgHtml(long, width, height, extend) {
   const HALF_HEIGHT_PX = mmToPxScale * HALF_HEIGHT;
   const HALF_WIDTH_PX = mmToPxScale * HALF_WIDTH;
 
-  const SMALL_RADIUS_PX = mmToPxScale * SMALL_RADIUS;  // height * 0.25;
-  const BIG_RADIUS_PX = mmToPxScale * BIG_RADIUS;  // width * 0.25;
+  const SMALL_RADIUS_PX = mmToPxScale * SMALL_RADIUS; // height * 0.25;
+  const BIG_RADIUS_PX = mmToPxScale * BIG_RADIUS; // width * 0.25;
   const THIRD_RADIUS_PX = mmToPxScale * max(width, height) * 0.25;
 
   const FIRST_V_PX = HEIGHT_PX - SMALL_RADIUS_PX * 2 - THICKESS_PX * 2;
@@ -191,18 +197,28 @@ ${getInnerHorizontalLine(X4, X5, Y5)}
 }
 
 function getCuboidWithSquareSectionSvgHtml(long, side, pasteWidth) {
-  const { max, min } = Math;
+  const {
+    max,
+    min
+  } = Math;
 
   long = max(1, long || 40);
   width = max(1, side || long * 0.5);
-  if (width > long) { width += long; long -= width - long; width = width - long; }
+  if (width > long) {
+    width += long;
+    long -= width - long;
+    width = width - long;
+  }
   height = width;
 
   return getCuboidWithHalfExtend(long, width, height, pasteWidth);
 }
 
 function getCuboidWithHalfExtend(long, width, height, pasteWidth) {
-  const { max, min } = Math;
+  const {
+    max,
+    min
+  } = Math;
 
   long = max(1, long || 40);
   width = max(1, width || 40);
@@ -230,7 +246,7 @@ function getCuboidWithHalfExtend(long, width, height, pasteWidth) {
   const X3 = X2 + long;
   const X4 = X3 + height;
   const X5 = X4 + long;
-// const X6 = X5 + pasteWidth;
+  // const X6 = X5 + pasteWidth;
 
   const html = `<path fill="none" stroke="#000000"
 d="M 0, ${EXTEND_PX}
@@ -300,8 +316,14 @@ function getInlineVerticalLine(X, Y1, Y2) {
 function createAndAppendCuboids(PAGE_ELEMENT, LONG, SIDE, PASTE_WIDTH, COUNT) {
   const result = [];
   for (let i = 0; i < COUNT; ++i) {
-    const { html, width, height } = getCuboidWithSquareSectionSvgHtml(LONG, SIDE, PASTE_WIDTH);
-    const { svgElement } = createSvgElement(html, width, height);
+    const {
+      html,
+      width,
+      height
+    } = getCuboidWithSquareSectionSvgHtml(LONG, SIDE, PASTE_WIDTH);
+    const {
+      svgElement
+    } = createSvgElement(html, width, height);
     PAGE_ELEMENT.appendChild(svgElement);
 
     svgElement.widthMm = width;
@@ -313,8 +335,14 @@ function createAndAppendCuboids(PAGE_ELEMENT, LONG, SIDE, PASTE_WIDTH, COUNT) {
 }
 
 function createAndAppendCuboid(PAGE_ELEMENT, LONG, SIDE, PASTE_WIDTH) {
-  const { html, width, height } = getCuboidWithSquareSectionSvgHtml(LONG, SIDE, PASTE_WIDTH);
-  const { svgElement } = createSvgElement(html, width, height);
+  const {
+    html,
+    width,
+    height
+  } = getCuboidWithSquareSectionSvgHtml(LONG, SIDE, PASTE_WIDTH);
+  const {
+    svgElement
+  } = createSvgElement(html, width, height);
   PAGE_ELEMENT.appendChild(svgElement);
 
   svgElement.widthMm = width;
@@ -325,7 +353,9 @@ function createAndAppendCuboid(PAGE_ELEMENT, LONG, SIDE, PASTE_WIDTH) {
 function rotate90(svgElement) {
   const svgStyle = svgElement.style;
 
-  const { heightMm: HEIGHT } = svgElement;
+  const {
+    heightMm: HEIGHT
+  } = svgElement;
   const HALF_HEIGHT = HEIGHT * 0.5;
   svgStyle.transform = 'rotate(90deg)';
   svgStyle.transformOrigin = `${HALF_HEIGHT}mm ${HALF_HEIGHT}mm`;

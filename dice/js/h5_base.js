@@ -8,10 +8,10 @@ const SITE_ROOT = HOME_URL.substring(0, HOME_URL.lastIndexOf('/') + 1);
 const SITE_IMAGE_PATH = `${SITE_ROOT}images/`;
 const SITE_JAVASCRIPT_PATH = `${SITE_ROOT}js/`;
 const SITE_CSS_PATH = `${SITE_ROOT}css/`;
-const getPageParameterByName = (name, defaultValue)=>{
+const getPageParameterByName = (name, defaultValue) => {
     const REPLACED_CURRENT_URL = CURRENT_URL.replace('?', '&');
     const SEARCH_STRING = `${name}=`;
-    return REPLACED_CURRENT_URL.indexOf(`&${SEARCH_STRING}`) === -1 ? defaultValue || '' : decodeURIComponent(REPLACED_CURRENT_URL.split('&').slice(1).filter((keyValue)=>keyValue.startsWith(SEARCH_STRING))[0].split('=')[1]);
+    return REPLACED_CURRENT_URL.indexOf(`&${SEARCH_STRING}`) === -1 ? defaultValue || '' : decodeURIComponent(REPLACED_CURRENT_URL.split('&').slice(1).filter((keyValue) => keyValue.startsWith(SEARCH_STRING))[0].split('=')[1]);
 };
 const LANG_PROPERTY = 'edu-lang';
 const MONTH_FULL_NAME_ARRAY = [
@@ -37,21 +37,23 @@ const MONTH_NAME_ARRAY = [
     'Nov',
     'Dec'
 ];
+
 function parsePageParamsFromUrl(url) {
     const anqiData = window.anqiData;
     url = url.replace('?', '&').toLowerCase();
     const keyValueArray = url.split('&').slice(1);
+
     function getValueByUrlParamNam(key, defaultValue) {
         const SEARCH_STRING = `${key}=`;
         if (url.indexOf(SEARCH_STRING) === -1) return defaultValue;
-        return keyValueArray.filter((keyValue)=>keyValue.startsWith(`&${SEARCH_STRING}`))[0].split('=')[1];
+        return keyValueArray.filter((keyValue) => keyValue.startsWith(`&${SEARCH_STRING}`))[0].split('=')[1];
     }
-    const LANG_IN_URL = getValueByUrlParamNam('lang', 'en');
+    const LANG_IN_URL = getValueByUrlParamNam('lang', 'en_us');
     const LANG = [
-        'en',
+        'en_us',
         'zh_cn',
         'zh_tw'
-    ].indexOf(LANG_IN_URL) === -1 ? 'en' : LANG_IN_URL;
+    ].indexOf(LANG_IN_URL) === -1 ? 'en_us' : LANG_IN_URL;
     const THICKESS = Math.max(0, parseFloat(getValueByUrlParamNam('thickess', '0.2')));
     const A3 = getValueByUrlParamNam('a3', 'true') === 'true';
     const LANDSCAPE = getValueByUrlParamNam('landscape', 'false') === 'true';
@@ -77,16 +79,25 @@ function parsePageParamsFromUrl(url) {
     anqiData.MM_TO_PX_SCALE = DPI_HELPER.getMmToPxScale();
     anqiData.PX_TO_MM_SCALE = DPI_HELPER.getPxToMmScale();
 }
+
 function getPageCss() {
-    const { A3, LANDSCAPE, PAGE_PADDING_TOP, PAGE_PADDING_LEFT, PAGE_WIDTH, PAGE_HEIGHT } = window.anqiData;
+    const {
+        A3,
+        LANDSCAPE,
+        PAGE_PADDING_TOP,
+        PAGE_PADDING_LEFT,
+        PAGE_WIDTH,
+        PAGE_HEIGHT
+    } = window.anqiData;
     return `\@media print\{\@page\{size:${A3 ? 'A3' : 'A4'} ${LANDSCAPE ? 'landscape' : 'portrait'};\} \}
 *\{margin:0;border:0;padding:0;\}
 page:not(:last-of-type)\{page-break-after:always;\}
 page\{padding-top:${PAGE_PADDING_TOP}mm;padding-left:${PAGE_PADDING_LEFT}mm;display:block;width:${PAGE_WIDTH}mm;height:${PAGE_HEIGHT}mm;position:relative;overflow:hidden;\}`;
 }
+
 function setF1Content(content) {
-    document.onkeydown = function(e) {
-        switch(e.keyCode){
+    document.onkeydown = function (e) {
+        switch (e.keyCode) {
             case 112:
                 alert(content);
                 e.preventDefault();
@@ -98,28 +109,29 @@ function setF1Content(content) {
         return false;
     };
 }
+
 function getNumbersArray(min, max) {
     const array = [];
-    for(let i = min; i <= max; ++i)array.push(i.toString());
+    for (let i = min; i <= max; ++i) array.push(i.toString());
     return array;
 }
 const LOCAL_STORAGE_KEY_OF_LANG = 'lang';
 const LOCAL_STORAGE_KEY_OF_CURRENT_PAGE = CURRENT_URL.includes('?') ? CURRENT_URL.split('?')[1] : CURRENT_URL;
 const CHANGE_LANG_NOTIFY_ARRAY = [];
-const getCurrentLang = ()=>localStorage.getItem(LOCAL_STORAGE_KEY_OF_LANG) || 'zh_cn';
-const setCurrentLang = (lang)=>{
+const getCurrentLang = () => localStorage.getItem(LOCAL_STORAGE_KEY_OF_LANG) || 'zh_cn';
+const setCurrentLang = (lang) => {
     getHtmlElement().setAttribute(LANG_PROPERTY, lang);
     localStorage.setItem(LOCAL_STORAGE_KEY_OF_LANG, lang);
     updateUIByCurrentLang();
 };
-const updateUIByCurrentLang = ()=>{
+const updateUIByCurrentLang = () => {
     const lang = getCurrentLang();
-    CHANGE_LANG_NOTIFY_ARRAY.forEach((func)=>func(lang));
+    CHANGE_LANG_NOTIFY_ARRAY.forEach((func) => func(lang));
 };
-const getCurrentPageLocalStorage = ()=>localStorage.getItem(LOCAL_STORAGE_KEY_OF_CURRENT_PAGE) || '';
-const setCurrentPageLocalStorage = (newValue)=>localStorage.setItem(LOCAL_STORAGE_KEY_OF_CURRENT_PAGE, newValue);
-const getChangeLangNotifyArrayOfCurrentPage = ()=>CHANGE_LANG_NOTIFY_ARRAY;
-const clearChangeLangNotifyArrayOfCurrentPage = ()=>{
+const getCurrentPageLocalStorage = () => localStorage.getItem(LOCAL_STORAGE_KEY_OF_CURRENT_PAGE) || '';
+const setCurrentPageLocalStorage = (newValue) => localStorage.setItem(LOCAL_STORAGE_KEY_OF_CURRENT_PAGE, newValue);
+const getChangeLangNotifyArrayOfCurrentPage = () => CHANGE_LANG_NOTIFY_ARRAY;
+const clearChangeLangNotifyArrayOfCurrentPage = () => {
     CHANGE_LANG_NOTIFY_ARRAY.length = 0;
 };
 class DPIHelper {
@@ -127,9 +139,11 @@ class DPIHelper {
     dpiX = 0;
     mmToPxScale = 0;
     pxToMmScale = 0;
-    constructor(){
+    constructor() {
         const screen = window.screen;
-        const { dpiArray } = this;
+        const {
+            dpiArray
+        } = this;
         if (screen.deviceXDPI) {
             dpiArray.push(screen.deviceXDPI);
             dpiArray.push(screen.deviceYDPI);
@@ -146,95 +160,125 @@ class DPIHelper {
         this.mmToPxScale = dpiX / 25.4;
         this.pxToMmScale = 25.4 / dpiX;
     }
-    convertPxToMm = (px)=>px / this.dpiX * 25.4;
-    convertMmToPx = (mm)=>mm / 25.4 * this.dpiX;
-    getMmToPxScale = ()=>this.mmToPxScale;
-    getPxToMmScale = ()=>this.pxToMmScale;
+    convertPxToMm = (px) => px / this.dpiX * 25.4;
+    convertMmToPx = (mm) => mm / 25.4 * this.dpiX;
+    getMmToPxScale = () => this.mmToPxScale;
+    getPxToMmScale = () => this.pxToMmScale;
 }
+
 function isI18nable(object) {
-    return typeof object !== 'undefined' && object !== null && typeof object !== 'string' && typeof object.en === 'string' && typeof object.zh_cn === 'string' && typeof object.zh_tw === 'string';
+    return typeof object !== 'undefined' && object !== null && typeof object !== 'string' && typeof object.en_us === 'string' && typeof object.zh_cn === 'string' && typeof object.zh_tw === 'string';
 }
+
 function hide(element) {
     if (element) element.style.display = 'none';
 }
+
 function showBlock(element) {
     if (element) element.style.display = 'block';
 }
+
 function showInlineBlock(element) {
     if (element) element.style.display = 'inline-block';
 }
+
 function showFlex(element) {
     if (element) element.style.display = 'flex';
 }
+
 function showInlineFlex(element) {
     if (element) element.style.display = 'inline-flex';
 }
+
 function getElementById(id) {
     return document.getElementById(id);
 }
+
 function getElementByIdAndTagName(id, _tagName) {
     return document.getElementById(id);
 }
+
 function querySelectorAll(selectors) {
     return document.querySelectorAll(selectors);
 }
+
 function querySelectorAllByI18n() {
     return document.querySelectorAll('[i18n]');
 }
+
 function querySelectorAllByI18nPlaceholder() {
     return document.querySelectorAll('[i18n-placeholder]');
 }
+
 function getElementsByTagName(qualifiedName) {
     return document.getElementsByTagName(qualifiedName);
 }
+
 function getHeadElement() {
     return document.getElementsByTagName('head')[0];
 }
+
 function getHtmlElement() {
     return document.getElementsByTagName('html')[0];
 }
+
 function getBodyElement() {
     return document.getElementsByTagName('body')[0];
 }
+
 function getTitleElement() {
     return document.getElementsByTagName('title')[0];
 }
+
 function getHeaderElement() {
     return document.getElementsByTagName('header')[0];
 }
+
 function getFooterElement() {
     return document.getElementsByTagName('footer')[0];
 }
+
 function getMainElement() {
     return document.getElementsByTagName('main')[0];
 }
+
 function createElement(tagName, options) {
     return document.createElement(tagName, options);
 }
+
 function setAttributesOfA(aElement, link) {
     aElement.setAttribute('href', link);
     if (!link.startsWith('mailto:')) {
         aElement.setAttribute('target', '_blank');
     }
 }
+
 function stopEventBubble(event) {
     event.cancelBubble = true;
     event.preventDefault();
     event.stopPropagation();
     return false;
 }
-function getI18nInnerHTML({ en, zh_cn, zh_tw }) {
-    return `<en>${en}</en><zh_cn>${zh_cn}</zh_cn><zh_tw>${zh_tw}</zh_tw>`;
+
+function getI18nInnerHTML({
+    en_us,
+    zh_cn,
+    zh_tw
+}) {
+    return `<en_us>${en_us}</en_us><zh_cn>${zh_cn}</zh_cn><zh_tw>${zh_tw}</zh_tw>`;
 }
+
 function getI18nInnerHTMLFromDate(date) {
-    const en = `${MONTH_NAME_ARRAY[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    const en_us = `${MONTH_NAME_ARRAY[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     const zh_cn = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     const zh_tw = zh_cn;
-    return `<en>${en}</en><zh_cn>${zh_cn}</zh_cn><zh_tw>${zh_tw}</zh_tw>`;
+    return `<en_us>${en_us}</en_us><zh_cn>${zh_cn}</zh_cn><zh_tw>${zh_tw}</zh_tw>`;
 }
+
 function createPageElement() {
     return document.createElement('page');
 }
+
 function createSvgElement(html, width, height) {
     const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgElement.innerHTML = html;
@@ -248,6 +292,7 @@ function createSvgElement(html, width, height) {
         height
     };
 }
+
 function createSvgGElement(html, width, height) {
     const gElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     gElement.innerHTML = html;
@@ -259,7 +304,12 @@ function createSvgGElement(html, width, height) {
         height
     };
 }
-function createSvgAndGElement({ html, width, height }) {
+
+function createSvgAndGElement({
+    html,
+    width,
+    height
+}) {
     const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgElement.setAttribute('version', '1.1');
     svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -274,11 +324,31 @@ function createSvgAndGElement({ html, width, height }) {
         height
     };
 }
+
 function appendSvgAndG(parentElement, info, options) {
-    const { abs, sin, cos, PI } = Math;
-    const { svgElement, gElement, width, height } = info;
-    const { left, right, top, bottom, degree } = options;
-    const { PAGE_WIDTH, PAGE_HEIGHT } = window.anqiData;
+    const {
+        abs,
+        sin,
+        cos,
+        PI
+    } = Math;
+    const {
+        svgElement,
+        gElement,
+        width,
+        height
+    } = info;
+    const {
+        left,
+        right,
+        top,
+        bottom,
+        degree
+    } = options;
+    const {
+        PAGE_WIDTH,
+        PAGE_HEIGHT
+    } = window.anqiData;
     const x = 'undefined' !== typeof left ? left : PAGE_WIDTH - width - right;
     const y = 'undefined' !== typeof top ? top : PAGE_HEIGHT - height - bottom;
     parentElement.appendChild(svgElement);
@@ -288,7 +358,12 @@ function appendSvgAndG(parentElement, info, options) {
     gElement.setAttribute('transform', `rotate(${degree})`);
     gElement.style.transformOrigin = '50% 50%';
     if (degree === 180 || degree === -180) return;
-    let newWidth = 0, newHeight = 0, gTranslateScaleX = 1, gTranslateScaleY = 1, xScale = 1, yScale = 1;
+    let newWidth = 0,
+        newHeight = 0,
+        gTranslateScaleX = 1,
+        gTranslateScaleY = 1,
+        xScale = 1,
+        yScale = 1;
     if (degree <= -90) {
         const newDegree = -90 - degree;
         const radian = PI * newDegree / 180;
@@ -355,8 +430,12 @@ function appendSvgAndG(parentElement, info, options) {
     svgElement.setAttribute('y', `${y + HALF_DELTA_HEIGHT * yScale}mm`);
     gElement.style.translate = `${G_DELTA_X}mm ${G_DELTA_Y}mm`;
 }
+
 function createTopSvgElement() {
-    const { PAGE_WIDTH, PAGE_HEIGHT } = window.anqiData;
+    const {
+        PAGE_WIDTH,
+        PAGE_HEIGHT
+    } = window.anqiData;
     const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgElement.setAttribute('version', '1.1');
     svgElement.setAttribute('width', `${PAGE_WIDTH}mm`);
@@ -366,14 +445,14 @@ function createTopSvgElement() {
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const SVG_XLINKNS = 'http://www.w3.org/1999/xlink';
 class SvgHelper {
-    static createSvg = ()=>{
+    static createSvg = () => {
         const svg = document.createElementNS(SVG_NS, 'svg');
         svg.setAttribute('version', '1.1');
         svg.setAttribute('xmlns', SVG_NS);
         svg.setAttribute('xmlns:xlink', SVG_XLINKNS);
         return svg;
     };
-    static createSvgPath = ()=>{
+    static createSvgPath = () => {
         return document.createElementNS(SVG_NS, 'path');
     };
     static appendLine(svg, STYLE, x1, x2, y1, y2, viewBox) {
@@ -427,10 +506,10 @@ class SvgHelper {
         svg.appendChild(text);
         if (isI18nable(content)) {
             content = content;
-            content = `<en>${content.en}</en><zh_cn>${content.zh_cn}</zh_cn><zh_tw>${content.zh_tw}</zh_tw>`;
+            content = `<en_us>${content.en_us}</en_us><zh_cn>${content.zh_cn}</zh_cn><zh_tw>${content.zh_tw}</zh_tw>`;
         }
         content = content;
-        if (content.indexOf('<en>') > -1) {
+        if (content.indexOf('<en_us>') > -1) {
             const lang = getCurrentLang();
             const startTag = `<${lang}>`;
             const endTag = `</${lang}>`;
@@ -446,13 +525,13 @@ class SvgHelper {
             const segs = content.split('<br>');
             let lastLength = 0;
             const dyOffset = `${dyNumber}${unit}`;
-            segs.forEach((seg, index)=>{
+            segs.forEach((seg, index) => {
                 SvgHelper.appendTspan(text, '', seg, index ? `-${lastLength}em` : '0', index ? dyOffset : '0');
                 lastLength = seg.length;
             });
         } else {
             if (maybeNumber) {
-                content.split('').forEach((__char, index)=>{
+                content.split('').forEach((__char, index) => {
                     SvgHelper.appendTspan(text, '', __char, '0', '0');
                 });
             } else {
@@ -461,7 +540,12 @@ class SvgHelper {
         }
         if (viewBox) {
             const clientRects = text.getClientRects();
-            const { left: x1, right: x2, top: y1, bottom: y2 } = clientRects.length ? clientRects.item(0) : text.getBoundingClientRect();
+            const {
+                left: x1,
+                right: x2,
+                top: y1,
+                bottom: y2
+            } = clientRects.length ? clientRects.item(0) : text.getBoundingClientRect();
             viewBox.left = Math.min(viewBox.left, x1, x2);
             viewBox.right = Math.max(viewBox.right, x1, x2);
             viewBox.top = Math.min(viewBox.top, y1, y2);
@@ -489,7 +573,9 @@ class SvgHelper {
     static appendOuterLine(svg, WIDTH, HEIGHT, OUTER_LINE_STYLE) {
         svg.setAttribute('width', `${WIDTH}mm`);
         svg.setAttribute('height', `${HEIGHT}mm`);
-        const { appendLine } = SvgHelper;
+        const {
+            appendLine
+        } = SvgHelper;
         appendLine(svg, OUTER_LINE_STYLE, 0, WIDTH, 0, 0, null);
         appendLine(svg, OUTER_LINE_STYLE, 0, WIDTH, HEIGHT, HEIGHT, null);
         appendLine(svg, OUTER_LINE_STYLE, 0, 0, 0, HEIGHT, null);
@@ -505,22 +591,60 @@ class SvgHelper {
         return '';
     }
 }
-export { CURRENT_URL as CURRENT_URL };
-export { HOME_URL as HOME_URL };
-export { SITE_ROOT as SITE_ROOT };
-export { SITE_IMAGE_PATH as SITE_IMAGE_PATH };
-export { SITE_JAVASCRIPT_PATH as SITE_JAVASCRIPT_PATH };
-export { SITE_CSS_PATH as SITE_CSS_PATH };
-export { LANG_PROPERTY as LANG_PROPERTY };
-export { MONTH_FULL_NAME_ARRAY as MONTH_FULL_NAME_ARRAY };
-export { MONTH_NAME_ARRAY as MONTH_NAME_ARRAY };
-export { setF1Content as setF1Content };
-export { LOCAL_STORAGE_KEY_OF_LANG as LOCAL_STORAGE_KEY_OF_LANG };
-export { LOCAL_STORAGE_KEY_OF_CURRENT_PAGE as LOCAL_STORAGE_KEY_OF_CURRENT_PAGE };
-export { isI18nable as isI18nable };
-export { querySelectorAllByI18n as querySelectorAllByI18n };
-export { querySelectorAllByI18nPlaceholder as querySelectorAllByI18nPlaceholder };
-export { getI18nInnerHTML as getI18nInnerHTML };
-export { getI18nInnerHTMLFromDate as getI18nInnerHTMLFromDate };
-export { SVG_NS as SVG_NS };
-export { SVG_XLINKNS as SVG_XLINKNS };
+export {
+    CURRENT_URL as CURRENT_URL
+};
+export {
+    HOME_URL as HOME_URL
+};
+export {
+    SITE_ROOT as SITE_ROOT
+};
+export {
+    SITE_IMAGE_PATH as SITE_IMAGE_PATH
+};
+export {
+    SITE_JAVASCRIPT_PATH as SITE_JAVASCRIPT_PATH
+};
+export {
+    SITE_CSS_PATH as SITE_CSS_PATH
+};
+export {
+    LANG_PROPERTY as LANG_PROPERTY
+};
+export {
+    MONTH_FULL_NAME_ARRAY as MONTH_FULL_NAME_ARRAY
+};
+export {
+    MONTH_NAME_ARRAY as MONTH_NAME_ARRAY
+};
+export {
+    setF1Content as setF1Content
+};
+export {
+    LOCAL_STORAGE_KEY_OF_LANG as LOCAL_STORAGE_KEY_OF_LANG
+};
+export {
+    LOCAL_STORAGE_KEY_OF_CURRENT_PAGE as LOCAL_STORAGE_KEY_OF_CURRENT_PAGE
+};
+export {
+    isI18nable as isI18nable
+};
+export {
+    querySelectorAllByI18n as querySelectorAllByI18n
+};
+export {
+    querySelectorAllByI18nPlaceholder as querySelectorAllByI18nPlaceholder
+};
+export {
+    getI18nInnerHTML as getI18nInnerHTML
+};
+export {
+    getI18nInnerHTMLFromDate as getI18nInnerHTMLFromDate
+};
+export {
+    SVG_NS as SVG_NS
+};
+export {
+    SVG_XLINKNS as SVG_XLINKNS
+};

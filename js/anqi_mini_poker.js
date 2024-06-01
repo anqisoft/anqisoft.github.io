@@ -123,7 +123,10 @@ function getPokerHtmlOfCarryAdditionAndAbdicationMinusLessThan20() {
   }
   htmlB += htmlB;
 
-  return { htmlA, htmlB };
+  return {
+    htmlA,
+    htmlB
+  };
 }
 
 function getPokerHtmlOfMultiplicationTableAndDivisionTableLessThan9() {
@@ -149,7 +152,9 @@ function getPokerHtmlOfMultiplicationTableAndDivisionTableLessThan9() {
   // htmlB += htmlB;
   for (let i = 9; i >= 1; --i) {
     for (let j = 9; j >= 1; --j) {
-      if (i === 1 && j === 1) { continue; }
+      if (i === 1 && j === 1) {
+        continue;
+      }
 
       htmlB += `<topic><question>${getFixedHtml(
         `${i * j}&nbsp;÷&nbsp;${i}`,
@@ -157,7 +162,10 @@ function getPokerHtmlOfMultiplicationTableAndDivisionTableLessThan9() {
     }
   }
 
-  return { htmlA, htmlB };
+  return {
+    htmlA,
+    htmlB
+  };
 }
 
 function getMiniPokerCss(sameColor) {
@@ -180,13 +188,13 @@ function getMiniPokerCss(sameColor) {
     'page:nth-of-type(2n), page:nth-of-type(2n) topic{flex-direction:row-reverse;}',
 
     // AnQi, 2023-09-22
-    // <en>Cancel the border lines on the back page, because printers often have deviations that make it difficult to align horizontally.</en>
+    // <en_us>Cancel the border lines on the back page, because printers often have deviations that make it difficult to align horizontally.</en_us>
     // <zh_cn>取消背面页的框线，因为打印机经常有偏差而导致横向难以对齐。</zh_cn>
     // <zh_tw>取消背面頁的框線，因為打印機經常有偏差而導致橫向難以對齊。</zh_tw>
     // 'page:nth-of-type(2n) question, page:nth-of-type(2n) answer{border-left-color:transparent;border-right-color:transparent;border-radius:0;}',
     'page:nth-of-type(2n) question, page:nth-of-type(2n) answer{border-color:transparent;border-radius:0;}',
     // AnQi, 2023-09-22
-    // <en>In order to facilitate cutting the transparent edges after converting the PDF to the picture, the first question retains the upper border, and the last answer retains the lower border.</en>
+    // <en_us>In order to facilitate cutting the transparent edges after converting the PDF to the picture, the first question retains the upper border, and the last answer retains the lower border.</en_us>
     // <zh_cn>为方便pdf转图片后切透明边，第一个题目保留上边线，最后一个答案保留下边线。</zh_cn>
     // <zh_tw>為方便pdf轉圖片後切透明邊，第一個題目保留上邊線，最後一個答案保留下邊線。</zh_tw >
     'page:nth-of-type(2n) topic:first-of-type question{border-top-color:#999;}',
@@ -196,7 +204,10 @@ function getMiniPokerCss(sameColor) {
 
 // use ./anqi_mini_poker.js
 function getFirstPageAppendHtml(BIG_COVER_TEXT, SMALL_COVER_TEXT, USED_DICES) {
-  const { BoxGenerator, BoxKind } = boxSpace.edu.sonya.cc;
+  const {
+    BoxGenerator,
+    BoxKind
+  } = boxSpace.edu.sonya.cc;
   const boxGenerator = new BoxGenerator();
 
   const ROTATE = false;
@@ -204,17 +215,25 @@ function getFirstPageAppendHtml(BIG_COVER_TEXT, SMALL_COVER_TEXT, USED_DICES) {
   const TOP_WITHOUT_HALF_CIRCLE = false;
   const OUTER_LINE_STYLE = 'stroke:#555;stroke-width:0.2mm;';
   const INNER_LINE_STYLE = 'stroke:#888;stroke-width:0.1mm;stroke-dasharray:3 2;';
-  // const TEXT_STYLE = `font-size:${window.LANG === 'en' ? 3.5 : 4.5}mm;font-family:"Times New Roman", "Kaiti";`;
+  // const TEXT_STYLE = `font-size:${window.LANG === 'en_us' ? 3.5 : 4.5}mm;font-family:"Times New Roman", "Kaiti";`;
   const TEXT_STYLE = 'font-size:4.5mm;font-family:"Times New Roman", "Kaiti";';
   const OPTIONS = {};
 
   let svgId = 0;
   let html = '';
 
-  [
-    { WIDTH: 54, POKER_COVER_TEXT: BIG_COVER_TEXT },
-    { WIDTH: 18, POKER_COVER_TEXT: SMALL_COVER_TEXT },
-  ].forEach(({ WIDTH, POKER_COVER_TEXT }, n) => {
+  [{
+      WIDTH: 54,
+      POKER_COVER_TEXT: BIG_COVER_TEXT
+    },
+    {
+      WIDTH: 18,
+      POKER_COVER_TEXT: SMALL_COVER_TEXT
+    },
+  ].forEach(({
+    WIDTH,
+    POKER_COVER_TEXT
+  }, n) => {
     // const LENGTHS = [WIDTH, 30, 20]; // 206*100、130*100
     // const LENGTHS = [30, WIDTH, 20]; // 234*156、120*80
     // const LENGTHS = [WIDTH, 20, 30]; // 176*90, 100*90
@@ -247,7 +266,7 @@ function getFirstPageAppendHtml(BIG_COVER_TEXT, SMALL_COVER_TEXT, USED_DICES) {
   });
 
   for (let i = 0; i < 8; ++i) {
-    const SIDE = 10;  // (i > 0 && i < 4) ? 7.5 : 8;  // i === 0 ? 8 : 7;
+    const SIDE = 10; // (i > 0 && i < 4) ? 7.5 : 8;  // i === 0 ? 8 : 7;
     const LENGTHS = [SIDE, SIDE, SIDE];
     // const CONTENTS = i % 2 === 0 ? ['1', '2', '3', '4', '5', '6'] : ['0', '1', '2', '3', '4', '5'];
     const CONTENTS = i === 0 ? ['0', '1', '2', '3', '4', '5'] : ['1', '2', '3', '4', '5', '6'];
@@ -287,7 +306,10 @@ function getFirstPageAppendHtml(BIG_COVER_TEXT, SMALL_COVER_TEXT, USED_DICES) {
   }
 
   // const { USED_DICES, html: DICES_HTML, css: DICES_CSS } = getDicesInfo();
-  const { html: DICES_HTML, css: DICES_CSS } = getDicesInfo(USED_DICES);
+  const {
+    html: DICES_HTML,
+    css: DICES_CSS
+  } = getDicesInfo(USED_DICES);
   // console.log(DICES_CSS);
   if (USED_DICES) {
     html += DICES_HTML;
@@ -598,13 +620,15 @@ function getDicesInfo2(USED_DICES) {
       // 'topic, div>svg{display:none;}#svg_241{display:inline-block;top:0mm;left:-120mm;}',
 
       'page>div{margin-top:1mm;}',
-    )
-      : '',
+    ) : '',
   }
 }
 
 function getDicesInfo3() {
-  const { BoxGenerator, BoxKind } = boxSpace.edu.sonya.cc;
+  const {
+    BoxGenerator,
+    BoxKind
+  } = boxSpace.edu.sonya.cc;
   const boxGenerator = new BoxGenerator();
 
   const ROTATE = false;
@@ -722,8 +746,7 @@ function getDicesInfo(USED_DICES) {
       '#svg_53,#svg_54{bottom:0mm;}',
       '#svg_53{left:2mm;}',
       '#svg_54{left:62mm;}',
-    )
-      : '',
+    ) : '',
   }
 }
 
@@ -793,14 +816,20 @@ function getDicesHtml() {
 
 function drawCore(getPokerHtml, firstPageAppendHtmlParamI18n, useDice, sameColor, mixed) {
   console.log(window.LANG);
-  const { longText, shortText } = firstPageAppendHtmlParamI18n[window.LANG];
+  const {
+    longText,
+    shortText
+  } = firstPageAppendHtmlParamI18n[window.LANG];
   const firstPageAppendHtml = getFirstPageAppendHtml(longText, shortText, useDice);
 
   document.getElementById('style').innerHTML = getMiniPokerCss(sameColor);
 
   const body = document.getElementsByTagName('body')[0];
   if (mixed) {
-    const { htmlA, htmlB } = getPokerHtml(useDice);
+    const {
+      htmlA,
+      htmlB
+    } = getPokerHtml(useDice);
     for (let i = 0; i < 2; ++i) {
       const pageElement = createPageElement();
       pageElement.innerHTML = i === 0 ? htmlA.concat(firstPageAppendHtml) : htmlB;
@@ -820,10 +849,10 @@ function drawCore(getPokerHtml, firstPageAppendHtmlParamI18n, useDice, sameColor
 }
 
 function draw() {
-  /*<en>
+  /*<en_us>
       Only A3. Kinds = 3 * 7 * 2 = 42: 3 languages, 7 types, and use dice or not.
 
-      lang: en, zh_cn, zh_tw. Default value is en.
+      lang: en_us, zh_cn, zh_tw. Default value is en_us.
       no: Default value is 1
         1 Carry Plus
         2 Abdication Minus
@@ -833,11 +862,11 @@ function draw() {
         6 Multiplication Table and Division Table Less Than 9
         7 Carry Plus and Abdication Minus
       useDice: true, false. Default value is true.
-    </en>
+    </en_us>
   */
   /*<zh_cn>
       仅允许A3竖排。种类 = 3 * 7 * 2 = 42: 3种语言，7类口诀，及使用骰子与否。
-      lang: en, zh_cn, zh_tw. 默认en
+      lang: en_us, zh_cn, zh_tw. 默认en_us
       no: 默认1
         1 20内进位加
         2 20内退位减
@@ -851,7 +880,7 @@ function draw() {
   */
   /*<zh_tw>
       僅允許A3豎排。種類 = 3 * 7 * 2 = 42: 3種語言，7類口訣，及使用骰子與否。
-      lang: en, zh_cn, zh_tw. 默認en.
+      lang: en_us, zh_cn, zh_tw. 默認en_us.
       no: 默認1
         1 20內進位加
         2 20內退位减
@@ -863,14 +892,15 @@ function draw() {
       useDice: true, false. 默認true.
     </zh_tw>
   */
-  setF1Content('?lang=en&no=1&useDice=true');
+  setF1Content('?lang=en_us&no=1&useDice=true');
 
   const url = window.location.href.replace('?', '&');
   parsePageParamsFromUrl(url);
 
   const USE_DICE = url.concat('&useDice=true').replace('&useDice=', '厶').split('厶')[1].split('&')[0] === 'true';
 
-  let getPokerHtml, firstPageAppendHtmlParamI18n, sameColor = true, mixed = false;
+  let getPokerHtml, firstPageAppendHtmlParamI18n, sameColor = true,
+    mixed = false;
   let titleI18n;
   const NO = parseInt(url.concat('&no=1').replace('&no=', '厶').split('厶')[1].split('&')[0]);
   switch (NO) {
@@ -878,12 +908,21 @@ function draw() {
     default:
       getPokerHtml = getPokerHtmlOfCarryAdditionLessThan20;
       firstPageAppendHtmlParamI18n = {
-        en: { longText: 'Carry Plus', shortText: 'Plus' },
-        zh_cn: { longText: '20内进位加', shortText: '进位加' },
-        zh_tw: { longText: '20內進位加', shortText: '進位加' },
+        en_us: {
+          longText: 'Carry Plus',
+          shortText: 'Plus'
+        },
+        zh_cn: {
+          longText: '20内进位加',
+          shortText: '进位加'
+        },
+        zh_tw: {
+          longText: '20內進位加',
+          shortText: '進位加'
+        },
       };
       titleI18n = {
-        en: 'Carry Plus Poker',
+        en_us: 'Carry Plus Poker',
         zh_cn: '迷你扑克：20内进位加',
         zh_tw: '迷你撲克：20內進位加',
       }
@@ -891,13 +930,22 @@ function draw() {
     case 2:
       getPokerHtml = getPokerHtmlOfAbdicationMinusLessThan20;
       firstPageAppendHtmlParamI18n = {
-        // en: { longText: 'Abdication Minus', shortText: 'Minus' },
-        en: { longText: 'Subtraction', shortText: 'Minus' },
-        zh_cn: { longText: '20内退位减', shortText: '退位减' },
-        zh_tw: { longText: '20內退位减', shortText: '退位减' },
+        // en_us: { longText: 'Abdication Minus', shortText: 'Minus' },
+        en_us: {
+          longText: 'Subtraction',
+          shortText: 'Minus'
+        },
+        zh_cn: {
+          longText: '20内退位减',
+          shortText: '退位减'
+        },
+        zh_tw: {
+          longText: '20內退位减',
+          shortText: '退位减'
+        },
       };
       titleI18n = {
-        en: 'Abdication Minus Poker',
+        en_us: 'Abdication Minus Poker',
         zh_cn: '迷你扑克：20内退位减',
         zh_tw: '迷你撲克：20內退位减',
       }
@@ -909,13 +957,22 @@ function draw() {
 
       getPokerHtml = getPokerHtmlOfMultiplicationFormulasFullLessThan9;
       firstPageAppendHtmlParamI18n = {
-        en: { longText: 'Multiply 2', shortText: 'Multiply2' },
-        zh_cn: { longText: '大九九<br>乘法口诀表', shortText: '大九九' },
-        zh_tw: { longText: '大九九<br>乘法口訣表', shortText: '大九九' },
+        en_us: {
+          longText: 'Multiply 2',
+          shortText: 'Multiply2'
+        },
+        zh_cn: {
+          longText: '大九九<br>乘法口诀表',
+          shortText: '大九九'
+        },
+        zh_tw: {
+          longText: '大九九<br>乘法口訣表',
+          shortText: '大九九'
+        },
 
       };
       titleI18n = {
-        en: 'Full Multiplication Table Less Than 9 Poker',
+        en_us: 'Full Multiplication Table Less Than 9 Poker',
         zh_cn: '迷你扑克：大九九乘法口诀表',
         zh_tw: '迷你撲克：大九九乘法口訣表',
       }
@@ -923,12 +980,21 @@ function draw() {
     case 4:
       getPokerHtml = getPokerHtmlOfMultiplicationFormulasSimpleLessThan9;
       firstPageAppendHtmlParamI18n = {
-        en: { longText: 'Multiply 1', shortText: 'Multiply1' },
-        zh_cn: { longText: '小九九<br>乘法口诀表', shortText: '小九九' },
-        zh_tw: { longText: '小九九<br>乘法口訣表', shortText: '小九九' },
+        en_us: {
+          longText: 'Multiply 1',
+          shortText: 'Multiply1'
+        },
+        zh_cn: {
+          longText: '小九九<br>乘法口诀表',
+          shortText: '小九九'
+        },
+        zh_tw: {
+          longText: '小九九<br>乘法口訣表',
+          shortText: '小九九'
+        },
       };
       titleI18n = {
-        en: 'Simple Multiplication Table Less Than 9 Poker',
+        en_us: 'Simple Multiplication Table Less Than 9 Poker',
         zh_cn: '迷你扑克：小九九乘法口诀表',
         zh_tw: '迷你撲克：小九九乘法口訣表',
       }
@@ -940,12 +1006,21 @@ function draw() {
 
       getPokerHtml = getPokerHtmlOfDivisionTableLessThan9;
       firstPageAppendHtmlParamI18n = {
-        en: { longText: 'Division', shortText: 'Division' },
-        zh_cn: { longText: '九九除法<br>口诀表', shortText: '九九除法' },
-        zh_tw: { longText: '九九除法<br>口訣錶', shortText: '九九除法' },
+        en_us: {
+          longText: 'Division',
+          shortText: 'Division'
+        },
+        zh_cn: {
+          longText: '九九除法<br>口诀表',
+          shortText: '九九除法'
+        },
+        zh_tw: {
+          longText: '九九除法<br>口訣錶',
+          shortText: '九九除法'
+        },
       };
       titleI18n = {
-        en: 'Division Table Less Than 9 Poker',
+        en_us: 'Division Table Less Than 9 Poker',
         zh_cn: '迷你扑克：九九除法口诀表',
         zh_tw: '迷你撲克：九九除法口訣錶',
       }
@@ -954,12 +1029,21 @@ function draw() {
       mixed = true;
       getPokerHtml = getPokerHtmlOfMultiplicationTableAndDivisionTableLessThan9;
       firstPageAppendHtmlParamI18n = {
-        en: { longText: 'Complex2', shortText: 'Complex2' },
-        zh_cn: { longText: '九九乘除<br>口诀表', shortText: '九九乘除' },
-        zh_tw: { longText: '九九乘除<br>口訣錶', shortText: '九九乘除' },
+        en_us: {
+          longText: 'Complex2',
+          shortText: 'Complex2'
+        },
+        zh_cn: {
+          longText: '九九乘除<br>口诀表',
+          shortText: '九九乘除'
+        },
+        zh_tw: {
+          longText: '九九乘除<br>口訣錶',
+          shortText: '九九乘除'
+        },
       };
       titleI18n = {
-        en: 'Multiplication Table and Division Table Less Than 9 Poker',
+        en_us: 'Multiplication Table and Division Table Less Than 9 Poker',
         zh_cn: '迷你扑克：九九乘除口诀表',
         zh_tw: '迷你撲克：九九乘除口訣錶',
       }
@@ -968,13 +1052,22 @@ function draw() {
       mixed = true;
       getPokerHtml = getPokerHtmlOfCarryAdditionAndAbdicationMinusLessThan20;
       firstPageAppendHtmlParamI18n = {
-        // en: { longText: 'Carry Plus <br>and Abdication Minus', shortText: 'Addition<br>Minus' },
-        en: { longText: 'Complex1', shortText: 'Complex1' },
-        zh_cn: { longText: '20内<br>进位加<br>退位减', shortText: '加减' },
-        zh_tw: { longText: '20內<br>進位加<br>退位减', shortText: '加减' },
+        // en_us: { longText: 'Carry Plus <br>and Abdication Minus', shortText: 'Addition<br>Minus' },
+        en_us: {
+          longText: 'Complex1',
+          shortText: 'Complex1'
+        },
+        zh_cn: {
+          longText: '20内<br>进位加<br>退位减',
+          shortText: '加减'
+        },
+        zh_tw: {
+          longText: '20內<br>進位加<br>退位减',
+          shortText: '加减'
+        },
       };
       titleI18n = {
-        en: 'Carry Plus and Abdication Minus Poker',
+        en_us: 'Carry Plus and Abdication Minus Poker',
         zh_cn: '迷你扑克：20内进位加退位减',
         zh_tw: '迷你撲克：20內進位加退位减',
       }

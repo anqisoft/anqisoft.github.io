@@ -17,7 +17,9 @@ class DPIHelper {
   pxToMmScale = 0;
   constructor() {
     const screen = window.screen;
-    const { dpiArray } = this;
+    const {
+      dpiArray
+    } = this;
     if (screen.deviceXDPI) {
       dpiArray.push(screen.deviceXDPI);
       dpiArray.push(screen.deviceYDPI);
@@ -85,9 +87,9 @@ function setF1Content(content) {
 function parsePageParamsFromUrl(url) {
   url = url.replace('?', '&').toLowerCase();
   window.LANG =
-    url.concat('&lang=en').replace('&lang=', '厶').split('厶')[1].split('&')[0];
-  if (['en', 'zh_cn', 'zh_tw'].indexOf(window.LANG) === -1) {
-    window.LANG = 'en';
+    url.concat('&lang=en_us').replace('&lang=', '厶').split('厶')[1].split('&')[0];
+  if (['en_us', 'zh_cn', 'zh_tw'].indexOf(window.LANG) === -1) {
+    window.LANG = 'en_us';
   }
 
   window.LANDSCAPE =

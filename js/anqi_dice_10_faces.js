@@ -1,7 +1,6 @@
-
 // ?top=4&left=3.5&landscape=false&a3=true
 function draw() {
-  setF1Content('?lang=en&landscape=true&no=1\nlang:en, zh_cn, zh_tw\nlandscape:true, false\nno:1,2');
+  setF1Content('?lang=en_us&landscape=true&no=1\nlang:en_us, zh_cn, zh_tw\nlandscape:true, false\nno:1,2');
 
   // Force to A3 paper, and use the default margins.
   const ORIGINAL_URL = window.location.href;
@@ -15,12 +14,12 @@ function draw() {
 
   document.getElementsByTagName('title')[0].innerText = `${[
     {
-      en: 'A3 D10 Landscape ',
+      en_us: 'A3 D10 Landscape ',
       zh_cn: 'A3_带正方形截面的长方体_横排',
       zh_tw: 'A3_帶正方形截面的長方體_橫排',
     },
     {
-      en: 'A3 D10 Portrait ',
+      en_us: 'A3 D10 Portrait ',
       zh_cn: 'A3_带正方形截面的长方体_竖排',
       zh_tw: 'A3_帶正方形截面的長方體_豎排',
     },
@@ -62,7 +61,10 @@ function draw() {
 }
 
 function appendPortraitDices2(PAGE_ELEMENT) {
-  const { floor, ceil } = Math;
+  const {
+    floor,
+    ceil
+  } = Math;
   const CONTENTS_ARRAY = [
     [], // 1-10
     [], // 0-9
@@ -83,12 +85,24 @@ function appendPortraitDices2(PAGE_ELEMENT) {
   const ROW_COUNT = 4;
   const HORIZTONTAL_COUNT = COL_COUNT * ROW_COUNT;
   let svgId = 0;
-  [
-    { SIDE: 10, PASTE_WIDTH: 6, COUNT: HORIZTONTAL_COUNT + 3 },
-  ].forEach(({ SIDE, PASTE_WIDTH, COUNT }, n) => {
+  [{
+    SIDE: 10,
+    PASTE_WIDTH: 6,
+    COUNT: HORIZTONTAL_COUNT + 3
+  }, ].forEach(({
+    SIDE,
+    PASTE_WIDTH,
+    COUNT
+  }, n) => {
     for (let i = 0; i < COUNT; ++i) {
-      const { html, width, height } = getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS_ARRAY[i % CONTENTS_ARRAY_LENGTH]);
-      const { svgElement } = createSvgElement(html, width, height);
+      const {
+        html,
+        width,
+        height
+      } = getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS_ARRAY[i % CONTENTS_ARRAY_LENGTH]);
+      const {
+        svgElement
+      } = createSvgElement(html, width, height);
       PAGE_ELEMENT.appendChild(svgElement);
 
       svgElement.widthMm = width;
@@ -141,13 +155,30 @@ function appendPortraitDices2(PAGE_ELEMENT) {
 
 function appendPortraitDices1(PAGE_ELEMENT) {
   let svgId = 0;
-  [
-    { SIDE: 20, PASTE_WIDTH: 8, COUNT: 3 },
-    { SIDE: 10, PASTE_WIDTH: 6, COUNT: 12 },
-  ].forEach(({ SIDE, PASTE_WIDTH, COUNT }, n) => {
+  [{
+      SIDE: 20,
+      PASTE_WIDTH: 8,
+      COUNT: 3
+    },
+    {
+      SIDE: 10,
+      PASTE_WIDTH: 6,
+      COUNT: 12
+    },
+  ].forEach(({
+    SIDE,
+    PASTE_WIDTH,
+    COUNT
+  }, n) => {
     for (let i = 0; i < COUNT; ++i) {
-      const { html, width, height } = getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS_ARRAY[i % CONTENTS_ARRAY_LENGTH]);
-      const { svgElement } = createSvgElement(html, width, height);
+      const {
+        html,
+        width,
+        height
+      } = getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS_ARRAY[i % CONTENTS_ARRAY_LENGTH]);
+      const {
+        svgElement
+      } = createSvgElement(html, width, height);
       PAGE_ELEMENT.appendChild(svgElement);
 
       svgElement.widthMm = width;
@@ -220,7 +251,16 @@ function getSvgTsSpanHtml(STYLE, CHAR, dx, dy, rotate) {
 }
 
 function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
-  const { max, min, sin, cos, tan, atan, PI, abs } = Math;
+  const {
+    max,
+    min,
+    sin,
+    cos,
+    tan,
+    atan,
+    PI,
+    abs
+  } = Math;
 
   SIDE = max(1, SIDE || 10);
   PASTE_WIDTH = max(1, PASTE_WIDTH || 5);
@@ -250,7 +290,7 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
 
   const ANGLE_90 = PI * 0.5;
   // const ANGLE_EXTEND = 30 * PI / 180;  // PI * 0.25;
-  const ANGLE_EXTEND = 45 * PI / 180;  // PI * 0.25;
+  const ANGLE_EXTEND = 45 * PI / 180; // PI * 0.25;
 
   const ANGLE_B1 = ANGLE_90 - HALF_ANGLE_SMALL;
   const ANGLE_B2 = ANGLE_MIDDLE - ANGLE_B1;
@@ -262,11 +302,14 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
   // const SIZE_SHORT_MIDLINE = SIDE_H1 * 2;
 
   const ANGLE_A1 = HALF_ANGLE_SMALL; // 其实是逆时针的，但用绝对值比较方便计算
-  const X_B1 = X_O1, Y_B1 = Y_O1 + SIZE_LONG_MIDLINE;
+  const X_B1 = X_O1,
+    Y_B1 = Y_O1 + SIZE_LONG_MIDLINE;
   const X_A1_DELTA = SIDE_LONG * sin(ANGLE_A1);
   const Y_A1_DELTA = SIDE_LONG * cos(ANGLE_A1);
-  const X_A1 = X_O1 - X_A1_DELTA, X_C1 = X_O1 + X_A1_DELTA;
-  const Y_A1 = Y_O1 + Y_A1_DELTA, Y_C1 = Y_O1 + Y_A1_DELTA;
+  const X_A1 = X_O1 - X_A1_DELTA,
+    X_C1 = X_O1 + X_A1_DELTA;
+  const Y_A1 = Y_O1 + Y_A1_DELTA,
+    Y_C1 = Y_O1 + Y_A1_DELTA;
 
   const ANGLE_D1 = ANGLE_SMALL; // 其实是逆时针的，但用绝对值比较方便计算
   const X_D1 = X_O1 + SIZE_LONG_MIDLINE * sin(ANGLE_D1);
@@ -304,10 +347,13 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
   const X_O2 = (X_A1 + X_B1) - X_O1;
   const Y_O2 = (Y_A1 + Y_B1) - Y_O1;
 
-  const X_B2 = X_A1, Y_B2 = Y_A1;
-  const X_C2 = X_B1, Y_C2 = Y_B1;
+  const X_B2 = X_A1,
+    Y_B2 = Y_A1;
+  const X_C2 = X_B1,
+    Y_C2 = Y_B1;
   // X_C2 - X_O2 = X_O2 - X_A2 => X_A2 = X_O2 * 2 - X_C2;
-  const X_A2 = X_O2 * 2 - X_C2, Y_A2 = Y_C2;
+  const X_A2 = X_O2 * 2 - X_C2,
+    Y_A2 = Y_C2;
 
   const ANGLE_D2 = ANGLE_SMALL; // 其实是逆时针的，但用绝对值比较方便计算
   const X_D2 = X_O2 + SIZE_LONG_MIDLINE * sin(ANGLE_D2);
@@ -385,7 +431,7 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
   const X_D1E2 = X_D1 + PASTE_WIDTH * cos(ANGLE_D1E2);
   const Y_D1E2 = Y_D1 + PASTE_WIDTH * sin(ANGLE_D1E2);
 
-  const ANGLE_E1E1 = ANGLE_EXTEND - ANGLE_DE;  //(HALF_PI - ANGLE_DE);
+  const ANGLE_E1E1 = ANGLE_EXTEND - ANGLE_DE; //(HALF_PI - ANGLE_DE);
   const X_E1E1 = X_E1 + PASTE_WIDTH * sin(ANGLE_E1E1);
   const Y_E1E1 = Y_E1 + PASTE_WIDTH * cos(ANGLE_E1E1);
 
@@ -428,7 +474,7 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
   const Y_H1E2 = Y_H1 + PASTE_WIDTH * sin(ANGLE_H1E2);
 
   // OK
-  const ANGLE_I1E1 = ANGLE_EXTEND + ANGLE_HI;  // QUARTER_PI - ANGLE_HI;
+  const ANGLE_I1E1 = ANGLE_EXTEND + ANGLE_HI; // QUARTER_PI - ANGLE_HI;
   const X_I1E1 = X_I1 + PASTE_WIDTH * cos(ANGLE_I1E1);
   const Y_I1E1 = Y_I1 + PASTE_WIDTH * sin(ANGLE_I1E1);
 
@@ -468,22 +514,67 @@ function getSvgOfDice10(SIDE, PASTE_WIDTH, CONTENTS, FONT_SIZE) {
       // { x: (X_C2 + X_E2) * 0.5, y: (Y_C2 + Y_E2) * 0.5, rotate: ANGLE_SMALL_DEGREE }, // 2OCDE, 9
       // { x: (X_G1 + X_I1) * 0.5, y: (Y_G1 + Y_I1) * 0.5, rotate: 360 - ANGLE_SMALL_DEGREE * 3 }, // 1OGHI, 10
 
-      { x: (X_A2 + X_C2) * 0.5, y: (Y_A2 + Y_C2) * 0.5, rotate: 0 }, // 2OABC, 1
-      { x: (X_G1 + X_I1) * 0.5, y: (Y_G1 + Y_I1) * 0.5, rotate: 360 - ANGLE_SMALL_DEGREE * 3 },// 1OIJK, 2
+      {
+        x: (X_A2 + X_C2) * 0.5,
+        y: (Y_A2 + Y_C2) * 0.5,
+        rotate: 0
+      }, // 2OABC, 1
+      {
+        x: (X_G1 + X_I1) * 0.5,
+        y: (Y_G1 + Y_I1) * 0.5,
+        rotate: 360 - ANGLE_SMALL_DEGREE * 3
+      }, // 1OIJK, 2
 
-      { x: (X_E2 + X_G2) * 0.5, y: (Y_E2 + Y_G2) * 0.5, rotate: ANGLE_SMALL_DEGREE * 2 }, // 2OEFG, 3
-      { x: (X_A1 + X_C1) * 0.5, y: (Y_A1 + Y_C1) * 0.5, rotate: 0 }, // 1OCDE, 4
+      {
+        x: (X_E2 + X_G2) * 0.5,
+        y: (Y_E2 + Y_G2) * 0.5,
+        rotate: ANGLE_SMALL_DEGREE * 2
+      }, // 2OEFG, 3
+      {
+        x: (X_A1 + X_C1) * 0.5,
+        y: (Y_A1 + Y_C1) * 0.5,
+        rotate: 0
+      }, // 1OCDE, 4
 
-      { x: (X_I2 + X_K2) * 0.5, y: (Y_I2 + Y_K2) * 0.5, rotate: ANGLE_SMALL_DEGREE * 4 }, // 2OIJK, 5
-      { x: (X_C1 + X_E1) * 0.5, y: (Y_C1 + Y_E1) * 0.5, rotate: - ANGLE_SMALL_DEGREE }, // 1OEFG, 6
+      {
+        x: (X_I2 + X_K2) * 0.5,
+        y: (Y_I2 + Y_K2) * 0.5,
+        rotate: ANGLE_SMALL_DEGREE * 4
+      }, // 2OIJK, 5
+      {
+        x: (X_C1 + X_E1) * 0.5,
+        y: (Y_C1 + Y_E1) * 0.5,
+        rotate: -ANGLE_SMALL_DEGREE
+      }, // 1OEFG, 6
 
-      { x: (X_G2 + X_I2) * 0.5, y: (Y_G2 + Y_I2) * 0.5, rotate: ANGLE_SMALL_DEGREE * 3 }, // 2OGHI, 7
-      { x: (X_I1 + X_K1) * 0.5, y: (Y_I1 + Y_K1) * 0.5, rotate: 360 - ANGLE_SMALL_DEGREE * 4 },// 1OABC, 8
+      {
+        x: (X_G2 + X_I2) * 0.5,
+        y: (Y_G2 + Y_I2) * 0.5,
+        rotate: ANGLE_SMALL_DEGREE * 3
+      }, // 2OGHI, 7
+      {
+        x: (X_I1 + X_K1) * 0.5,
+        y: (Y_I1 + Y_K1) * 0.5,
+        rotate: 360 - ANGLE_SMALL_DEGREE * 4
+      }, // 1OABC, 8
 
-      { x: (X_C2 + X_E2) * 0.5, y: (Y_C2 + Y_E2) * 0.5, rotate: ANGLE_SMALL_DEGREE }, // 2OCDE, 9
-      { x: (X_E1 + X_G1) * 0.5, y: (Y_E1 + Y_G1) * 0.5, rotate: 360 - ANGLE_SMALL_DEGREE * 2 },// 1OGHI, 10
-    ].map(({ x, y, rotate }, i) => {
-      const X = x, Y = y;
+      {
+        x: (X_C2 + X_E2) * 0.5,
+        y: (Y_C2 + Y_E2) * 0.5,
+        rotate: ANGLE_SMALL_DEGREE
+      }, // 2OCDE, 9
+      {
+        x: (X_E1 + X_G1) * 0.5,
+        y: (Y_E1 + Y_G1) * 0.5,
+        rotate: 360 - ANGLE_SMALL_DEGREE * 2
+      }, // 1OGHI, 10
+    ].map(({
+      x,
+      y,
+      rotate
+    }, i) => {
+      const X = x,
+        Y = y;
 
       // X, Y, STYLE, CONTENT, rotate
       return getSvgTextHtml(X, Y, TEXT_STYLE, CONTENTS[i], rotate);
