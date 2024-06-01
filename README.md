@@ -1,9 +1,9 @@
 
   <details open>
     <summary>
-      <en_us> </en_us>
-      <zh_cn></zh_cn>
-      <zh_tw></zh_tw>
+      <en_us>Box</en_us>
+      <zh_cn>盒子</zh_cn>
+      <zh_tw>盒子</zh_tw>
     </summary>
     <a target="_blank" href="box.htm">
       <en_us>a single box</en_us>
