@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <!-- anqisoft@gmail.com 2024-02-03 -->
+    <meta charset="utf-8" />
+    <!-- It's useless? -->
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <meta id="viewportMeta" name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover,minimal-ui" />
+    <title>数学三下周末每日十题</title>
+    <!--
+      思路：最终成品为A5小册子（根据参数控制是免切边的还是免装订的——默认免装订），分两大部分——题目、答案。
+      题目：每页十题——4口算、3竖式、3脱式。
+      知识点：需覆盖加法、减法、乘法、除法，以及加减乘除及括号混合运算。如除法为最后一步，允许有余数。
+      页数（题目本、答案本）：1月27日到2月25日，每天一张，30天小计30张。再加一页封面，共31张。
+      页码：正文页左页左下角，右页右下角，从1开始。封面无页码。
+      页面参数：上下左右边距、开始日期、结束日期、是否免切边。
+
+      1. 增加三个最大值参数，以便控制题目难度：oralMax（默认100，最小10）、verticalMax（默认200，最小10）、offTheShelfMax（默认100，最小10）。推荐值：10、20、100、200、1000、2000、10000。
+      2. 增加参数：removeCover移除封面（默认false），以便不同时段采用不同的难度组合。移除封面时，空白页全部补充到末尾。
+      ?start=20230703&end=20230830&left=3&right=3&top=3&bottom=3&notrim=true&removeCover=false&oralMax=200&verticalMax=1000&offTheShelfMax=200
+      ?start=20230901&end=20230930&left=5&right=5&top=5&bottom=5&notrim=true&removeCover=true&oralMax=500&verticalMax=2000&offTheShelfMax=200
+      ?start=20230901&end=20230930&left=5&right=5&top=5&bottom=5&notrim=true&removeCover=true&oralMax=500&verticalMax=2000&offTheShelfMax=1000
+    -->
+    <link rel="stylesheet" href="css/index.css">
+    <script>
+        const COVER_INFO = {
+            QUESTION_COVER_PAGE_SUBJECT_TEXT: '三下周末每日十题',
+            ANSWER_COVER_PAGE_SUBJECT_TEXT: '三下周末每日十题答案',
+
+            QUESTION_PAGE_FOOTER_TEXT: '三下周末每日十题',
+            ANSWER_PAGE_FOOTER_TEXT: '', // '三下每日十题②答案',
+        };
+
+        // 八位：4位年，2位月，2位日
+        const DEFAULT_START_DATE = '20240317';
+        const DEFAULT_END_DATE = '20240706';
+
+        // const DATE_ARRAY = ["20240404", "20240405", "20240501", "20240502", "20240503", "20240610", "20240302", "20240303", "20240309", "20240310", "20240316", "20240317", "20240323", "20240324", "20240330", "20240331", "20240406", "20240413", "20240414", "20240420", "20240421", "20240427", "20240504", "20240505", "20240512", "20240518", "20240519", "20240525", "20240526", "20240601", "20240602", "20240608", "20240609", "20240615", "20240616", "20240622", "20240623", "20240629", "20240630", "20240706", "20240707"];
+
+        // remove: "20240302", "20240303", "20240309", "20240310", "20240316", "20240706", "20240707",
+        const DATE_ARRAY = ["20240404", "20240405", "20240501", "20240502", "20240503", "20240610", "20240317", "20240323", "20240324", "20240330", "20240331", "20240406", "20240413", "20240414", "20240420", "20240421", "20240427", "20240504", "20240505", "20240512", "20240518", "20240519", "20240525", "20240526", "20240601", "20240602", "20240608", "20240609", "20240615", "20240616", "20240622", "20240623", "20240629", "20240630"];
+        DATE_ARRAY.sort();
+
+        // panic: end=20300225
+        // maybe panic: end=20280225
+
+        // ok: >= 8100
+        // maybe error(less than 0): 20, 1000, 5000, ..., 8099
+        const MIN_OF_MAX_VALUE = 8100;
+
+        const FUNCTION_KEY = 'grade3_term2_phase3';
+    </script>
+</head>
+
+<body>
+    <script type="application/javascript" src="js/weekend.js?20240317"></script>
+</body>
+
+</html>
