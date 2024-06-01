@@ -6,5 +6,5 @@ Some of my small tools written in typescript or javascript and compiled with den
 <a target="_blank" href="README.zh_tw.md">繁體中文版</a><br /><br />
 
 The other website is <a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a> and the source url is <a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>.<br />
-另一网站是<<a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a>，相应源码网址：<a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>。<br />
+另一网站是<a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a>，相应源码网址：<a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>。<br />
 另一網站是<a target="_blank" href="http://edu.sonya.cc/">http://edu.sonya.cc/</a>，相應源碼網址：<a target="_blank" href="https://github.com/edu-sonya-cc/">https://github.com/edu-sonya-cc/</a>。<br />
